@@ -1,3 +1,5 @@
+import { Analytics } from '@vercel/analytics/react'
+
 export default {
   logo:
     <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
@@ -19,6 +21,11 @@ export default {
       <meta property="og:title" content="Claude Code Academy - by CC Club" />
       <meta property="og:description" content="为 Claude Code 开发者提供的中文学习资源库" />
       <link rel="icon" type="image/svg+xml" href="/cc-club.svg" />
+    </>
+  ),
+  body: (
+    <>
+      <Analytics />
     </>
   ),
   primaryHue: 220,
