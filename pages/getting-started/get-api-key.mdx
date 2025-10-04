@@ -4,17 +4,19 @@ description: 获取 Claude Code Club 提供的免费 API Key，开启 AI 编程�
 ---
 
 import { Callout, Steps, Cards } from 'nextra/components'
+import Image from 'next/image'
+
 
 # 申请免费 API Key
 
 ## 为什么选择 Claude Code Club？
 
-Claude Code Club（https://claude-code.club） 致力于推动 **Vibe Coding** 在中国的普及，让中国程序员也能用上世界最先进的 AI Coding Agent。
+Claude Code Club ( https://claude-code.club ) 致力于推动 **Vibe Coding** 在中国的普及，让中国程序员也能用上世界最先进的 AI Coding Agent。
 
 **核心优势：**
 
 - 🌐 **解决网络问题** - 无需科学上网，国内直连访问
-- 💳 **解决支付问题** - 无需海外信用卡，免费体验
+- 💳 **解决支付问题** - 无需海外信用卡，微信/支付宝即可支付
 - ⚡ **高速稳定** - 国内优化线路，响应更快
 - 🎯 **永久免费** - 提供永久免费体验额度
 
@@ -26,26 +28,21 @@ Claude Code Club（https://claude-code.club） 致力于推动 **Vibe Coding** �
 ### 扫码加入 CC Club 技术交流群
 
 扫描下方二维码，加入 Claude Code Club 技术交流群。在这里你可以：
-- 与 3000+ 名优秀开发者交流 AI 编程经验
+- 与 3000+ 名优秀开发者交流 AI 编程经验，答疑解惑
 - 获取最新的 Claude Code 使用技巧
-- 第一时间了解功能更新和最佳实践
-- 寻求技术支持和问题解答
 
-<div style={{ display: 'flex', justifyContent: 'center', margin: '2rem 0' }}>
-  ![CC Club 技术交流群](/images/cc-club-group-qrcode.png)
+<div style={{ display: 'flex', justifyContent: 'top', margin: '2rem 0' }}>
+  <Image src="/images/cc-club-group-qrcode.png" alt="CC Club 技术交流群" width={300} height={300} />
 </div>
 
-<Callout type="warning">
-请确保扫码后等待审核通过，审核时间通常在 24 小时内。
-</Callout>
 
 ### 联系客服申请 API Key
 
-进群后，在群内联系客服：**@蚂蚁数据**
+进群后，在群内联系蚂蚁数据团队任何人：**口口@蚂蚁数据**
 
 发送申请信息：
 ```
-您好，我想申请 Claude Code 免费体验 API Key
+申请免费体验 Key
 ```
 
 客服会在工作时间（工作日 9:00-18:00）为您处理申请，并发送您的专属 API Key。
@@ -60,11 +57,14 @@ Claude Code Club（https://claude-code.club） 致力于推动 **Vibe Coding** �
 
 获取 API Key 后，访问 [安装和配置](/getting-started/installation) 页面，按照教程完成环境配置。
 
-主要配置步骤：
-1. 安装 Node.js 环境
-2. 安装 Claude Code
-3. 设置环境变量（使用您获取的 API Key）
-4. 开始使用 Claude Code
+<Cards>
+  <Cards.Card
+    icon="📚"
+    title="安装和配置"
+    href="/getting-started/installation"
+  />
+</Cards>
+
 
 </Steps>
 
@@ -88,20 +88,12 @@ Claude Code Club（https://claude-code.club） 致力于推动 **Vibe Coding** �
 
 如果您在申请或使用 API Key 过程中遇到问题，请查看 [常见问题](/getting-started/faq) 页面获取帮助。
 
-## 下一步
-
-获得了 API Key 以后，您需要访问以下页面完成 Claude Code 的安装和配置：
-
-<Cards>
-  <Cards.Card
-    icon="📚"
-    title="安装和配置"
-    href="/getting-started/installation"
-  />
-</Cards>
 
 ---
 
 <Callout type="success">
 🎉 准备好开启 AI 编程之旅了吗？立即扫码加入 CC Club，获取您的免费 API Key！
+  <div style={{ display: 'flex', justifyContent: 'center', margin: '1rem 0'}}>
+    <Image src="/images/cc-club-group-qrcode.png" alt="CC Club 技术交流群" width={300} height={300} />
+  </div>
 </Callout>
