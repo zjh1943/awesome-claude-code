@@ -1,0 +1,306 @@
+---
+title: 如何贡献
+description: 参与 Claude Code Academy 的贡献指南
+---
+
+import { Callout, Steps } from 'nextra/components'
+
+# 如何贡献
+
+感谢你对 Claude Code Academy 的关注！这是一个社区驱动的项目，我们欢迎所有形式的贡献。
+
+<Callout type="info">
+💡 **新手友好**：即使你是第一次参与开源项目，我们也会帮助你完成第一次贡献！
+</Callout>
+
+## 🎯 贡献方式
+
+### 📝 文档贡献
+
+**难度**：⭐
+**适合**：所有人
+
+- 编写新教程
+- 改进现有文档
+- 修正错别字
+- 翻译英文资料
+
+### 💡 案例分享
+
+**难度**：⭐⭐
+**适合**：有实战经验的开发者
+
+- 分享项目案例
+- 记录踩坑经验
+- 展示创意用法
+
+### 🔧 工具推荐
+
+**难度**：⭐
+**适合**：MCP Server 用户
+
+- 推荐优质工具
+- 编写使用指南
+- 提供配置示例
+
+## 🚀 快速开始
+
+<Steps>
+
+### Fork 仓库
+
+点击页面右上角的 "Fork" 按钮，将仓库复制到你的账号下。
+
+### 克隆到本地
+
+```bash
+git clone https://github.com/YOUR_USERNAME/claude-code-academy.git
+cd claude-code-academy
+```
+
+### 安装依赖
+
+```bash
+npm install
+```
+
+### 启动开发服务器
+
+```bash
+npm run dev
+```
+
+访问 `http://localhost:3000` 查看效果。
+
+### 创建分支
+
+```bash
+git checkout -b feature/my-awesome-contribution
+```
+
+### 编辑内容
+
+在 `content/` 目录下编辑或新建文件。
+
+</Steps>
+
+## 📁 项目结构
+
+```
+claude-code-academy/
+├── content/              # 📚 所有文档内容
+│   ├── getting-started/  # 入门指南
+│   ├── tutorials/        # 教程
+│   ├── examples/         # 案例
+│   ├── resources/        # 资源
+│   ├── best-practices/   # 最佳实践
+│   └── community/        # 社区
+├── app/                  # Next.js 应用
+├── public/               # 静态资源
+├── components/           # React 组件
+└── theme.config.jsx      # 主题配置
+```
+
+## ✍️ 编写文档
+
+### 文档模板
+
+每个 MDX 文件应该包含：
+
+```markdown
+---
+title: 文档标题
+description: 简短描述
+---
+
+# 主标题
+
+简短介绍。
+
+## 核心内容
+
+详细内容...
+
+## 示例代码
+
+\```typescript
+// 代码示例
+\```
+
+## 相关资源
+
+- [链接1](#)
+- [链接2](#)
+```
+
+### 使用组件
+
+Nextra 提供了丰富的组件：
+
+#### Callout（提示框）
+
+```markdown
+import { Callout } from 'nextra/components'
+
+<Callout type="info">
+提示信息
+</Callout>
+
+<Callout type="warning">
+警告信息
+</Callout>
+
+<Callout type="error">
+错误信息
+</Callout>
+```
+
+效果：
+
+<Callout type="info">
+这是一个信息提示框
+</Callout>
+
+#### Steps（步骤）
+
+```markdown
+import { Steps } from 'nextra/components'
+
+<Steps>
+
+### 步骤 1
+
+说明...
+
+### 步骤 2
+
+说明...
+
+</Steps>
+```
+
+#### Cards（卡片）
+
+```markdown
+import { Cards, Card } from 'nextra/components'
+
+<Cards>
+  <Card title="标题 1" href="/link1">描述 1</Card>
+  <Card title="标题 2" href="/link2">描述 2</Card>
+</Cards>
+```
+
+### 代码高亮
+
+支持多种语言：
+
+````markdown
+```typescript
+const greeting: string = "Hello"
+```
+
+```bash
+npm install package-name
+```
+
+```json
+{
+  "key": "value"
+}
+```
+````
+
+## 📋 提交规范
+
+### Commit 信息格式
+
+```bash
+# 添加新内容
+git commit -m "Add: MCP Server 开发教程"
+
+# 更新现有内容
+git commit -m "Update: 改进安装说明"
+
+# 修复错误
+git commit -m "Fix: 修正代码示例中的错误"
+
+# 删除内容
+git commit -m "Remove: 删除过时的信息"
+```
+
+### PR 标题格式
+
+- `Add: 添加XXX`
+- `Update: 更新XXX`
+- `Fix: 修复XXX`
+- `Docs: 文档相关`
+
+## ✅ 质量检查清单
+
+提交前请确认：
+
+- [ ] 内容准确无误
+- [ ] 代码示例已测试
+- [ ] 遵循文档格式规范
+- [ ] 没有拼写错误
+- [ ] 本地预览效果正常
+- [ ] Commit 信息清晰
+
+## 🎨 文档风格
+
+### 语言规范
+
+- ✅ 使用简洁的中文
+- ✅ 技术术语保持一致
+- ✅ 适当保留英文原词
+- ❌ 避免过于口语化
+
+### 示例代码
+
+- ✅ 代码简洁清晰
+- ✅ 添加必要注释
+- ✅ 确保可运行
+- ✅ 遵循最佳实践
+
+## 🤝 获得帮助
+
+遇到问题？我们随时准备帮助你！
+
+- 💬 [GitHub Discussions](https://github.com/zjh1943/claude-code-academy/discussions)
+- 🐛 [Issues](https://github.com/zjh1943/claude-code-academy/issues)
+- 📧 Email: your-email@example.com
+
+## 🌟 成为核心贡献者
+
+优秀的贡献者可以成为项目的核心维护者！
+
+### 权益
+
+- 🎖️ 核心贡献者徽章
+- 📢 在社区展示页面推荐
+- 🗳️ 参与项目决策
+- 🎁 专属周边（未来计划）
+
+### 要求
+
+- 持续贡献 3 个月以上
+- 提交 5+ 个高质量 PR
+- 积极参与社区讨论
+
+## 📜 行为准则
+
+我们致力于营造友好、包容的社区环境：
+
+- ✅ 尊重所有贡献者
+- ✅ 接受建设性反馈
+- ✅ 保持友好和专业
+- ❌ 禁止人身攻击
+- ❌ 禁止歧视和骚扰
+
+## 🙏 致谢
+
+你的贡献将帮助更多开发者学习和使用 Claude Code。感谢你让这个社区更美好！
+
+---
+
+准备好了吗？[创建你的第一个 PR](https://github.com/zjh1943/claude-code-academy/compare) →
