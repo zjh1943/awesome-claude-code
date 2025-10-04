@@ -3,6 +3,811 @@ title: 安装和配置
 description: Claude Code 的安装和配置指南
 ---
 
+import { Tabs, Callout } from 'nextra/components'
+
 # 安装和配置
 
-**TBD** - 待完善
+跟着这个教程，你可以轻松在自己的电脑上安装并使用 Claude Code。
+
+<Tabs items={['Windows', 'macOS', 'Linux / WSL2']}>
+  <Tabs.Tab>
+    ## 1. 安装 Node.js 环境
+
+    Claude Code 需要 Node.js 环境才能运行。
+
+    ### Windows 安装方法
+
+    **方法一：官网下载（推荐）**
+
+    1. 打开浏览器访问 https://nodejs.org/
+    2. 点击 "LTS" 版本进行下载（推荐长期支持版本）
+    3. 下载完成后双击 .msi 文件
+    4. 按照安装向导完成安装，保持默认设置即可
+
+    **方法二：使用包管理器**
+
+    如果你安装了 Chocolatey 或 Scoop，可以使用命令行安装：
+
+    ```bash
+    # 使用 Chocolatey
+    choco install nodejs
+
+    # 或使用 Scoop
+    scoop install nodejs
+    ```
+
+    <Callout type="warning">
+      **Windows 注意事项**
+      - 建议使用 PowerShell 而不是 CMD
+      - 如果遇到权限问题，尝试以管理员身份运行
+      - 某些杀毒软件可能会误报，需要添加白名单
+    </Callout>
+
+    ### 验证安装是否成功
+
+    安装完成后，打开 PowerShell 或 CMD，输入以下命令：
+
+    ```bash
+    node --version
+    npm --version
+    ```
+
+    如果显示版本号，说明安装成功了！
+
+    ## 2. 安装 Claude Code
+
+    ### 安装 Claude Code
+
+    打开 PowerShell 或 CMD，运行以下命令：
+
+    ```bash
+    # 全局安装 Claude Code
+    npm install -g @anthropic-ai/claude-code
+    ```
+
+    这个命令会从 npm 官方仓库下载并安装最新版本的 Claude Code。
+
+    <Callout type="info">
+      **提示**
+      - 建议使用 PowerShell 而不是 CMD，功能更强大
+      - 如果遇到权限问题，以管理员身份运行 PowerShell
+    </Callout>
+
+    ### 验证 Claude Code 安装
+
+    安装完成后，输入以下命令检查是否安装成功：
+
+    ```bash
+    claude --version
+    ```
+
+    如果显示版本号，恭喜你！Claude Code 已经成功安装了。
+
+    ## 3. 设置环境变量
+
+    ### ⚙️ 配置 Claude Code 环境变量
+
+    为了让 Claude Code 连接到你的中转服务，需要设置两个环境变量：
+
+    **方法一：PowerShell 临时设置（当前会话）**
+
+    在 PowerShell 中运行以下命令：
+
+    ```powershell
+    $env:ANTHROPIC_BASE_URL = "https://claude-code.club/api"
+    $env:ANTHROPIC_AUTH_TOKEN = "你的API密钥"
+    ```
+
+    <Callout type="info">
+      💡 记得将 "你的API密钥" 替换为在上方 "API Keys" 标签页中创建的实际密钥。
+    </Callout>
+
+    **方法二：PowerShell 永久设置（用户级）**
+
+    在 PowerShell 中运行以下命令设置用户级环境变量：
+
+    ```powershell
+    # 设置用户级环境变量（永久生效）
+    [System.Environment]::SetEnvironmentVariable("ANTHROPIC_BASE_URL", "https://claude-code.club/api", "User")
+    [System.Environment]::SetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", "你的API密钥", "User")
+
+    # 查看已设置的环境变量
+    [System.Environment]::GetEnvironmentVariable("ANTHROPIC_BASE_URL", "User")
+    [System.Environment]::GetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", "User")
+    ```
+
+    <Callout type="warning">
+      💡 设置后需要重新打开 PowerShell 窗口才能生效。
+    </Callout>
+
+    ### VSCode Claude 插件配置
+
+    如果使用 VSCode 的 Claude 插件，需要在配置文件中进行设置：
+
+    **配置文件位置：** `C:\Users\你的用户名\.claude\config.json`
+
+    <Callout type="info">
+      💡 如果该文件不存在，请手动创建。
+    </Callout>
+
+    ```json
+    {
+      "primaryApiKey": "crs"
+    }
+    ```
+
+    ### 验证环境变量设置
+
+    设置完环境变量后，可以通过以下命令验证是否设置成功：
+
+    在 PowerShell 中验证：
+    ```powershell
+    echo $env:ANTHROPIC_BASE_URL
+    echo $env:ANTHROPIC_AUTH_TOKEN
+    ```
+
+    在 CMD 中验证：
+    ```cmd
+    echo %ANTHROPIC_BASE_URL%
+    echo %ANTHROPIC_AUTH_TOKEN%
+    ```
+
+    预期输出示例：
+    ```
+    https://claude-code.club/api
+    cr_xxxxxxxxxxxxxxxxxx
+    ```
+
+    <Callout type="warning">
+      💡 如果输出为空或显示变量名本身，说明环境变量设置失败，请重新设置。
+    </Callout>
+
+    ### 配置 Gemini CLI 环境变量
+
+    如果你使用 Gemini CLI，需要设置以下环境变量：
+
+    **PowerShell 设置方法**
+
+    在 PowerShell 中运行以下命令：
+    ```powershell
+    $env:CODE_ASSIST_ENDPOINT = "https://claude-code.club/gemini"
+    $env:GOOGLE_CLOUD_ACCESS_TOKEN = "你的API密钥"
+    $env:GOOGLE_GENAI_USE_GCA = "true"
+    ```
+
+    <Callout type="info">
+      💡 使用与 Claude Code 相同的 API 密钥即可。
+    </Callout>
+
+    **PowerShell 永久设置（用户级）**
+
+    在 PowerShell 中运行以下命令：
+    ```powershell
+    # 设置用户级环境变量（永久生效）
+    [System.Environment]::SetEnvironmentVariable("CODE_ASSIST_ENDPOINT", "https://claude-code.club/gemini", "User")
+    [System.Environment]::SetEnvironmentVariable("GOOGLE_CLOUD_ACCESS_TOKEN", "你的API密钥", "User")
+    [System.Environment]::SetEnvironmentVariable("GOOGLE_GENAI_USE_GCA", "true", "User")
+    ```
+
+    <Callout type="warning">
+      💡 设置后需要重新打开 PowerShell 窗口才能生效。
+    </Callout>
+
+    **验证 Gemini CLI 环境变量**
+
+    在 PowerShell 中验证：
+    ```powershell
+    echo $env:CODE_ASSIST_ENDPOINT
+    echo $env:GOOGLE_CLOUD_ACCESS_TOKEN
+    echo $env:GOOGLE_GENAI_USE_GCA
+    ```
+
+    ### 配置 Codex 环境变量
+
+    如果你使用支持 OpenAI API 的工具（如 Codex），需要设置以下环境变量：
+
+    **Codex 配置文件**
+
+    在 `~/.codex/config.toml` 文件开头添加以下配置：
+    ```toml
+    model_provider = "crs"
+    model = "gpt-5-codex"
+    model_reasoning_effort = "high"
+    disable_response_storage = true
+    preferred_auth_method = "apikey"
+
+    [model_providers.crs]
+    name = "crs"
+    base_url = "https://claude-code.club/openai"
+    wire_api = "responses"
+    requires_openai_auth = true
+    env_key = "CRS_OAI_KEY"
+    ```
+
+    在 `~/.codex/auth.json` 文件中配置API密钥：
+    ```json
+    {
+      "OPENAI_API_KEY": null
+    }
+    ```
+
+    <Callout type="info">
+      💡 将 OPENAI_API_KEY 设置为 null，然后设置环境变量 CRS_OAI_KEY 为您的 API 密钥（格式如 cr_xxxxxxxxxx）。
+    </Callout>
+
+    **环境变量设置方法**
+
+    Windows:
+    ```cmd
+    set CRS_OAI_KEY=cr_xxxxxxxxxx
+    ```
+
+    ## 4. 开始使用 Claude Code
+
+    现在你可以开始使用 Claude Code 了！
+
+    ### 启动 Claude Code
+
+    ```bash
+    claude
+    ```
+
+    ### 在特定项目中使用
+
+    ```bash
+    # 进入你的项目目录
+    cd C:\path\to\your\project
+
+    # 启动 Claude Code
+    claude
+    ```
+
+    ### Windows 常见问题解决
+
+    **安装时提示 "permission denied" 错误**
+
+    以管理员身份运行 PowerShell 或 CMD
+
+    **PowerShell 执行策略错误**
+
+    如果遇到执行策略限制，运行：
+    ```powershell
+    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+    ```
+
+    **环境变量设置后不生效**
+
+    设置永久环境变量后需要：
+    - 重新启动 PowerShell 或 CMD
+    - 或者注销并重新登录 Windows
+    - 验证设置：`echo $env:ANTHROPIC_BASE_URL`
+
+    ---
+
+    🎉 恭喜你！你已经成功安装并配置了 Claude Code，现在可以开始享受 AI 编程助手带来的便利了。
+
+    如果在使用过程中遇到任何问题，可以查看官方文档或社区讨论获取帮助。
+  </Tabs.Tab>
+
+  <Tabs.Tab>
+    ## 1. 安装 Node.js 环境
+
+    Claude Code 需要 Node.js 环境才能运行。
+
+    ### macOS 安装方法
+
+    **方法一：使用 Homebrew（推荐）**
+
+    如果你已经安装了 Homebrew，使用它安装 Node.js 会更方便：
+
+    ```bash
+    # 更新 Homebrew
+    brew update
+
+    # 安装 Node.js
+    brew install node
+    ```
+
+    **方法二：官网下载**
+
+    1. 访问 https://nodejs.org/
+    2. 下载适合 macOS 的 LTS 版本
+    3. 打开下载的 .pkg 文件
+    4. 按照安装程序指引完成安装
+
+    <Callout type="warning">
+      **macOS 注意事项**
+      - 如果遇到权限问题，可能需要使用 sudo
+      - 首次运行可能需要在系统偏好设置中允许
+      - 建议使用 Terminal 或 iTerm2
+    </Callout>
+
+    ### 验证安装是否成功
+
+    安装完成后，打开 Terminal，输入以下命令：
+
+    ```bash
+    node --version
+    npm --version
+    ```
+
+    如果显示版本号，说明安装成功了！
+
+    ## 2. 安装 Claude Code
+
+    ### 安装 Claude Code
+
+    打开 Terminal，运行以下命令：
+
+    ```bash
+    # 全局安装 Claude Code
+    npm install -g @anthropic-ai/claude-code
+    ```
+
+    如果遇到权限问题，可以使用 sudo：
+
+    ```bash
+    sudo npm install -g @anthropic-ai/claude-code
+    ```
+
+    ### 验证 Claude Code 安装
+
+    安装完成后，输入以下命令检查是否安装成功：
+
+    ```bash
+    claude --version
+    ```
+
+    如果显示版本号，恭喜你！Claude Code 已经成功安装了。
+
+    ## 3. 设置环境变量
+
+    ### ⚙️ 配置 Claude Code 环境变量
+
+    为了让 Claude Code 连接到你的中转服务，需要设置两个环境变量：
+
+    **方法一：临时设置（当前会话）**
+
+    在 Terminal 中运行以下命令：
+
+    ```bash
+    export ANTHROPIC_BASE_URL="https://claude-code.club/api"
+    export ANTHROPIC_AUTH_TOKEN="你的API密钥"
+    ```
+
+    <Callout type="info">
+      💡 记得将 "你的API密钥" 替换为在上方 "API Keys" 标签页中创建的实际密钥。
+    </Callout>
+
+    **方法二：永久设置**
+
+    编辑你的 shell 配置文件（根据你使用的 shell）：
+
+    ```bash
+    # 对于 zsh (默认)
+    echo 'export ANTHROPIC_BASE_URL="https://claude-code.club/api"' >> ~/.zshrc
+    echo 'export ANTHROPIC_AUTH_TOKEN="你的API密钥"' >> ~/.zshrc
+    source ~/.zshrc
+
+    # 对于 bash
+    echo 'export ANTHROPIC_BASE_URL="https://claude-code.club/api"' >> ~/.bash_profile
+    echo 'export ANTHROPIC_AUTH_TOKEN="你的API密钥"' >> ~/.bash_profile
+    source ~/.bash_profile
+    ```
+
+    ### VSCode Claude 插件配置
+
+    如果使用 VSCode 的 Claude 插件，需要在配置文件中进行设置：
+
+    **配置文件位置：** `~/.claude/config.json`
+
+    <Callout type="info">
+      💡 如果该文件不存在，请手动创建。
+    </Callout>
+
+    ```json
+    {
+      "primaryApiKey": "crs"
+    }
+    ```
+
+    ### 配置 Gemini CLI 环境变量
+
+    如果你使用 Gemini CLI，需要设置以下环境变量：
+
+    **Terminal 设置方法**
+
+    在 Terminal 中运行以下命令：
+    ```bash
+    export CODE_ASSIST_ENDPOINT="https://claude-code.club/gemini"
+    export GOOGLE_CLOUD_ACCESS_TOKEN="你的API密钥"
+    export GOOGLE_GENAI_USE_GCA="true"
+    ```
+
+    <Callout type="info">
+      💡 使用与 Claude Code 相同的 API 密钥即可。
+    </Callout>
+
+    **永久设置方法**
+
+    添加到你的 shell 配置文件：
+    ```bash
+    # 对于 zsh (默认)
+    echo 'export CODE_ASSIST_ENDPOINT="https://claude-code.club/gemini"' >> ~/.zshrc
+    echo 'export GOOGLE_CLOUD_ACCESS_TOKEN="你的API密钥"' >> ~/.zshrc
+    echo 'export GOOGLE_GENAI_USE_GCA="true"' >> ~/.zshrc
+    source ~/.zshrc
+
+    # 对于 bash
+    echo 'export CODE_ASSIST_ENDPOINT="https://claude-code.club/gemini"' >> ~/.bash_profile
+    echo 'export GOOGLE_CLOUD_ACCESS_TOKEN="你的API密钥"' >> ~/.bash_profile
+    echo 'export GOOGLE_GENAI_USE_GCA="true"' >> ~/.bash_profile
+    source ~/.bash_profile
+    ```
+
+    **验证 Gemini CLI 环境变量**
+
+    在 Terminal 中验证：
+    ```bash
+    echo $CODE_ASSIST_ENDPOINT
+    echo $GOOGLE_CLOUD_ACCESS_TOKEN
+    echo $GOOGLE_GENAI_USE_GCA
+    ```
+
+    ### 配置 Codex 环境变量
+
+    如果你使用支持 OpenAI API 的工具（如 Codex），需要设置以下环境变量：
+
+    **Codex 配置文件**
+
+    在 `~/.codex/config.toml` 文件开头添加以下配置：
+    ```toml
+    model_provider = "crs"
+    model = "gpt-5-codex"
+    model_reasoning_effort = "high"
+    disable_response_storage = true
+    preferred_auth_method = "apikey"
+
+    [model_providers.crs]
+    name = "crs"
+    base_url = "https://claude-code.club/openai"
+    wire_api = "responses"
+    requires_openai_auth = true
+    env_key = "CRS_OAI_KEY"
+    ```
+
+    在 `~/.codex/auth.json` 文件中配置API密钥：
+    ```json
+    {
+      "OPENAI_API_KEY": null
+    }
+    ```
+
+    <Callout type="info">
+      💡 将 OPENAI_API_KEY 设置为 null，然后设置环境变量 CRS_OAI_KEY 为您的 API 密钥（格式如 cr_xxxxxxxxxx）。
+    </Callout>
+
+    **环境变量设置方法**
+
+    macOS:
+    ```bash
+    export CRS_OAI_KEY=cr_xxxxxxxxxx
+    ```
+
+    **Shell 配置文件（持久保存）:**
+
+    添加到您的 shell 配置文件中：
+    ```bash
+    # 对于 zsh (默认)
+    echo "export CRS_OAI_KEY=cr_xxxxxxxxxx" >> ~/.zshrc
+    source ~/.zshrc
+
+    # 对于 bash
+    echo "export CRS_OAI_KEY=cr_xxxxxxxxxx" >> ~/.bash_profile
+    source ~/.bash_profile
+    ```
+
+    ## 4. 开始使用 Claude Code
+
+    现在你可以开始使用 Claude Code 了！
+
+    ### 启动 Claude Code
+
+    ```bash
+    claude
+    ```
+
+    ### 在特定项目中使用
+
+    ```bash
+    # 进入你的项目目录
+    cd /path/to/your/project
+
+    # 启动 Claude Code
+    claude
+    ```
+
+    ### macOS 常见问题解决
+
+    **安装时提示权限错误**
+
+    使用 sudo 命令进行安装
+
+    **macOS 安全设置阻止运行**
+
+    在系统偏好设置 → 安全性与隐私中允许运行
+
+    **环境变量不生效**
+
+    确认修改了正确的配置文件（zsh 或 bash），并重新加载配置文件
+
+    ---
+
+    🎉 恭喜你！你已经成功安装并配置了 Claude Code，现在可以开始享受 AI 编程助手带来的便利了。
+
+    如果在使用过程中遇到任何问题，可以查看官方文档或社区讨论获取帮助。
+  </Tabs.Tab>
+
+  <Tabs.Tab>
+    ## 1. 安装 Node.js 环境
+
+    Claude Code 需要 Node.js 环境才能运行。
+
+    ### Linux 安装方法
+
+    **方法一：使用官方仓库（推荐）**
+
+    ```bash
+    # 添加 NodeSource 仓库
+    curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+
+    # 安装 Node.js
+    sudo apt-get install -y nodejs
+    ```
+
+    **方法二：使用系统包管理器**
+
+    虽然版本可能不是最新的，但对于基本使用已经足够：
+
+    ```bash
+    # Ubuntu/Debian
+    sudo apt update
+    sudo apt install nodejs npm
+
+    # CentOS/RHEL/Fedora
+    sudo dnf install nodejs npm
+    ```
+
+    <Callout type="warning">
+      **Linux 注意事项**
+      - 某些发行版可能需要安装额外的依赖
+      - 如果遇到权限问题，使用 sudo
+      - 确保你的用户在 npm 的全局目录有写权限
+    </Callout>
+
+    ### 验证安装是否成功
+
+    安装完成后，打开终端，输入以下命令：
+
+    ```bash
+    node --version
+    npm --version
+    ```
+
+    如果显示版本号，说明安装成功了！
+
+    ## 2. 安装 Claude Code
+
+    ### 安装 Claude Code
+
+    打开终端，运行以下命令：
+
+    ```bash
+    # 全局安装 Claude Code
+    npm install -g @anthropic-ai/claude-code
+    ```
+
+    如果遇到权限问题，可以使用 sudo：
+
+    ```bash
+    sudo npm install -g @anthropic-ai/claude-code
+    ```
+
+    ### 验证 Claude Code 安装
+
+    安装完成后，输入以下命令检查是否安装成功：
+
+    ```bash
+    claude --version
+    ```
+
+    如果显示版本号，恭喜你！Claude Code 已经成功安装了。
+
+    ## 3. 设置环境变量
+
+    ### ⚙️ 配置 Claude Code 环境变量
+
+    为了让 Claude Code 连接到你的中转服务，需要设置两个环境变量：
+
+    **方法一：临时设置（当前会话）**
+
+    在终端中运行以下命令：
+
+    ```bash
+    export ANTHROPIC_BASE_URL="https://claude-code.club/api"
+    export ANTHROPIC_AUTH_TOKEN="你的API密钥"
+    ```
+
+    <Callout type="info">
+      💡 记得将 "你的API密钥" 替换为在上方 "API Keys" 标签页中创建的实际密钥。
+    </Callout>
+
+    **方法二：永久设置**
+
+    编辑你的 shell 配置文件：
+
+    ```bash
+    # 对于 bash (默认)
+    echo 'export ANTHROPIC_BASE_URL="https://claude-code.club/api"' >> ~/.bashrc
+    echo 'export ANTHROPIC_AUTH_TOKEN="你的API密钥"' >> ~/.bashrc
+    source ~/.bashrc
+
+    # 对于 zsh
+    echo 'export ANTHROPIC_BASE_URL="https://claude-code.club/api"' >> ~/.zshrc
+    echo 'export ANTHROPIC_AUTH_TOKEN="你的API密钥"' >> ~/.zshrc
+    source ~/.zshrc
+    ```
+
+    ### 配置 Gemini CLI 环境变量
+
+    如果你使用 Gemini CLI，需要设置以下环境变量：
+
+    **终端设置方法**
+
+    在终端中运行以下命令：
+    ```bash
+    export CODE_ASSIST_ENDPOINT="https://claude-code.club/gemini"
+    export GOOGLE_CLOUD_ACCESS_TOKEN="你的API密钥"
+    export GOOGLE_GENAI_USE_GCA="true"
+    ```
+
+    <Callout type="info">
+      💡 使用与 Claude Code 相同的 API 密钥即可。
+    </Callout>
+
+    **永久设置方法**
+
+    添加到你的 shell 配置文件：
+    ```bash
+    # 对于 bash (默认)
+    echo 'export CODE_ASSIST_ENDPOINT="https://claude-code.club/gemini"' >> ~/.bashrc
+    echo 'export GOOGLE_CLOUD_ACCESS_TOKEN="你的API密钥"' >> ~/.bashrc
+    echo 'export GOOGLE_GENAI_USE_GCA="true"' >> ~/.bashrc
+    source ~/.bashrc
+
+    # 对于 zsh
+    echo 'export CODE_ASSIST_ENDPOINT="https://claude-code.club/gemini"' >> ~/.zshrc
+    echo 'export GOOGLE_CLOUD_ACCESS_TOKEN="你的API密钥"' >> ~/.zshrc
+    echo 'export GOOGLE_GENAI_USE_GCA="true"' >> ~/.zshrc
+    source ~/.zshrc
+    ```
+
+    **验证 Gemini CLI 环境变量**
+
+    在终端中验证：
+    ```bash
+    echo $CODE_ASSIST_ENDPOINT
+    echo $GOOGLE_CLOUD_ACCESS_TOKEN
+    echo $GOOGLE_GENAI_USE_GCA
+    ```
+
+    ### 配置 Codex 环境变量
+
+    如果你使用支持 OpenAI API 的工具（如 Codex），需要设置以下环境变量：
+
+    **Codex 配置文件**
+
+    在 `~/.codex/config.toml` 文件开头添加以下配置：
+    ```toml
+    model_provider = "crs"
+    model = "gpt-5-codex"
+    model_reasoning_effort = "high"
+    disable_response_storage = true
+    preferred_auth_method = "apikey"
+
+    [model_providers.crs]
+    name = "crs"
+    base_url = "https://claude-code.club/openai"
+    wire_api = "responses"
+    requires_openai_auth = true
+    env_key = "CRS_OAI_KEY"
+    ```
+
+    在 `~/.codex/auth.json` 文件中配置API密钥：
+    ```json
+    {
+      "OPENAI_API_KEY": null
+    }
+    ```
+
+    <Callout type="info">
+      💡 将 OPENAI_API_KEY 设置为 null，然后设置环境变量 CRS_OAI_KEY 为您的 API 密钥（格式如 cr_xxxxxxxxxx）。
+    </Callout>
+
+    **环境变量设置方法**
+
+    Linux:
+    ```bash
+    export CRS_OAI_KEY=cr_xxxxxxxxxx
+    ```
+
+    **Shell 配置文件（持久保存）:**
+
+    添加到您的 shell 配置文件中：
+    ```bash
+    # 对于 bash (默认)
+    echo "export CRS_OAI_KEY=cr_xxxxxxxxxx" >> ~/.bashrc
+    source ~/.bashrc
+
+    # 对于 zsh
+    echo "export CRS_OAI_KEY=cr_xxxxxxxxxx" >> ~/.zshrc
+    source ~/.zshrc
+    ```
+
+    ### VSCode Claude 插件配置
+
+    如果使用 VSCode 的 Claude 插件，需要在配置文件中进行设置：
+
+    **配置文件位置：** `~/.claude/config.json`
+
+    <Callout type="info">
+      💡 如果该文件不存在，请手动创建。
+    </Callout>
+
+    ```json
+    {
+      "primaryApiKey": "crs"
+    }
+    ```
+
+    ## 4. 开始使用 Claude Code
+
+    现在你可以开始使用 Claude Code 了！
+
+    ### 启动 Claude Code
+
+    ```bash
+    claude
+    ```
+
+    ### 在特定项目中使用
+
+    ```bash
+    # 进入你的项目目录
+    cd /path/to/your/project
+
+    # 启动 Claude Code
+    claude
+    ```
+
+    ### Linux 常见问题解决
+
+    **安装时提示权限错误**
+
+    使用 sudo 命令进行安装
+
+    **缺少依赖库**
+
+    根据错误提示安装相应的依赖包
+
+    **环境变量不生效**
+
+    确认修改了正确的配置文件（bashrc 或 zshrc），并重新加载配置文件
+
+    ---
+
+    🎉 恭喜你！你已经成功安装并配置了 Claude Code，现在可以开始享受 AI 编程助手带来的便利了。
+
+    如果在使用过程中遇到任何问题，可以查看官方文档或社区讨论获取帮助。
+  </Tabs.Tab>
+</Tabs>
