@@ -1,5 +1,9 @@
 export default {
-  logo: <span style={{ fontWeight: 700, fontSize: '1.2rem' }}>🎓 Claude Code Academy</span>,
+  logo: 
+    <>
+      <img src="/cc-club.svg" alt="Logo" style={{ height: '40px' }} />
+      <span style={{ marginLeft: '0.5rem', fontWeight: 700 }}>Claude Code Academy</span>
+    </>,
   project: {
     link: 'https://github.com/zjh1943/claude-code-academy'
   },
