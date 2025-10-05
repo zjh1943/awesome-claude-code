@@ -2,7 +2,7 @@ export default {
   index: {
     title: '首页',
     type: 'page',
-    display: 'hidden',
+    // display: 'hidden',
     // theme: {
     //   layout: 'raw'
     // }
@@ -11,20 +11,16 @@ export default {
     title: '入门指南',
     type: 'page'
   },
+  'practical-skills': {
+    title: '实战技能',
+    type: 'page'
+  },
   tutorials: {
-    title: '教程',
+    title: '完整课程',
     type: 'page'
   },
   examples: {
-    title: '实战案例',
-    type: 'page'
-  },
-  resources: {
-    title: '资源',
-    type: 'page'
-  },
-  'best-practices': {
-    title: '最佳实践',
+    title: '项目案例',
     type: 'page'
   },
   community: {
