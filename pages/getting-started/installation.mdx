@@ -87,44 +87,35 @@ import { Tabs, Callout } from 'nextra/components'
 
     ### ⚙️ 配置 Claude Code 环境变量
 
-    为了让 Claude Code 连接到你的中转服务，需要设置两个环境变量：
+    为了让 Claude Code 连接到你的中转服务，需要设置两个环境变量。
 
-    **方法一：PowerShell 临时设置（当前会话）**
-
-    在 PowerShell 中运行以下命令：
-
-    ```powershell
-    $env:ANTHROPIC_BASE_URL = "https://claude-code.club/api"
-    $env:ANTHROPIC_AUTH_TOKEN = "你的API密钥"
-    ```
-
-    <Callout type="info">
-      💡 记得将 "你的API密钥" 替换为在上方 "API Keys" 标签页中创建的实际密钥。
-    </Callout>
-
-    **方法二：PowerShell 永久设置（用户级）**
-
-    在 PowerShell 中运行以下命令设置用户级环境变量：
+    在 PowerShell 中运行以下命令设置用户级环境变量（一条一条执行）：
 
     ```powershell
     # 设置用户级环境变量（永久生效）
     [System.Environment]::SetEnvironmentVariable("ANTHROPIC_BASE_URL", "https://claude-code.club/api", "User")
     [System.Environment]::SetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", "你的API密钥", "User")
+    ```
 
+    <Callout type="warning">
+      💡 记得将 "你的API密钥" 替换为在上方 "API Keys" 标签页中创建的实际密钥。
+      💡 设置后需要重新打开 PowerShell 窗口才能生效。
+    </Callout>
+
+    设置完后用如下命令检查环境变量是否成功（一条一条执行）：
+
+    ```powershell
     # 查看已设置的环境变量
     [System.Environment]::GetEnvironmentVariable("ANTHROPIC_BASE_URL", "User")
     [System.Environment]::GetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", "User")
     ```
 
-    <Callout type="warning">
-      💡 设置后需要重新打开 PowerShell 窗口才能生效。
-    </Callout>
 
     ### VSCode Claude 插件配置
 
     如果使用 VSCode 的 Claude 插件，需要在配置文件中进行设置：
 
-    **配置文件位置：** `C:\Users\你的用户名\.claude\config.json`
+    **配置文件位置：** `C:\Users\<你的用户名>\.claude\config.json`
 
     <Callout type="info">
       💡 如果该文件不存在，请手动创建。
@@ -135,6 +126,15 @@ import { Tabs, Callout } from 'nextra/components'
       "primaryApiKey": "crs"
     }
     ```
+
+     <Callout type="info">
+      **验证配置文件是否设置成功：**
+      
+      ```powershell
+      cat ~\.claude\config.json
+      ```
+    </Callout>   
+    
 
     ### 验证环境变量设置
 
