@@ -312,8 +312,8 @@ git push origin feature/your-feature-name
 
 遇到问题？
 
-- 💬 [GitHub Discussions](https://github.com/zjh1943/claude-code-academy/discussions) - 提问讨论
-- 🐛 [Issues](https://github.com/zjh1943/claude-code-academy/issues) - 报告问题
+- 💬 [GitHub Discussions](https://github.com/zjh1943/awesome-claude-code/discussions) - 提问讨论
+- 🐛 [Issues](https://github.com/zjh1943/awesome-claude-code/issues) - 报告问题
 - 📧 Email: your-email@example.com
 
 ## 📊 贡献者认可
@@ -332,4 +332,4 @@ git push origin feature/your-feature-name
 
 ---
 
-有任何疑问？欢迎随时在 [Discussions](https://github.com/zjh1943/claude-code-academy/discussions) 中提问！
+有任何疑问？欢迎随时在 [Discussions](https://github.com/zjh1943/awesome-claude-code/discussions) 中提问！

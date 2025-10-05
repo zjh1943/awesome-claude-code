@@ -7,9 +7,9 @@ export default {
     </div>,
   // logoLink: '/',
   project: {
-    link: 'https://github.com/zjh1943/claude-code-academy'
+    link: 'https://github.com/zjh1943/awesome-claude-code'
   },
-  docsRepositoryBase: 'https://github.com/zjh1943/claude-code-academy/tree/main',
+  docsRepositoryBase: 'https://github.com/zjh1943/awesome-claude-code/tree/main',
   useNextSeoProps() {
     return {
       titleTemplate: '%s – Claude Code Academy - by CC Club'
@@ -28,7 +28,7 @@ export default {
   banner: {
     key: 'beta-release',
     text: (
-      <a href="https://github.com/zjh1943/claude-code-academy" target="_blank">
+      <a href="https://github.com/zjh1943/awesome-claude-code" target="_blank">
         🎉 欢迎来到 Claude Code Academy！这是一个开源协作项目，欢迎贡献 →
       </a>
     )
@@ -46,7 +46,7 @@ export default {
   footer: {
     text: (
       <>
-        MIT {new Date().getFullYear()} © <a href="https://github.com/zjh1943/claude-code-academy" target="_blank">Claude Code Academy</a>
+        MIT {new Date().getFullYear()} © <a href="https://github.com/zjh1943/awesome-claude-code" target="_blank">Claude Code Academy</a>
         {' · '}
         Built with ❤️ by the community
       </>

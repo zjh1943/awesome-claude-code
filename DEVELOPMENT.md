@@ -127,7 +127,7 @@ touch pages/tutorials/new-section/index.mdx
 export default {
   logo: <span>🎓 Claude Code Academy</span>,
   project: {
-    link: 'https://github.com/zjh1943/claude-code-academy'
+    link: 'https://github.com/zjh1943/awesome-claude-code'
   },
   // 更多配置...
 }
@@ -283,5 +283,5 @@ blc http://localhost:8080 -ro
 
 ## 💬 获得帮助
 
-- [GitHub Issues](https://github.com/zjh1943/claude-code-academy/issues)
-- [Discussions](https://github.com/zjh1943/claude-code-academy/discussions)
+- [GitHub Issues](https://github.com/zjh1943/awesome-claude-code/issues)
+- [Discussions](https://github.com/zjh1943/awesome-claude-code/discussions)

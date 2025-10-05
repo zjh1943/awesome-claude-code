@@ -1,245 +1,118 @@
-# 🎓 Claude Code Academy
+# 🎓 Awesome Claude Code
 
 <p align="center">
-  <strong>为 Claude Code 开发者提供的中文学习资源库</strong>
+  <strong>最全面的 Claude Code 中文学习资源库</strong>
   <br />
-  <a href="https://zjh1943.github.io/claude-code-academy">📚 在线文档</a> ·
-  <a href="#快速开始">快速开始</a> ·
-  <a href="#贡献指南">参与贡献</a>
+  <a href="https://academy.claude-code.club">📚 在线文档</a> ·
+  <a href="#-核心内容">核心内容</a> ·
+  <a href="#-参与贡献">参与贡献</a>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/github/stars/zjh1943/claude-code-academy?style=social" />
-  <img src="https://img.shields.io/github/forks/zjh1943/claude-code-academy?style=social" />
-  <img src="https://img.shields.io/github/contributors/zjh1943/claude-code-academy" />
-  <img src="https://img.shields.io/github/license/zjh1943/claude-code-academy" />
+  <img src="https://img.shields.io/github/stars/zjh1943/awesome-claude-code?style=social" />
+  <img src="https://img.shields.io/github/forks/zjh1943/awesome-claude-code?style=social" />
+  <img src="https://img.shields.io/github/contributors/zjh1943/awesome-claude-code" />
+  <img src="https://img.shields.io/github/license/zjh1943/awesome-claude-code" />
 </p>
 
 ---
 
 ## 📖 关于本项目
 
-Claude Code Academy 是一个**开源协作**的学习资源库，旨在帮助中文开发者：
+**Awesome Claude Code** 是由 [Claude Code Club](https://claude-code.club) 维护的开源学习平台，致力于推动 **Vibe Coding** 在中国的普及。
 
-- 🚀 快速掌握 Claude Code 核心功能
-- 💡 学习最佳实践和开发技巧
-- 🛠️ 发现优质 MCP Servers 和工具
-- 🤝 分享实战经验和案例
+无论你是刚接触 AI 辅助编程的新手，还是希望深入掌握 Claude Code 高级功能的开发者，这里都有适合你的学习路径和实用资源。
 
-### ✨ 核心特色
+### ✨ 为什么选择 Awesome Claude Code？
 
-- ✅ **中文友好** - 专为中文开发者打造
-- ✅ **实战导向** - 所有案例可直接运行
-- ✅ **持续更新** - 跟进 Claude Code 最新版本
-- ✅ **社区共建** - 欢迎每个人贡献内容
-- ✅ **精美文档站** - 基于 Next.js + Nextra 构建
+- **🌐 中文友好** - 专为中文开发者打造，避免语言障碍
+- **📚 内容全面** - 从入门到精通的完整学习路径
+- **💼 实用至上** - 关注实际应用场景，而非纸上谈兵
+- **🔄 持续更新** - 跟进 Claude Code 最新版本和特性
+- **🤝 社区共建** - 开源协作，每个人都可以贡献
 
 ---
 
-## 🌐 双重访问方式
+## 🌟 核心内容
 
-### 📚 在线文档站（推荐）
-访问 **[https://zjh1943.github.io/claude-code-academy](https://zjh1943.github.io/claude-code-academy)** 获得最佳阅读体验：
-- 🔍 全文搜索
-- 📱 响应式设计
-- 🌙 深色模式
-- 📖 目录导航
+访问 **[https://academy.claude-code.club](https://academy.claude-code.club)** 获得最佳学习体验！
 
-### 💻 GitHub 仓库
-在本仓库浏览所有文档源文件（Markdown 格式），适合：
-- 📝 贡献内容
-- 🔧 本地开发
-- 📥 离线阅读
+### 📖 入门指南
+
+从零开始，快速上手 Claude Code：
+
+- **[什么是 Claude Code](https://academy.claude-code.club/getting-started/introduction)** - 了解基本概念和核心特性
+- **[获取 API Key](https://academy.claude-code.club/getting-started/get-api-key)** - 完整的 API Key 获取流程
+- **[安装和配置](https://academy.claude-code.club/getting-started/installation)** - 详细的安装配置指南
+- **[快速体验](https://academy.claude-code.club/getting-started/quick-start)** - 5 分钟体验 Claude Code 的强大
+- **[如何用 Claude Code 做...](https://academy.claude-code.club/getting-started/how-to)** - 常见场景的使用指南
+- **[常见问题](https://academy.claude-code.club/getting-started/faq)** - 新手常见问题解答
+
+### 💡 实战技能
+
+掌握 Claude Code 的实战技巧：
+
+- **[通用资源](https://academy.claude-code.club/practical-skills/general)** - 必备资源和工具集合
+- **[工作流程](https://academy.claude-code.club/practical-skills/workflow)** - 高效开发工作流
+- **[UI 设计](https://academy.claude-code.club/practical-skills/ui)** - 使用 Claude Code 进行 UI 开发
+- **[命令和技巧](https://academy.claude-code.club/practical-skills/commands)** - 常用命令和使用技巧
+- **[Subagent](https://academy.claude-code.club/practical-skills/subagents)** - 子代理的使用和开发
+- **[MCP Tools](https://academy.claude-code.club/practical-skills/mcp-tools)** - MCP 工具的集成和应用
+
+### 🎓 完整课程
+
+系统化的完整课程，适合有整块时间的深度学习：
+
+- **[浏览完整课程](https://academy.claude-code.club/tutorials)** - 由专业机构开发的系统化课程（持续更新中）
+
+### 💼 项目案例
+
+通过真实项目案例巩固所学知识：
+
+- **[查看项目案例](https://academy.claude-code.club/examples)** - 真实项目的完整实现（持续更新中）
+
+### 🤝 社区资源
+
+加入社区，与其他开发者交流经验：
+
+- **[贡献指南](https://academy.claude-code.club/community/contributing)** - 了解如何为项目做贡献
+- **[案例展示](https://academy.claude-code.club/community/showcase)** - 社区优秀项目展示
+- **[常见问题](https://academy.claude-code.club/community/faq)** - 社区常见问题解答
 
 ---
 
 ## 🚀 快速开始
 
-### 对于学习者
+### 📚 在线学习
 
-直接访问 **[在线文档站](https://zjh1943.github.io/claude-code-academy)** 开始学习！
+直接访问 **[https://academy.claude-code.club](https://academy.claude-code.club)** 开始学习！
 
-推荐路径：
-1. [什么是 Claude Code？](https://zjh1943.github.io/claude-code-academy/getting-started/introduction)
-2. [安装和配置](https://zjh1943.github.io/claude-code-academy/getting-started/installation)
-3. [第一个项目](https://zjh1943.github.io/claude-code-academy/getting-started/first-project)
+推荐学习路径：
+1. [什么是 Claude Code？](https://academy.claude-code.club/getting-started/introduction) - 了解基本概念
+2. [获取 API Key](https://academy.claude-code.club/getting-started/get-api-key) - 获取使用权限
+3. [安装和配置](https://academy.claude-code.club/getting-started/installation) - 搭建开发环境
+4. [快速体验](https://academy.claude-code.club/getting-started/quick-start) - 完成第一个项目
 
-### 对于贡献者
+### 🔍 站点特色
 
-#### 1. Fork 并克隆仓库
-
-```bash
-git clone https://github.com/zjh1943/claude-code-academy.git
-cd claude-code-academy
-```
-
-#### 2. 安装依赖
-
-```bash
-npm install
-# 或
-pnpm install
-# 或
-yarn install
-```
-
-#### 3. 本地预览
-
-```bash
-npm run dev
-```
-
-访问 `http://localhost:3000` 查看效果。
-
-#### 4. 编辑文档
-
-所有文档位于 `pages/` 目录，使用 Markdown/MDX 格式编写：
-
-```
-pages/
-├── getting-started/     # 入门指南
-├── tutorials/           # 教程
-├── examples/            # 示例
-├── resources/           # 资源
-├── best-practices/      # 最佳实践
-└── community/           # 社区
-```
+- 🔍 全文搜索 - 快速找到你需要的内容
+- 📱 响应式设计 - 完美支持移动端
+- 🌙 深色模式 - 保护你的眼睛
+- 📖 目录导航 - 清晰的内容结构
 
 ---
 
-## 📚 内容概览
+## 🤝 参与贡献
 
-<table>
-<tr>
-<td width="50%">
+这是一个由社区驱动的项目，我们欢迎任何形式的贡献：
 
-### 📘 基础教程
-- [Claude Code 介绍](pages/getting-started/introduction.mdx)
-- [MCP Server 开发](pages/tutorials/mcp-servers/index.mdx)
-- [Sub-Agent 开发](pages/tutorials/sub-agents/index.mdx)
-- [Slash Command 开发](pages/tutorials/slash-commands/index.mdx)
+- 📝 编写教程和文档
+- 💡 分享实战案例和经验
+- 🔧 推荐优质工具和资源
+- 🐛 报告问题和错误
+- 🌐 翻译英文资料
 
-</td>
-<td width="50%">
-
-### 💼 实战案例
-- [天气查询 MCP](pages/examples/mcp-examples/weather.mdx)
-- [代码审查 Agent](pages/examples/agent-examples/code-review.mdx)
-- [数据库助手](pages/examples/mcp-examples/database.mdx)
-
-</td>
-</tr>
-<tr>
-<td>
-
-### 🛠️ 工具资源
-- [精选 MCP Servers](pages/resources/tools/mcp-servers.mdx)
-- [Claude Code 插件](pages/resources/tools/extensions.mdx)
-- [开发辅助工具](pages/resources/tools/dev-tools.mdx)
-
-</td>
-<td>
-
-### 💎 最佳实践
-- [开发工作流优化](pages/best-practices/workflow.mdx)
-- [性能优化技巧](pages/best-practices/performance.mdx)
-- [团队协作指南](pages/best-practices/collaboration.mdx)
-
-</td>
-</tr>
-</table>
-
----
-
-## 🤝 贡献指南
-
-我们欢迎所有形式的贡献！🎉
-
-### 贡献方式
-
-| 类型 | 说明 | 示例 |
-|------|------|------|
-| 📝 文档 | 添加/改进教程文档 | 编写新教程、修正错误 |
-| 💡 案例 | 提交实战案例 | 分享你的项目经验 |
-| 🔧 工具 | 推荐优质工具 | 推荐 MCP Server |
-| 🐛 修复 | 修复错误和问题 | 修正文档错误 |
-| 🌐 翻译 | 翻译英文资料 | 翻译官方文档 |
-
-### 快速贡献流程
-
-1. **Fork** 本仓库
-2. **创建分支**：`git checkout -b feature/awesome-tutorial`
-3. **编辑内容**：在 `pages/` 目录下编辑或新建文件
-4. **本地预览**：运行 `npm run dev` 确保效果正确
-5. **提交更改**：`git commit -m 'Add: awesome tutorial'`
-6. **推送分支**：`git push origin feature/awesome-tutorial`
-7. **提交 PR**：在 GitHub 上创建 Pull Request
-
-### 内容规范
-
-#### 文档格式
-```markdown
----
-title: 文档标题
-description: 简短描述
----
-
-# 文档标题
-
-## 适用场景
-描述什么时候使用
-
-## 前置条件
-- 需要的知识/工具
-
-## 详细步骤
-具体内容...
-
-## 完整示例
-可运行的代码...
-```
-
-#### 提交信息规范
-- `Add:` 添加新内容
-- `Update:` 更新现有内容
-- `Fix:` 修复错误
-- `Docs:` 文档相关
-- `Style:` 格式调整
-
-**详细规范请参考：** [CONTRIBUTING.md](CONTRIBUTING.md)
-
----
-
-## 🌟 社区展示
-
-展示优秀的社区贡献和项目案例：
-
-- **[@contributor1]** - [项目名称](链接) - 用 Claude Code 实现了自动化测试工具
-- **[@contributor2]** - [项目名称](链接) - 开发效率提升 5 倍的实战经验
-
-> 想展示你的项目？[提交你的案例](content/community/showcase.mdx)
-
----
-
-## 📊 项目统计
-
-- 📚 教程文档：**持续增长中**
-- 💼 实战案例：**持续增长中**
-- 🛠️ 收录工具：**持续增长中**
-- 👥 贡献者：**欢迎你加入**
-
----
-
-## 🛠️ 技术栈
-
-本项目使用以下技术构建：
-
-- **[Next.js](https://nextjs.org/)** - React 框架
-- **[Nextra](https://nextra.site/)** - 文档站点生成器
-- **[MDX](https://mdxjs.com/)** - Markdown + React 组件
-- **[Tailwind CSS](https://tailwindcss.com/)** - 样式框架
-
----
+**想要贡献内容？** 请查看详细的 **[贡献指南](CONTRIBUTING.md)** 了解如何开始。
 
 ## 🔗 相关资源
 
@@ -247,12 +120,15 @@ description: 简短描述
 - [Claude Code GitHub](https://github.com/anthropics/claude-code)
 - [MCP 协议文档](https://modelcontextprotocol.io/)
 - [Anthropic 官网](https://www.anthropic.com)
+- [Claude Code Club](https://claude-code.club)
 
 ---
 
-## 📅 更新日志
+## 💬 联系我们
 
-查看 [CHANGELOG.md](CHANGELOG.md) 了解项目更新历史。
+- 💬 [GitHub Discussions](https://github.com/zjh1943/awesome-claude-code/discussions) - 提问和讨论
+- 🐛 [Issues](https://github.com/zjh1943/awesome-claude-code/issues) - 报告问题
+- 📧 Email: [z@claude-code.club](mailto:z@claude-code.club)
 
 ---
 
@@ -262,20 +138,12 @@ description: 简短描述
 
 ---
 
-## 💬 联系我们
-
-- 💬 [GitHub Discussions](https://github.com/zjh1943/claude-code-academy/discussions) - 提问和讨论
-- 🐛 [Issues](https://github.com/zjh1943/claude-code-academy/issues) - 报告问题
-- 📧 Email: [z@claude-code.club](mailto:z@claude-code.club)
-
----
-
 ## 🙏 致谢
 
 感谢所有为本项目做出贡献的开发者！
 
-<a href="https://github.com/zjh1943/claude-code-academy/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=zjh1943/claude-code-academy" />
+<a href="https://github.com/zjh1943/awesome-claude-code/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=zjh1943/awesome-claude-code" />
 </a>
 
 ---
@@ -284,12 +152,12 @@ description: 简短描述
 
 如果这个项目对你有帮助，请给我们一个 ⭐️
 
-[![Star History Chart](https://api.star-history.com/svg?repos=zjh1943/claude-code-academy&type=Date)](https://star-history.com/#zjh1943/claude-code-academy&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=zjh1943/awesome-claude-code&type=Date)](https://star-history.com/#zjh1943/awesome-claude-code&Date)
 
 ---
 
 <p align="center">
-  <sub>Built with ❤️ by the community</sub>
+  <sub>Built with ❤️ by Claude Code Club</sub>
   <br />
   <sub>让 Claude Code 开发更简单、更高效</sub>
 </p>
