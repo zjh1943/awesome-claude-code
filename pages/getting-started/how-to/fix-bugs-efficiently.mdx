@@ -1,0 +1,40 @@
+---
+title: 高效修复 Bug
+description: 学习如何使用 Claude Code 快速定位和修复代码中的错误
+---
+
+import { Steps, Callout } from 'nextra/components'
+
+# 高效修复 Bug
+
+假设你遇到了一个错误信息,需要找到并修复它的源头。
+
+<Steps>
+
+### 与 Claude 分享错误信息
+
+```
+> I'm seeing an error when I run npm test
+```
+
+### 请求修复建议
+
+```
+> suggest a few ways to fix the @ts-ignore in user.ts
+```
+
+### 应用修复
+
+```
+> update user.ts to add the null check you suggested
+```
+
+</Steps>
+
+<Callout type="info">
+**提示:**
+
+* 告诉 Claude 重现问题的命令并获取堆栈跟踪
+* 提及任何重现错误的步骤
+* 让 Claude 知道错误是间歇性的还是一致的
+</Callout>

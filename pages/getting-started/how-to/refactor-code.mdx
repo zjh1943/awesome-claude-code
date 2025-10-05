@@ -1,0 +1,46 @@
+---
+title: 重构代码
+description: 学习如何使用 Claude Code 将旧代码更新为现代模式和最佳实践
+---
+
+import { Steps, Callout } from 'nextra/components'
+
+# 重构代码
+
+假设你需要将旧代码更新为使用现代模式和实践。
+
+<Steps>
+
+### 识别需要重构的遗留代码
+
+```
+> find deprecated API usage in our codebase
+```
+
+### 获取重构建议
+
+```
+> suggest how to refactor utils.js to use modern JavaScript features
+```
+
+### 安全地应用更改
+
+```
+> refactor utils.js to use ES2024 features while maintaining the same behavior
+```
+
+### 验证重构结果
+
+```
+> run tests for the refactored code
+```
+
+</Steps>
+
+<Callout type="info">
+**提示:**
+
+* 让 Claude 解释现代方法的好处
+* 在需要时请求保持向后兼容性
+* 以小的、可测试的增量进行重构
+</Callout>

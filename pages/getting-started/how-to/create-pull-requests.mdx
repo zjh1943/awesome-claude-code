@@ -1,0 +1,46 @@
+---
+title: 创建 Pull Request
+description: 学习如何使用 Claude Code 创建文档完善的 Pull Request
+---
+
+import { Steps, Callout } from 'nextra/components'
+
+# 创建 Pull Request
+
+假设你需要为你的更改创建一个文档完善的 Pull Request。
+
+<Steps>
+
+### 总结你的更改
+
+```
+> summarize the changes I've made to the authentication module
+```
+
+### 使用 Claude 生成 PR
+
+```
+> create a pr
+```
+
+### 审查和完善
+
+```
+> enhance the PR description with more context about the security improvements
+```
+
+### 添加测试详情
+
+```
+> add information about how these changes were tested
+```
+
+</Steps>
+
+<Callout type="info">
+**提示:**
+
+* 直接让 Claude 为你创建 PR
+* 在提交之前审查 Claude 生成的 PR
+* 让 Claude 强调潜在的风险或注意事项
+</Callout>

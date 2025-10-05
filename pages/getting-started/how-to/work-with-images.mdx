@@ -1,0 +1,65 @@
+---
+title: 使用图片
+description: 学习如何在 Claude Code 中使用图片来分析和获取代码建议
+---
+
+import { Steps, Callout } from 'nextra/components'
+
+# 使用图片
+
+假设你需要在代码库中使用图片,并且希望 Claude 帮助分析图片内容。
+
+<Steps>
+
+### 向对话添加图片
+
+你可以使用以下任何方法:
+
+1. 将图片拖放到 Claude Code 窗口中
+2. 复制图片并使用 ctrl+v 粘贴到 CLI 中(不要使用 cmd+v)
+3. 向 Claude 提供图片路径。例如:"Analyze this image: /path/to/your/image.png"
+
+### 让 Claude 分析图片
+
+```
+> What does this image show?
+```
+
+```
+> Describe the UI elements in this screenshot
+```
+
+```
+> Are there any problematic elements in this diagram?
+```
+
+### 使用图片提供上下文
+
+```
+> Here's a screenshot of the error. What's causing it?
+```
+
+```
+> This is our current database schema. How should we modify it for the new feature?
+```
+
+### 从视觉内容获取代码建议
+
+```
+> Generate CSS to match this design mockup
+```
+
+```
+> What HTML structure would recreate this component?
+```
+
+</Steps>
+
+<Callout type="info">
+**提示:**
+
+* 当文本描述不清楚或繁琐时使用图片
+* 包含错误截图、UI 设计或图表以获得更好的上下文
+* 你可以在对话中使用多张图片
+* 图片分析适用于图表、截图、设计稿等
+</Callout>

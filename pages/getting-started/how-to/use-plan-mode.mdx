@@ -1,0 +1,72 @@
+---
+title: 使用计划模式安全分析代码
+description: 学习如何使用计划模式来安全地探索代码库和规划复杂变更
+---
+
+import { Steps, Callout } from 'nextra/components'
+
+# 使用计划模式安全分析代码
+
+计划模式指示 Claude 通过只读操作分析代码库来创建计划,非常适合探索代码库、规划复杂变更或安全地审查代码。
+
+## 何时使用计划模式
+
+* **多步骤实现**:当你的功能需要编辑许多文件时
+* **代码探索**:当你想在更改任何内容之前彻底研究代码库时
+* **交互式开发**:当你想与 Claude 迭代讨论方向时
+
+## 如何使用计划模式
+
+### 在会话期间打开计划模式
+
+你可以在会话期间使用 **Shift+Tab** 在权限模式之间切换。
+
+如果你处于普通模式,**Shift+Tab** 将首先切换到自动接受模式,在终端底部显示 `⏵⏵ accept edits on`。再次按 **Shift+Tab** 将切换到计划模式,显示 `⏸ plan mode on`。
+
+### 在计划模式下启动新会话
+
+要在计划模式下启动新会话,使用 `--permission-mode plan` 标志:
+
+```bash
+claude --permission-mode plan
+```
+
+### 在计划模式下运行"无头"查询
+
+你也可以直接使用 `-p` 在计划模式下运行查询(即["无头模式"](https://docs.claude.com/en/docs/claude-code/sdk/sdk-headless)):
+
+```bash
+claude --permission-mode plan -p "Analyze the authentication system and suggest improvements"
+```
+
+<Callout type="info">
+示例:规划复杂的重构
+
+```bash
+claude --permission-mode plan
+```
+
+```
+> I need to refactor our authentication system to use OAuth2. Create a detailed migration plan.
+```
+
+Claude 将分析当前实现并创建一个全面的计划。通过后续问题进行细化:
+
+```
+> What about backward compatibility?
+> How should we handle database migration?
+```
+</Callout>
+
+## 将计划模式配置为默认
+
+```json
+// .claude/settings.json
+{
+  "permissions": {
+    "defaultMode": "plan"
+  }
+}
+```
+
+查看[设置文档](https://docs.claude.com/en/docs/claude-code/settings#available-settings)了解更多配置选项。

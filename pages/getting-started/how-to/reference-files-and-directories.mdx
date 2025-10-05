@@ -1,0 +1,47 @@
+---
+title: 引用文件和目录
+description: 学习如何使用 @ 快速包含文件或目录而无需等待 Claude 读取
+---
+
+import { Steps, Callout } from 'nextra/components'
+
+# 引用文件和目录
+
+使用 @ 快速包含文件或目录,而无需等待 Claude 读取它们。
+
+<Steps>
+
+### 引用单个文件
+
+```
+> Explain the logic in @src/utils/auth.js
+```
+
+这会将文件的完整内容包含在对话中。
+
+### 引用目录
+
+```
+> What's the structure of @src/components?
+```
+
+这会提供一个包含文件信息的目录列表。
+
+### 引用 MCP 资源
+
+```
+> Show me the data from @github:repos/owner/repo/issues
+```
+
+这会使用 @server:resource 格式从连接的 MCP 服务器获取数据。查看 [MCP 资源](https://docs.claude.com/en/docs/claude-code/mcp#use-mcp-resources)了解详情。
+
+</Steps>
+
+<Callout type="info">
+**提示:**
+
+* 文件路径可以是相对路径或绝对路径
+* @ 文件引用会将文件目录和父目录中的 CLAUDE.md 添加到上下文中
+* 目录引用显示文件列表,而不是内容
+* 你可以在单个消息中引用多个文件(例如 "@file1.js and @file2.js")
+</Callout>

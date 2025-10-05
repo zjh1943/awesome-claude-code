@@ -3,6 +3,8 @@ export default {
   'get-api-key': '获取 API Key',
   installation: '安装和配置',
   'quick-start': '快速体验 Claude Code',
-  'basic-concepts': '核心概念',
+  'how-to': {
+    title: '如何用 Claude Code 做…',
+  },
   faq: '常见问题'
 }

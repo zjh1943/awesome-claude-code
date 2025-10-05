@@ -1,0 +1,46 @@
+---
+title: 使用测试
+description: 学习如何使用 Claude Code 为未覆盖的代码添加测试
+---
+
+import { Steps, Callout } from 'nextra/components'
+
+# 使用测试
+
+假设你需要为未覆盖的代码添加测试。
+
+<Steps>
+
+### 识别未测试的代码
+
+```
+> find functions in NotificationsService.swift that are not covered by tests
+```
+
+### 生成测试脚手架
+
+```
+> add tests for the notification service
+```
+
+### 添加有意义的测试用例
+
+```
+> add test cases for edge conditions in the notification service
+```
+
+### 运行并验证测试
+
+```
+> run the new tests and fix any failures
+```
+
+</Steps>
+
+<Callout type="info">
+**提示:**
+
+* 请求涵盖边缘情况和错误条件的测试
+* 在适当的情况下同时请求单元测试和集成测试
+* 让 Claude 解释测试策略
+</Callout>

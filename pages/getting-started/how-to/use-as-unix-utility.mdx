@@ -1,0 +1,91 @@
+---
+title: 将 Claude 用作 Unix 实用工具
+description: 学习如何将 Claude Code 集成到脚本和 Unix 管道中
+---
+
+import { Steps, Callout } from 'nextra/components'
+
+# 将 Claude 用作 Unix 实用工具
+
+## 将 Claude 添加到验证流程
+
+假设你想将 Claude Code 用作 linter 或代码审查器。
+
+**将 Claude 添加到构建脚本:**
+
+```json
+// package.json
+{
+    ...
+    "scripts": {
+        ...
+        "lint:claude": "claude -p 'you are a linter. please look at the changes vs. main and report any issues related to typos. report the filename and line number on one line, and a description of the issue on the second line. do not return any other text.'"
+    }
+}
+```
+
+<Callout type="info">
+**提示:**
+
+* 在 CI/CD 管道中使用 Claude 进行自动化代码审查
+* 自定义提示以检查与项目相关的特定问题
+* 考虑为不同类型的验证创建多个脚本
+</Callout>
+
+## 管道输入、管道输出
+
+假设你想通过 Claude 传输数据,并以结构化格式返回数据。
+
+**通过 Claude 传输数据:**
+
+```bash
+cat build-error.txt | claude -p 'concisely explain the root cause of this build error' > output.txt
+```
+
+<Callout type="info">
+**提示:**
+
+* 使用管道将 Claude 集成到现有的 shell 脚本中
+* 与其他 Unix 工具结合以实现强大的工作流
+* 考虑使用 --output-format 获取结构化输出
+</Callout>
+
+## 控制输出格式
+
+假设你需要 Claude 以特定格式输出,特别是在将 Claude Code 集成到脚本或其他工具中时。
+
+<Steps>
+
+### 使用文本格式(默认)
+
+```bash
+cat data.txt | claude -p 'summarize this data' --output-format text > summary.txt
+```
+
+这只输出 Claude 的纯文本响应(默认行为)。
+
+### 使用 JSON 格式
+
+```bash
+cat code.py | claude -p 'analyze this code for bugs' --output-format json > analysis.json
+```
+
+这会输出一个包含元数据(包括成本和持续时间)的消息 JSON 数组。
+
+### 使用流式 JSON 格式
+
+```bash
+cat log.txt | claude -p 'parse this log file for errors' --output-format stream-json
+```
+
+这会在 Claude 处理请求时实时输出一系列 JSON 对象。每条消息都是有效的 JSON 对象,但如果连接起来,整个输出不是有效的 JSON。
+
+</Steps>
+
+<Callout type="info">
+**提示:**
+
+* 对于只需要 Claude 响应的简单集成,使用 `--output-format text`
+* 当需要完整的对话日志时使用 `--output-format json`
+* 对于每个对话轮次的实时输出,使用 `--output-format stream-json`
+</Callout>

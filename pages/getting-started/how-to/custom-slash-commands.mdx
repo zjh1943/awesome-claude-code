@@ -1,0 +1,119 @@
+---
+title: 创建自定义斜杠命令
+description: 学习如何创建自定义斜杠命令来快速执行特定提示或任务
+---
+
+import { Steps, Callout } from 'nextra/components'
+
+# 创建自定义斜杠命令
+
+Claude Code 支持自定义斜杠命令,你可以创建它们来快速执行特定的提示或任务。
+
+有关更多详细信息,请参阅[斜杠命令](https://docs.claude.com/en/docs/claude-code/slash-commands)参考页面。
+
+## 创建项目特定的命令
+
+假设你想为项目创建可重用的斜杠命令,所有团队成员都可以使用。
+
+<Steps>
+
+### 在项目中创建命令目录
+
+```bash
+mkdir -p .claude/commands
+```
+
+### 为每个命令创建 Markdown 文件
+
+```bash
+echo "Analyze the performance of this code and suggest three specific optimizations:" > .claude/commands/optimize.md
+```
+
+### 在 Claude Code 中使用自定义命令
+
+```
+> /optimize
+```
+
+</Steps>
+
+<Callout type="info">
+**提示:**
+
+* 命令名称源自文件名(例如 `optimize.md` 变成 `/optimize`)
+* 你可以在子目录中组织命令(例如 `.claude/commands/frontend/component.md` 创建 `/component`,描述中显示"(project:frontend)")
+* 项目命令对克隆仓库的每个人都可用
+* Markdown 文件内容成为调用命令时发送给 Claude 的提示
+</Callout>
+
+## 使用 $ARGUMENTS 添加命令参数
+
+假设你想创建可以接受用户额外输入的灵活斜杠命令。
+
+<Steps>
+
+### 使用 $ARGUMENTS 占位符创建命令文件
+
+```bash
+echo 'Find and fix issue #$ARGUMENTS. Follow these steps:
+1. Understand the issue described in the ticket
+2. Locate the relevant code in our codebase
+3. Implement a solution that addresses the root cause
+4. Add appropriate tests
+5. Prepare a concise PR description' > .claude/commands/fix-issue.md
+```
+
+### 使用问题编号使用命令
+
+在 Claude 会话中,使用带参数的命令。
+
+```
+> /fix-issue 123
+```
+
+这会将 $ARGUMENTS 替换为提示中的"123"。
+
+</Steps>
+
+<Callout type="info">
+**提示:**
+
+* $ARGUMENTS 占位符会被命令后面的任何文本替换
+* 你可以在命令模板中的任何位置放置 $ARGUMENTS
+* 其他有用的应用:为特定函数生成测试用例、为组件创建文档、审查特定文件中的代码或将内容翻译成指定的语言
+</Callout>
+
+## 创建个人斜杠命令
+
+假设你想创建在所有项目中工作的个人斜杠命令。
+
+<Steps>
+
+### 在主文件夹中创建命令目录
+
+```bash
+mkdir -p ~/.claude/commands
+```
+
+### 为每个命令创建 Markdown 文件
+
+```bash
+echo "Review this code for security vulnerabilities, focusing on:" > ~/.claude/commands/security-review.md
+```
+
+### 使用你的个人自定义命令
+
+```
+> /security-review
+```
+
+</Steps>
+
+<Callout type="info">
+**提示:**
+
+* 个人命令在列出 `/help` 时在描述中显示"(user)"
+* 个人命令仅对你可用,不与团队共享
+* 个人命令在你的所有项目中都有效
+* 你可以使用这些命令在不同的代码库中保持一致的工作流
+</Callout>

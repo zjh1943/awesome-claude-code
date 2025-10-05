@@ -1,0 +1,66 @@
+---
+title: 使用专业化 Subagent
+description: 学习如何使用专业化 AI 子代理来更有效地处理特定任务
+---
+
+import { Steps, Callout } from 'nextra/components'
+
+# 使使用专业化 Subagent
+
+假设你想使用专业化的 AI 子代理来更有效地处理特定任务。
+
+<Steps>
+
+### 查看可用的子代理
+
+```
+> /agents
+```
+
+这将显示所有可用的子代理并允许你创建新的子代理。
+
+### 自动使用子代理
+
+Claude Code 会自动将适当的任务委派给专业化子代理:
+
+```
+> review my recent code changes for security issues
+```
+
+```
+> run all tests and fix any failures
+```
+
+### 明确请求特定子代理
+
+```
+> use the code-reviewer subagent to check the auth module
+```
+
+```
+> have the debugger subagent investigate why users can't log in
+```
+
+### 为你的工作流创建自定义子代理
+
+```
+> /agents
+```
+
+然后选择 "Create New subagent" 并按照提示定义:
+
+* 子代理类型(例如 `api-designer`、`performance-optimizer`)
+* 何时使用它
+* 它可以访问哪些工具
+* 它的专业化系统提示
+
+</Steps>
+
+<Callout type="info">
+**提示:**
+
+* 在 `.claude/agents/` 中创建项目特定的子代理以便团队共享
+* 使用描述性的 `description` 字段来启用自动委派
+* 限制工具访问权限,仅授予每个子代理实际需要的权限
+* 查看[子代理文档](https://docs.claude.com/en/docs/claude-code/sub-agents)以获取详细示例
+</Callout>

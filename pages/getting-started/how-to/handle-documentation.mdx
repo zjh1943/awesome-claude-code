@@ -1,0 +1,46 @@
+---
+title: 处理文档
+description: 学习如何使用 Claude Code 为代码添加或更新文档
+---
+
+import { Steps, Callout } from 'nextra/components'
+
+# 处理文档
+
+假设你需要为代码添加或更新文档。
+
+<Steps>
+
+### 识别未文档化的代码
+
+```
+> find functions without proper JSDoc comments in the auth module
+```
+
+### 生成文档
+
+```
+> add JSDoc comments to the undocumented functions in auth.js
+```
+
+### 审查和增强
+
+```
+> improve the generated documentation with more context and examples
+```
+
+### 验证文档
+
+```
+> check if the documentation follows our project standards
+```
+
+</Steps>
+
+<Callout type="info">
+**提示:**
+
+* 指定你想要的文档风格(JSDoc、docstrings 等)
+* 在文档中请求示例
+* 为公共 API、接口和复杂逻辑请求文档
+</Callout>

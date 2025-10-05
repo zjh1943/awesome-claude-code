@@ -1,0 +1,89 @@
+---
+title: 理解新代码库
+description: 学习如何使用 Claude Code 快速理解和探索新的代码库
+---
+
+import { Steps, Callout } from 'nextra/components'
+
+# 理解新代码库
+
+## 快速获取代码库概览
+
+假设你刚刚加入一个新项目,需要快速了解其结构。
+
+<Steps>
+
+### 导航到项目根目录
+
+```bash
+cd /path/to/project
+```
+
+### 启动 Claude Code
+
+```bash
+claude
+```
+
+### 请求高层次概览
+
+```
+> give me an overview of this codebase
+```
+
+### 深入了解特定组件
+
+```
+> explain the main architecture patterns used here
+```
+
+```
+> what are the key data models?
+```
+
+```
+> how is authentication handled?
+```
+
+</Steps>
+
+<Callout type="info">
+**提示:**
+
+* 从宽泛的问题开始,然后逐步深入到特定领域
+* 询问项目中使用的编码约定和模式
+* 请求项目特定术语的词汇表
+</Callout>
+
+## 查找相关代码
+
+假设你需要定位与特定功能相关的代码。
+
+<Steps>
+
+### 让 Claude 查找相关文件
+
+```
+> find the files that handle user authentication
+```
+
+### 获取组件交互的上下文
+
+```
+> how do these authentication files work together?
+```
+
+### 理解执行流程
+
+```
+> trace the login process from front-end to database
+```
+
+</Steps>
+
+<Callout type="info">
+**提示:**
+
+* 对你要查找的内容要具体明确
+* 使用项目中的领域语言
+</Callout>

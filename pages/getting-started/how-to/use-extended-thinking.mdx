@@ -1,0 +1,61 @@
+---
+title: 使用扩展思考
+description: 学习如何使用扩展思考功能来处理复杂的架构决策和挑战性问题
+---
+
+import { Steps, Callout } from 'nextra/components'
+
+# 使用扩展思考
+
+假设你正在处理复杂的架构决策、具有挑战性的 bug,或需要深度推理的多步骤实现规划。
+
+<Callout type="warning">
+[扩展思考](https://docs.claude.com/en/docs/build-with-claude/extended-thinking)在 Claude Code 中默认是禁用的。你可以使用 `Tab` 键切换思考开关来按需启用它,或使用"think"或"think hard"等提示词。你也可以通过在设置中设置 [`MAX_THINKING_TOKENS` 环境变量](https://docs.claude.com/en/docs/claude-code/settings#environment-variables)来永久启用它。
+</Callout>
+
+<Steps>
+
+### 提供上下文并让 Claude 思考
+
+```
+> I need to implement a new authentication system using OAuth2 for our API. Think deeply about the best approach for implementing this in our codebase.
+```
+
+Claude 将从你的代码库中收集相关信息并使用扩展思考,这将在界面中可见。
+
+### 通过后续提示细化思考
+
+```
+> think about potential security vulnerabilities in this approach
+```
+
+```
+> think hard about edge cases we should handle
+```
+
+</Steps>
+
+<Callout type="info">
+**从扩展思考中获取最大价值的提示:**
+
+[扩展思考](https://docs.claude.com/en/docs/build-with-claude/extended-thinking)对于复杂任务最有价值,例如:
+
+* 规划复杂的架构变更
+* 调试复杂的问题
+* 为新功能创建实现计划
+* 理解复杂的代码库
+* 评估不同方法之间的权衡
+
+使用 `Tab` 键在会话期间切换思考开关。
+
+你提示思考的方式会产生不同深度的思考:
+
+* "think" 触发基本的扩展思考
+* 强化短语如"think hard"、"think more"、"think a lot"或"think longer"触发更深层次的思考
+
+有关更多扩展思考提示技巧,请参阅[扩展思考提示](https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/extended-thinking-tips)。
+</Callout>
+
+<Callout>
+Claude 将在响应上方以斜体灰色文本显示其思考过程。
+</Callout>

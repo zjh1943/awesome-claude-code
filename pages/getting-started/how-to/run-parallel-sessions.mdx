@@ -1,0 +1,71 @@
+---
+title: 使用 Git Worktrees 运行并行会话
+description: 学习如何使用 Git worktrees 在完全隔离的环境中运行多个 Claude Code 实例
+---
+
+import { Steps, Callout } from 'nextra/components'
+
+# 使用 Git Worktrees 运行并行会话
+
+假设你需要同时处理多个任务,并在 Claude Code 实例之间完全隔离代码。
+
+<Steps>
+
+### 了解 Git worktrees
+
+Git worktrees 允许你将同一仓库的多个分支检出到单独的目录中。每个 worktree 都有自己的工作目录和隔离的文件,同时共享相同的 Git 历史记录。在[官方 Git worktree 文档](https://git-scm.com/docs/git-worktree)中了解更多。
+
+### 创建新的 worktree
+
+```bash
+# 使用新分支创建新的 worktree
+git worktree add ../project-feature-a -b feature-a
+
+# 或使用现有分支创建 worktree
+git worktree add ../project-bugfix bugfix-123
+```
+
+这会创建一个新目录,其中包含仓库的单独工作副本。
+
+### 在每个 worktree 中运行 Claude Code
+
+```bash
+# 导航到你的 worktree
+cd ../project-feature-a
+
+# 在这个隔离环境中运行 Claude Code
+claude
+```
+
+### 在另一个 worktree 中运行 Claude
+
+```bash
+cd ../project-bugfix
+claude
+```
+
+### 管理你的 worktrees
+
+```bash
+# 列出所有 worktrees
+git worktree list
+
+# 完成后删除 worktree
+git worktree remove ../project-feature-a
+```
+
+</Steps>
+
+<Callout type="info">
+**提示:**
+
+* 每个 worktree 都有自己独立的文件状态,非常适合并行的 Claude Code 会话
+* 在一个 worktree 中所做的更改不会影响其他 worktrees,防止 Claude 实例相互干扰
+* 所有 worktrees 共享相同的 Git 历史记录和远程连接
+* 对于长时间运行的任务,你可以让 Claude 在一个 worktree 中工作,同时在另一个 worktree 中继续开发
+* 使用描述性的目录名称,以便轻松识别每个 worktree 的任务
+* 记住根据项目的设置在每个新的 worktree 中初始化开发环境。根据你的技术栈,这可能包括:
+  * JavaScript 项目:运行依赖安装(`npm install`、`yarn`)
+  * Python 项目:设置虚拟环境或使用包管理器安装
+  * 其他语言:遵循项目的标准设置流程
+</Callout>

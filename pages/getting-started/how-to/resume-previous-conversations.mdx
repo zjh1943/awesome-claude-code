@@ -1,0 +1,81 @@
+---
+title: 恢复之前的对话
+description: 学习如何恢复之前的 Claude Code 对话以继续你的工作
+---
+
+import { Steps, Callout } from 'nextra/components'
+
+# 恢复之前的对话
+
+假设你一直在使用 Claude Code 处理任务,需要在后续会话中从上次中断的地方继续。
+
+Claude Code 提供两个选项来恢复之前的对话:
+
+* `--continue` 自动继续最近的对话
+* `--resume` 显示对话选择器
+
+<Steps>
+
+### 继续最近的对话
+
+```bash
+claude --continue
+```
+
+这会立即恢复你最近的对话,无需任何提示。
+
+### 在非交互模式下继续
+
+```bash
+claude --continue --print "Continue with my task"
+```
+
+使用 `--print` 与 `--continue` 在非交互模式下恢复最近的对话,非常适合脚本或自动化。
+
+### 显示对话选择器
+
+```bash
+claude --resume
+```
+
+这会显示一个交互式对话选择器,提供一个清晰的列表视图,显示:
+
+* 会话摘要(或初始提示)
+* 元数据:经过的时间、消息数量和 git 分支
+
+使用箭头键导航并按 Enter 选择对话。按 Esc 退出。
+
+</Steps>
+
+<Callout type="info">
+**提示:**
+
+* 对话历史记录存储在你的本地机器上
+* 使用 `--continue` 快速访问最近的对话
+* 当需要选择特定的过去对话时使用 `--resume`
+* 恢复时,你将看到整个对话历史记录,然后再继续
+* 恢复的对话以与原始对话相同的模型和配置开始
+
+**工作原理:**
+
+1. **对话存储**:所有对话都会自动保存在本地,包含完整的消息历史
+2. **消息反序列化**:恢复时,整个消息历史会被恢复以保持上下文
+3. **工具状态**:之前对话中的工具使用和结果会被保留
+4. **上下文恢复**:对话以所有之前的上下文完整无缺地恢复
+
+**示例:**
+
+```bash
+# 继续最近的对话
+claude --continue
+
+# 使用特定提示继续最近的对话
+claude --continue --print "Show me our progress"
+
+# 显示对话选择器
+claude --resume
+
+# 在非交互模式下继续最近的对话
+claude --continue --print "Run the tests again"
+```
+</Callout>
