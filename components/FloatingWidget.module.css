@@ -80,13 +80,15 @@
   right: 12px;
   background: none;
   border: none;
-  font-size: 24px;
   cursor: pointer;
   color: #666;
-  padding: 4px 8px;
+  padding: 6px;
   line-height: 1;
   border-radius: 50%;
   transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .closeButton:hover {
