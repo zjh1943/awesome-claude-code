@@ -14,7 +14,7 @@
 ### 目录结构
 
 ```
-claude-code-academy/
+awesome-claude-code/
 ├── pages/                # 文档内容（MDX）+ Next.js Pages
 │   ├── _meta.js          # 导航配置
 │   ├── _app.jsx          # App 组件
@@ -139,7 +139,7 @@ export default {
 
 1. 推送到 `main` 分支
 2. GitHub Actions 自动构建和部署
-3. 访问 `https://zjh1943.github.io/claude-code-academy`
+3. 访问 `https://zjh1943.github.io/awesome-claude-code`
 
 ### 手动部署到其他平台
 

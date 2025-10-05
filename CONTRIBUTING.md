@@ -47,8 +47,8 @@
 
 ```bash
 # Fork 并克隆仓库
-git clone https://github.com/YOUR_USERNAME/claude-code-academy.git
-cd claude-code-academy
+git clone https://github.com/YOUR_USERNAME/awesome-claude-code.git
+cd awesome-claude-code
 
 # 安装依赖
 npm install

@@ -14,7 +14,7 @@
 ### 2. 目录结构
 
 ```
-claude-code-academy/
+awesome-claude-code/
 ├── content/              # 📚 文档内容（MDX 格式）
 │   ├── getting-started/  # 入门指南
 │   ├── tutorials/        # 教程

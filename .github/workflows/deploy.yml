@@ -36,7 +36,7 @@ jobs:
       - name: Build with Next.js
         run: npm run build
         env:
-          BASE_PATH: /claude-code-academy
+          BASE_PATH: /awesome-claude-code
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
