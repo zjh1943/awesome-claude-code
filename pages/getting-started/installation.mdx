@@ -98,8 +98,8 @@ import { Tabs, Callout } from 'nextra/components'
     ```
 
     <Callout type="warning">
-      💡 记得将 "你的API密钥" 替换为在上方 "API Keys" 标签页中创建的实际密钥。
-      💡 设置后需要重新打开 PowerShell 窗口才能生效。
+      记得将 "你的API密钥" 替换为在上方 "API Keys" 标签页中创建的实际密钥。
+      设置后需要重新打开 PowerShell 窗口才能生效。
     </Callout>
 
     设置完后用如下命令检查环境变量是否成功（一条一条执行）：
@@ -118,7 +118,7 @@ import { Tabs, Callout } from 'nextra/components'
     **配置文件位置：** `C:\Users\<你的用户名>\.claude\config.json`
 
     <Callout type="info">
-      💡 如果该文件不存在，请手动创建。
+      如果该文件不存在，请手动创建。
     </Callout>
 
     ```json
@@ -159,7 +159,7 @@ import { Tabs, Callout } from 'nextra/components'
     ```
 
     <Callout type="warning">
-      💡 如果输出为空或显示变量名本身，说明环境变量设置失败，请重新设置。
+      如果输出为空或显示变量名本身，说明环境变量设置失败，请重新设置。
     </Callout>
 
     ### 配置 Gemini CLI 环境变量
@@ -176,7 +176,7 @@ import { Tabs, Callout } from 'nextra/components'
     ```
 
     <Callout type="info">
-      💡 使用与 Claude Code 相同的 API 密钥即可。
+      使用与 Claude Code 相同的 API 密钥即可。
     </Callout>
 
     **PowerShell 永久设置（用户级）**
@@ -190,7 +190,7 @@ import { Tabs, Callout } from 'nextra/components'
     ```
 
     <Callout type="warning">
-      💡 设置后需要重新打开 PowerShell 窗口才能生效。
+      设置后需要重新打开 PowerShell 窗口才能生效。
     </Callout>
 
     **验证 Gemini CLI 环境变量**
@@ -232,7 +232,7 @@ import { Tabs, Callout } from 'nextra/components'
     ```
 
     <Callout type="info">
-      💡 将 OPENAI_API_KEY 设置为 null，然后设置环境变量 CRS_OAI_KEY 为您的 API 密钥（格式如 cr_xxxxxxxxxx）。
+      将 OPENAI_API_KEY 设置为 null，然后设置环境变量 CRS_OAI_KEY 为您的 API 密钥（格式如 cr_xxxxxxxxxx）。
     </Callout>
 
     **环境变量设置方法**
@@ -364,24 +364,9 @@ import { Tabs, Callout } from 'nextra/components'
 
     ### ⚙️ 配置 Claude Code 环境变量
 
-    为了让 Claude Code 连接到你的中转服务，需要设置两个环境变量：
+    为了让 Claude Code 连接到你的中转服务，需要设置两个环境变量。
 
-    **方法一：临时设置（当前会话）**
-
-    在 Terminal 中运行以下命令：
-
-    ```bash
-    export ANTHROPIC_BASE_URL="https://claude-code.club/api"
-    export ANTHROPIC_AUTH_TOKEN="你的API密钥"
-    ```
-
-    <Callout type="info">
-      💡 记得将 "你的API密钥" 替换为在上方 "API Keys" 标签页中创建的实际密钥。
-    </Callout>
-
-    **方法二：永久设置**
-
-    编辑你的 shell 配置文件（根据你使用的 shell）：
+    在 Terminal 中运行以下命令设置永久环境变量（一条一条执行）：
 
     ```bash
     # 对于 zsh (默认)
@@ -395,6 +380,19 @@ import { Tabs, Callout } from 'nextra/components'
     source ~/.bash_profile
     ```
 
+    <Callout type="warning">
+      记得将 "你的API密钥" 替换为在上方 "API Keys" 标签页中创建的实际密钥。
+      设置后需要重新打开 Terminal 窗口才能生效。
+    </Callout>
+
+    设置完后用如下命令检查环境变量是否成功：
+
+    ```bash
+    echo $ANTHROPIC_BASE_URL
+    echo $ANTHROPIC_AUTH_TOKEN
+    ```
+
+
     ### VSCode Claude 插件配置
 
     如果使用 VSCode 的 Claude 插件，需要在配置文件中进行设置：
@@ -402,7 +400,7 @@ import { Tabs, Callout } from 'nextra/components'
     **配置文件位置：** `~/.claude/config.json`
 
     <Callout type="info">
-      💡 如果该文件不存在，请手动创建。
+      如果该文件不存在，请手动创建。
     </Callout>
 
     ```json
@@ -410,6 +408,14 @@ import { Tabs, Callout } from 'nextra/components'
       "primaryApiKey": "crs"
     }
     ```
+
+     <Callout type="info">
+      **验证配置文件是否设置成功：**
+
+      ```bash
+      cat ~/.claude/config.json
+      ```
+    </Callout>
 
     ### 配置 Gemini CLI 环境变量
 
@@ -425,7 +431,7 @@ import { Tabs, Callout } from 'nextra/components'
     ```
 
     <Callout type="info">
-      💡 使用与 Claude Code 相同的 API 密钥即可。
+      使用与 Claude Code 相同的 API 密钥即可。
     </Callout>
 
     **永久设置方法**
@@ -484,7 +490,7 @@ import { Tabs, Callout } from 'nextra/components'
     ```
 
     <Callout type="info">
-      💡 将 OPENAI_API_KEY 设置为 null，然后设置环境变量 CRS_OAI_KEY 为您的 API 密钥（格式如 cr_xxxxxxxxxx）。
+      将 OPENAI_API_KEY 设置为 null，然后设置环境变量 CRS_OAI_KEY 为您的 API 密钥（格式如 cr_xxxxxxxxxx）。
     </Callout>
 
     **环境变量设置方法**
@@ -627,24 +633,9 @@ import { Tabs, Callout } from 'nextra/components'
 
     ### ⚙️ 配置 Claude Code 环境变量
 
-    为了让 Claude Code 连接到你的中转服务，需要设置两个环境变量：
+    为了让 Claude Code 连接到你的中转服务，需要设置两个环境变量。
 
-    **方法一：临时设置（当前会话）**
-
-    在终端中运行以下命令：
-
-    ```bash
-    export ANTHROPIC_BASE_URL="https://claude-code.club/api"
-    export ANTHROPIC_AUTH_TOKEN="你的API密钥"
-    ```
-
-    <Callout type="info">
-      💡 记得将 "你的API密钥" 替换为在上方 "API Keys" 标签页中创建的实际密钥。
-    </Callout>
-
-    **方法二：永久设置**
-
-    编辑你的 shell 配置文件：
+    在终端中运行以下命令设置永久环境变量（一条一条执行）：
 
     ```bash
     # 对于 bash (默认)
@@ -657,6 +648,20 @@ import { Tabs, Callout } from 'nextra/components'
     echo 'export ANTHROPIC_AUTH_TOKEN="你的API密钥"' >> ~/.zshrc
     source ~/.zshrc
     ```
+
+    <Callout type="warning">
+      记得将 "你的API密钥" 替换为在上方 "API Keys" 标签页中创建的实际密钥。
+      设置后需要重新打开终端窗口才能生效。
+    </Callout>
+
+    设置完后用如下命令检查环境变量是否成功：
+
+    ```bash
+    echo $ANTHROPIC_BASE_URL
+    echo $ANTHROPIC_AUTH_TOKEN
+    ```
+
+
 
     ### 配置 Gemini CLI 环境变量
 
@@ -672,7 +677,7 @@ import { Tabs, Callout } from 'nextra/components'
     ```
 
     <Callout type="info">
-      💡 使用与 Claude Code 相同的 API 密钥即可。
+      使用与 Claude Code 相同的 API 密钥即可。
     </Callout>
 
     **永久设置方法**
@@ -731,7 +736,7 @@ import { Tabs, Callout } from 'nextra/components'
     ```
 
     <Callout type="info">
-      💡 将 OPENAI_API_KEY 设置为 null，然后设置环境变量 CRS_OAI_KEY 为您的 API 密钥（格式如 cr_xxxxxxxxxx）。
+      将 OPENAI_API_KEY 设置为 null，然后设置环境变量 CRS_OAI_KEY 为您的 API 密钥（格式如 cr_xxxxxxxxxx）。
     </Callout>
 
     **环境变量设置方法**
@@ -761,7 +766,7 @@ import { Tabs, Callout } from 'nextra/components'
     **配置文件位置：** `~/.claude/config.json`
 
     <Callout type="info">
-      💡 如果该文件不存在，请手动创建。
+      如果该文件不存在，请手动创建。
     </Callout>
 
     ```json
@@ -769,6 +774,15 @@ import { Tabs, Callout } from 'nextra/components'
       "primaryApiKey": "crs"
     }
     ```
+
+     <Callout type="info">
+      **验证配置文件是否设置成功：**
+
+      ```bash
+      cat ~/.claude/config.json
+      ```
+    </Callout>
+
 
     ## 4. 开始使用 Claude Code
 
