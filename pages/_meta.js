@@ -8,27 +8,33 @@ export default {
     // }
   },
   'getting-started': {
-    title: '📖 入门指南',
+    title: '入门指南',
     type: 'page'
   },
   tutorials: {
-    title: '📚 教程',
+    title: '教程',
     type: 'page'
   },
   examples: {
-    title: '💼 实战案例',
+    title: '实战案例',
     type: 'page'
   },
   resources: {
-    title: '🛠️ 资源',
+    title: '资源',
     type: 'page'
   },
   'best-practices': {
-    title: '💎 最佳实践',
+    title: '最佳实践',
     type: 'page'
   },
   community: {
-    title: '🤝 社区',
+    title: '社区',
     type: 'page'
+  },
+  'back-to-website': {
+    title: '返回CC Club',
+    type: 'page',
+    href: 'https://www.claude-code.club',
+    newWindow: true
   }
 }

@@ -1,9 +1,11 @@
 export default {
   logo:
-    <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
-      <img src="/images/cc-club-right-text.svg" alt="Logo" style={{ height: '24px' }} />
+    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', height: '100%' }}>
+      <img src="/cc-club.svg" alt="Logo" style={{ width: '40px', height: '40px', backgroundColor: '#030219', borderRadius: '4px' }} />
+      <span style={{ marginLeft: 8, fontWeight: 'bold', fontSize: '24px' }}>CC Academy</span>
+      {/* <a href="https://claude-code.club" target="_blank" rel="noopener noreferrer" style={{ marginLeft: 8, fontSize: '14px', color: '#888' }}>by CC Club</a> */}
     </div>,
-  logoLink: 'https://claude-code.club',
+  // logoLink: '/',
   project: {
     link: 'https://github.com/zjh1943/claude-code-academy'
   },

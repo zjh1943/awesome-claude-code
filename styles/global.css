@@ -1,0 +1,46 @@
+/* 返回官网按钮样式 */
+nav > div{
+  display: flex;
+  align-items: center;
+}
+
+nav a[href="https://www.claude-code.club"] {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  padding: 6px 12px !important;
+  margin-left: 8px;
+  transition: all 0.2s ease;
+  position: relative;
+  padding-left: 32px !important;
+}
+
+/* 暗色模式边框 */
+html.dark nav a[href="https://www.claude-code.club"] {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* home 图标 - 使用 ::before 伪元素 */
+nav a[href="https://www.claude-code.club"]::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1024 1024' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M819.2 507.733333c-6.4 0-14.933333-2.133333-19.2-6.4L512 268.8 224 501.333333c-12.8 10.666667-34.133333 8.533333-44.8-4.266666-10.666667-12.8-8.533333-34.133333 4.266667-44.8L490.666667 204.8c10.666667-8.533333 27.733333-8.533333 40.533333 0l307.2 247.466667c12.8 10.666667 14.933333 32 4.266667 44.8-4.266667 6.4-14.933333 10.666667-23.466667 10.666666z' fill='%23666666'/%3E%3Cpath d='M736 827.733333h-448c-17.066667 0-32-14.933333-32-32V413.866667c0-17.066667 14.933333-32 32-32s32 14.933333 32 32v349.866666h384V413.866667c0-17.066667 14.933333-32 32-32s32 14.933333 32 32v381.866666c0 17.066667-14.933333 32-32 32z' fill='%23666666'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+/* 悬停效果 */
+nav a[href="https://www.claude-code.club"]:hover {
+  border-color: rgba(59, 130, 246, 0.5);
+  background-color: rgba(59, 130, 246, 0.05);
+}
+
+html.dark nav a[href="https://www.claude-code.club"]:hover {
+  border-color: rgba(96, 165, 250, 0.5);
+  background-color: rgba(59, 130, 246, 0.1);
+}
