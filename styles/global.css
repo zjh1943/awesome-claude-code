@@ -1,3 +1,10 @@
+:root {
+  --nextra-primary-hue: 154; /* 蓝色调，范围是 0–360 */
+  --nextra-primary-saturation: 70%;
+  --nextra-primary-rgb: #0CDF70; /* 对应的 RGB 颜色值 */
+}
+
+
 /* 返回官网按钮样式 */
 nav > div{
   display: flex;
@@ -36,11 +43,11 @@ nav a[href="https://www.claude-code.club"]::before {
 
 /* 悬停效果 */
 nav a[href="https://www.claude-code.club"]:hover {
-  border-color: rgba(59, 130, 246, 0.5);
-  background-color: rgba(59, 130, 246, 0.05);
+  border-color: var(--nextra-primary-rgb);
+  background-color: rgba(12, 223, 112, 0.05); /* 使用 --nextra-primary-rgb 的 RGB 值 */
 }
 
 html.dark nav a[href="https://www.claude-code.club"]:hover {
-  border-color: rgba(96, 165, 250, 0.5);
-  background-color: rgba(59, 130, 246, 0.1);
+  border-color: var(--nextra-primary-rgb);
+  background-color: rgba(12, 223, 112, 0.05); /* 使用 --nextra-primary-rgb 的 RGB 值 */
 }
