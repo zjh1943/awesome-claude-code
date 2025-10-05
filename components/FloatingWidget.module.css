@@ -1,0 +1,120 @@
+/* 右侧浮动挂件容器 */
+.widget {
+  position: fixed;
+  right: 0;
+  top: 70%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 8px;
+  background-color: var(--nextra-bg);
+  border-left: 1px solid var(--nextra-border);
+  border-radius: 8px 0 0 8px;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 挂件按钮基础样式 */
+.widgetButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--nextra-fg);
+  font-size: 12px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.widgetButton:hover {
+  background-color: var(--nextra-primary-hue);
+  opacity: 0.8;
+}
+
+.widgetButton span {
+  white-space: nowrap;
+}
+
+/* CC Club Logo */
+.ccLogo {
+  width: 24px;
+  height: 24px;
+  background-color: #030219;
+  border-radius: 4px;
+}
+
+/* 弹窗遮罩层 */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+/* 弹窗内容 */
+.modalContent {
+  background-color: #ffffff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-width: 90%;
+  max-height: 90%;
+  position: relative;
+}
+
+/* 关闭按钮 */
+.closeButton {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  padding: 4px 8px;
+  line-height: 1;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.closeButton:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* 弹窗标题 */
+.modalTitle {
+  margin-top: 0;
+  margin-bottom: 16px;
+  text-align: center;
+  color: #000;
+}
+
+/* 二维码容器 */
+.qrCodeContainer {
+  text-align: center;
+}
+
+.qrCodeImage {
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+}
+
+.qrCodeDescription {
+  margin-top: 12px;
+  margin-bottom: 0;
+  color: #666;
+  font-size: 14px;
+}
