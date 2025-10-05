@@ -13,4 +13,5 @@ Claude Code Academy 是一个开源协作的学习平台，致力于帮助中文
    - Link. 使用方式 <Link href="/path/to/page">链接文本</Link>
    - Table. 使用方式 <Table> <thead>...</thead> <tbody>...</tbody> </Table>
    - Steps. 使用方式 <Steps> </Steps>
+   使用这些组件时，需要从 'nextra/components' 导入。
 3. 使用 `pnpm` 进行包管理和构建，不要使用 `npm` 或 `yarn`。
