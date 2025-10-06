@@ -56,6 +56,19 @@ html.dark nav a[href="https://www.claude-code.club"]:hover {
 .nextra-cards .nextra-card {
   display: flex;
   flex-direction: column;
+  background-color: transparent;
+}
+
+.nextra-cards .nextra-card:hover {
+  background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+}
+
+html.dark .nextra-cards .nextra-card {
+  background-color: transparent;
+}
+
+html.dark .nextra-cards .nextra-card:hover {
+  background-color: rgb(32 33 36 / var(--tw-bg-opacity, 1));
 }
 
 /* Style for span with title attribute inside .nextra-card */
