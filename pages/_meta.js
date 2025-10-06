@@ -15,7 +15,7 @@ export default {
     title: '实战技巧',
     type: 'page'
   },
-  tutorials: {
+  courses: {
     title: '完整课程',
     type: 'page'
   },

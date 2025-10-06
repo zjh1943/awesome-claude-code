@@ -51,3 +51,28 @@ html.dark nav a[href="https://www.claude-code.club"]:hover {
   border-color: var(--nextra-primary-rgb);
   background-color: rgba(12, 223, 112, 0.05); /* 使用 --nextra-primary-rgb 的 RGB 值 */
 }
+
+/* Cards.Card 样式调整 */
+.nextra-cards .nextra-card {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Style for span with title attribute inside .nextra-card */
+.nextra-cards .nextra-card span[title] {
+  order: 0;
+}
+
+.nextra-cards .nextra-card > *:first-child:nth-last-child(n+2) {
+  padding: 0 16px 16px 16px;
+  display: block;
+  margin-top: 0;
+  line-height: 1.6;
+  color: #666;
+  order: 1;
+  background-color: transparent;
+}
+
+html.dark .nextra-cards .nextra-card > *:first-child:nth-last-child(n+2) {
+  color: #999;
+}

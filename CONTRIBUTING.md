@@ -78,7 +78,7 @@ git checkout -b feature/your-feature-name
 ```
 pages/
 ├── getting-started/     # 入门指南
-├── tutorials/           # 教程
+├── courses/             # 完整课程
 ├── examples/            # 实战案例
 ├── resources/           # 资源
 ├── best-practices/      # 最佳实践

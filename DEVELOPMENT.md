@@ -21,7 +21,7 @@ awesome-claude-code/
 │   ├── _document.jsx     # Document 组件
 │   ├── index.mdx         # 首页
 │   ├── getting-started/  # 入门指南
-│   ├── tutorials/        # 教程
+│   ├── courses/        # 完整课程
 │   ├── examples/         # 案例
 │   ├── resources/        # 资源
 │   ├── best-practices/   # 最佳实践
@@ -82,7 +82,7 @@ npm run start
 
 ```bash
 # 例如：添加新教程
-touch pages/tutorials/new-tutorial.mdx
+touch pages/courses/new-tutorial.mdx
 ```
 
 ### 2. 配置导航
@@ -90,7 +90,7 @@ touch pages/tutorials/new-tutorial.mdx
 在对应目录的 `_meta.js` 中添加配置：
 
 ```javascript
-// pages/tutorials/_meta.js
+// pages/courses/_meta.js
 export default {
   'mcp-servers': 'MCP Server 开发',
   'new-tutorial': '新教程标题',  // 添加这行
@@ -114,9 +114,9 @@ description: 简短描述
 ### 4. 添加子目录
 
 ```bash
-mkdir pages/tutorials/new-section
-touch pages/tutorials/new-section/_meta.js
-touch pages/tutorials/new-section/index.mdx
+mkdir pages/courses/new-section
+touch pages/courses/new-section/_meta.js
+touch pages/courses/new-section/index.mdx
 ```
 
 ## 🎨 自定义主题

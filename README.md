@@ -62,7 +62,7 @@
 
 系统化的完整课程，适合有整块时间的深度学习：
 
-- **[浏览完整课程](https://academy.claude-code.club/tutorials)** - 由专业机构开发的系统化课程（持续更新中）
+- **[浏览完整课程](https://academy.claude-code.club/courses)** - 由专业机构开发的系统化课程（持续更新中）
 
 ### 💼 项目案例
 

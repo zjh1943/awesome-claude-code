@@ -1,0 +1,146 @@
+---
+title: Claude Code：高度 Agentic 的编码助手
+description: 学习使用 Claude Code 提升编码效率的最佳实践
+---
+
+import { Callout, Cards } from 'nextra/components'
+
+# Claude Code：高度 Agentic 的编码助手
+
+<Callout type="info">
+**课程信息**
+- 原课程名：Claude Code: A Highly Agentic Coding Assistant
+- 讲师：Elie Schoppik（Anthropic 技术教育负责人）
+- 难度：中级
+- 时长：1小时50分钟
+- 课程地址：[DeepLearning.AI](https://www.deeplearning.ai/short-courses/claude-code-a-highly-agentic-coding-assistant/)
+- 中文翻译地址：[Bilibili](https://space.bilibili.com/143684723/lists/6462358?type=season)
+- 推荐理由：这是 Anthropic 官方推出的 Claude Code 入门课程，由技术教育负责人亲自授课，通过 3 个实战项目系统讲解 Claude Code 的核心功能和最佳实践，是快速掌握 Claude Code 的最佳学习路径
+</Callout>
+
+## 课程简介
+
+在这门由 Anthropic 与 DeepLearning.AI 合作推出的短期课程中，你将学习使用 Claude Code 进行 agentic 编码的最佳实践。
+
+AI 编码助手已经从简单的代码补全工具快速演变为能够自主生成代码的工具。Claude Code 通过成为一个高度 agentic 的助手，将自主性推向了新的高度——它能够以最少的人工干预进行规划、执行和改进代码，工作时长可超过几分钟。你和你的团队现在可以运行多个 Claude Code 实例，并行处理代码库的不同部分。然而，协调所有这些工作需要一套最佳实践来显著提升你的生产力。
+
+## 你将学到什么
+
+<Cards>
+  <Cards.Card
+    icon="🔍"
+    title="探索与开发"
+    href="#课程大纲"
+  >
+    学习如何使用 Claude Code 探索和理解复杂的代码库，掌握代码导航和架构分析技巧
+  </Cards.Card>
+
+  <Cards.Card
+    icon="🔌"
+    title="扩展能力"
+    href="#课程大纲"
+  >
+    通过 MCP servers 和 Hooks 扩展 Claude Code 的功能，连接外部工具和服务
+  </Cards.Card>
+
+  <Cards.Card
+    icon="💡"
+    title="实战项目"
+    href="#课程大纲"
+  >
+    通过 RAG 聊天机器人、数据分析和 Figma 转 Web 应用等实战项目掌握核心技能
+  </Cards.Card>
+</Cards>
+
+## 课程内容详解
+
+在这门课程中，你将学习使用 Claude Code 改进编码工作流的最佳实践。你将学习如何为 Claude Code 提供清晰的上下文，例如指定相关文件、明确定义功能需求，以及将 Claude Code 连接到 MCP servers。
+
+你将把这些最佳实践应用到三个示例中：
+- 探索 RAG 聊天机器人代码库
+- 在 Jupyter notebook 中分析电商数据
+- 基于 Figma 原型创建 Web 应用
+
+**在本课程中，你将使用 Claude Code**：
+
+1. **理解架构和工具**。了解 Claude Code 的底层架构、它用于导航代码库的工具，以及如何跨会话存储记忆。
+2. **探索 RAG 聊天机器人**。探索并理解 RAG 聊天机器人的代码库，以及信息如何在前端和后端之间流动。
+3. **创建 CLAUDE.md 文件**。在项目目录中创建 CLAUDE.md 文件，包含关于代码库的信息和指南，Claude Code 可以跨会话记住这些内容。
+4. **管理上下文**。通过提及相关文件和提供截图或图片来为 Claude Code 提供上下文，并使用 escape、clear 和 compact 命令控制上下文。
+5. **添加功能**。为 RAG 聊天机器人的前端和后端添加功能：先让 Claude Code 进行规划以提高性能；对更难的任务使用 thinking mode；使用 Claude Code 的 subagents 进行头脑风暴。
+6. **编写测试**。编写测试来评估 RAG 聊天机器人的功能，并重构聊天机器人的部分代码。
+7. **并行开发**。使用 git worktrees 同时运行多个 Claude 会话，每个会话专注于为聊天机器人添加独立的功能。
+8. **Github 集成**。使用 Claude Code 的 Github 集成修复 Github issues，创建、审查和合并 pull requests。
+9. **使用 Hooks**。通过 Claude Code hooks 在使用工具前后执行代码。
+10. **重构 Jupyter Notebook**。重构电商数据分析的 Jupyter notebook 并将其转换为仪表板。
+11. **Figma 到 Web 应用**。连接 Claude 到 Figma MCP server，将设计原型导入 Claude Code，并开发一个展示联邦储备经济数据的 Web 界面。
+12. **自动化 UI 测试**。使用 Playwright MCP server 自动打开浏览器、截图，并指导 Claude Code 改进应用的 UI 设计。
+
+## 课程大纲
+
+本课程包含 10 个视频课程，总时长约 1 小时 50 分钟。
+
+| 课程 | 标题 | 时长 |
+|------|------|------|
+| 1 | Introduction（介绍） | 4分钟 |
+| 2 | What is Claude Code?（什么是 Claude Code？） | 8分钟 |
+| 3 | Course Notes（课程笔记） | 1分钟 |
+| 4 | Setup & Codebase Understanding（设置与代码库理解） | 14分钟 |
+| 5 | Adding Features（添加功能） | 17分钟 |
+| 6 | Testing, Error Debugging and Code Refactoring（测试、错误调试和代码重构） | 12分钟 |
+| 7 | Adding Multiple Features Simultaneously（同时添加多个功能） | 11分钟 |
+| 8 | Exploring Github Integration & Hooks（探索 Github 集成与 Hooks） | 10分钟 |
+| 9 | Refactoring a Jupyter Notebook & Creating a Dashboard（重构 Jupyter Notebook 并创建仪表板） | 12分钟 |
+| 10 | Creating Web App based on a Figma Mockup（基于 Figma 原型创建 Web 应用） | 9分钟 |
+| 11 | Conclusion（总结） | 1分钟 |
+
+## 适合人群
+
+本课程适合任何想要探索 AI 编码助手工具（如 Claude Code）如何增强开发流程的人。无论你是在构建应用程序、调试代码，还是探索不熟悉的代码库，你都将获得使用 AI 辅助工作流更高效工作的实用技能。
+
+<Callout type="warning">
+**前置要求**
+
+如果你熟悉 Python 和 Git，将能更好地学习本课程。
+</Callout>
+
+## 讲师介绍
+
+**Elie Schoppik**
+- 职位：Anthropic 技术教育负责人
+- 机构：[Anthropic](https://www.anthropic.com/)
+
+## 学习资源
+
+<Cards>
+  <Cards.Card
+    icon="🎓"
+    title="免费注册学习"
+    href="https://learn.deeplearning.ai/courses/claude-code-a-highly-agentic-coding-assistant"
+  >
+    在 DeepLearning.AI 平台免费学习（英文）
+  </Cards.Card>
+
+  <Cards.Card
+    icon="📺"
+    title="中文翻译版"
+    href="https://space.bilibili.com/143684723/lists/6462358?type=season"
+  >
+    在 Bilibili 观看中文翻译版本
+  </Cards.Card>
+</Cards>
+
+## 课程收获
+
+完成本课程后，你将掌握一套可应用于加速和改进编码工作流的最佳实践。你将能够：
+
+- ✅ 高效地使用 Claude Code 探索和理解大型代码库
+- ✅ 利用 MCP servers 扩展 Claude Code 的功能
+- ✅ 使用 git worktrees 并行开发多个功能
+- ✅ 通过 Github 集成自动化开发工作流
+- ✅ 将设计原型快速转换为可工作的 Web 应用
+- ✅ 使用 hooks 自定义 Claude Code 的行为
+
+<Callout type="success">
+本课程在 DeepLearning.AI 学习平台测试期间免费开放！
+</Callout>
