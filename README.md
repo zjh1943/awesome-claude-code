@@ -15,7 +15,7 @@
   <img src="https://img.shields.io/github/license/zjh1943/awesome-claude-code" />
 </p>
 
----
+
 
 ## 📖 关于本项目
 
@@ -31,7 +31,6 @@
 - **🔄 持续更新** - 跟进 Claude Code 最新版本和特性
 - **🤝 社区共建** - 开源协作，每个人都可以贡献
 
----
 
 ## 🌟 核心内容
 
@@ -79,28 +78,7 @@
 - **[案例展示](https://academy.claude-code.club/community/showcase)** - 社区优秀项目展示
 - **[常见问题](https://academy.claude-code.club/community/faq)** - 社区常见问题解答
 
----
 
-## 🚀 快速开始
-
-### 📚 在线学习
-
-直接访问 **[https://academy.claude-code.club](https://academy.claude-code.club)** 开始学习！
-
-推荐学习路径：
-1. [什么是 Claude Code？](https://academy.claude-code.club/getting-started/introduction) - 了解基本概念
-2. [获取 API Key](https://academy.claude-code.club/getting-started/get-api-key) - 获取使用权限
-3. [安装和配置](https://academy.claude-code.club/getting-started/installation) - 搭建开发环境
-4. [快速体验](https://academy.claude-code.club/getting-started/quick-start) - 完成第一个项目
-
-### 🔍 站点特色
-
-- 🔍 全文搜索 - 快速找到你需要的内容
-- 📱 响应式设计 - 完美支持移动端
-- 🌙 深色模式 - 保护你的眼睛
-- 📖 目录导航 - 清晰的内容结构
-
----
 
 ## 🤝 参与贡献
 
@@ -114,15 +92,11 @@
 
 **想要贡献内容？** 请查看详细的 **[贡献指南](CONTRIBUTING.md)** 了解如何开始。
 
-## 🔗 相关资源
+**想要学习交流？** 加入我们的微信群，已有 3000+ 名开发者在这里分享经验和技巧！
+<div style={{ display: 'flex', justifyContent: 'center', margin: '2rem 0' }}>
+  <img src="./public/images/cc-club-group-qrcode.png" alt="CC Club 技术交流群" width={120} height={120} />
+</div>
 
-- [Claude Code 官方文档](https://docs.claude.com/claude-code)
-- [Claude Code GitHub](https://github.com/anthropics/claude-code)
-- [MCP 协议文档](https://modelcontextprotocol.io/)
-- [Anthropic 官网](https://www.anthropic.com)
-- [Claude Code Club](https://claude-code.club)
-
----
 
 ## 💬 联系我们
 
@@ -130,15 +104,11 @@
 - 🐛 [Issues](https://github.com/zjh1943/awesome-claude-code/issues) - 报告问题
 - 📧 Email: [z@claude-code.club](mailto:z@claude-code.club)
 
----
 
-## 📜 开源协议
-
-本项目采用 [MIT License](LICENSE) 开源协议。
-
----
 
 ## 🙏 致谢
+
+本项目采用 [MIT License](LICENSE) 开源协议。
 
 感谢所有为本项目做出贡献的开发者！
 
@@ -146,7 +116,6 @@
   <img src="https://contrib.rocks/image?repo=zjh1943/awesome-claude-code" />
 </a>
 
----
 
 ## ⭐ Star History
 
@@ -154,7 +123,7 @@
 
 [![Star History Chart](https://api.star-history.com/svg?repos=zjh1943/awesome-claude-code&type=Date)](https://star-history.com/#zjh1943/awesome-claude-code&Date)
 
----
+
 
 <p align="center">
   <sub>Built with ❤️ by Claude Code Club</sub>
