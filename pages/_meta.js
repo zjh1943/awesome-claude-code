@@ -12,7 +12,7 @@ export default {
     type: 'page'
   },
   'practical-skills': {
-    title: '实战技能',
+    title: '实战技巧',
     type: 'page'
   },
   tutorials: {

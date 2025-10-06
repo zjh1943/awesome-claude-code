@@ -1,5 +1,5 @@
 export default {
-  index: '实战技能',
+  index: '实战技巧',
   general: '通用资源',
   workflow: '工作流程',
   ui: 'UI 设计',

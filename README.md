@@ -4,7 +4,7 @@
   <strong>最全面的 Claude Code 中文学习资源库</strong>
   <br />
   <a href="https://academy.claude-code.club">📚 在线文档</a> ·
-  <a href="#-核心内容">核心内容</a> ·
+  <a href="#-核心内容">核心内容</a>
   <a href="#-参与贡献">参与贡献</a>
 </p>
 
@@ -47,7 +47,7 @@
 - **[如何用 Claude Code 做...](https://academy.claude-code.club/getting-started/how-to)** - 常见场景的使用指南
 - **[常见问题](https://academy.claude-code.club/getting-started/faq)** - 新手常见问题解答
 
-### 💡 实战技能
+### 💡 实战技巧
 
 掌握 Claude Code 的实战技巧：
 
