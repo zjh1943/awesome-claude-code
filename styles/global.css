@@ -59,7 +59,7 @@ html.dark nav a[href="https://www.claude-code.club"]:hover {
 }
 
 /* Style for span with title attribute inside .nextra-card */
-.nextra-cards .nextra-card span[title] {
+.nextra-cards .nextra-card > span[title] {
   order: 0;
 }
 
