@@ -89,3 +89,99 @@ html.dark .nextra-cards .nextra-card:hover {
 html.dark .nextra-cards .nextra-card > *:first-child:nth-last-child(n+2) {
   color: #999;
 }
+
+/* 视频封面样式 - 可复用 */
+.video-cover-wrapper {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.video-cover-wrapper:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+}
+
+.video-cover-img {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.video-cover-wrapper:hover .video-cover-img {
+  transform: scale(1.02);
+}
+
+.video-cover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.3));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+.video-cover-wrapper:hover .video-cover-overlay {
+  background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.4));
+}
+
+.video-cover-play-btn {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.video-cover-wrapper:hover .video-cover-play-btn {
+  transform: scale(1.1);
+  background: rgba(255,255,255,1);
+}
+
+.video-cover-play-icon {
+  margin-left: 4px;
+}
+
+/* 课程信息布局 */
+.course-info-layout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.course-info-layout > .course-info-content {
+  flex: 1;
+  min-width: 300px;
+}
+
+.course-info-layout > .video-cover-wrapper {
+  width: 100%;
+  max-width: 400px;
+  min-width: 280px;
+  flex: 0 0 auto;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .course-info-layout {
+    flex-direction: column;
+  }
+
+  .course-info-layout > .video-cover-wrapper {
+    max-width: 100%;
+  }
+}
