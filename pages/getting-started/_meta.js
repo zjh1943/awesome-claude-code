@@ -4,7 +4,7 @@ export default {
   installation: '安装和配置',
   'quick-start': '快速体验 Claude Code',
   'how-to': {
-    title: '如何用 Claude Code 做…',
+    title: '如何用 Claude Code 做这些事',
   },
   faq: '常见问题'
 }

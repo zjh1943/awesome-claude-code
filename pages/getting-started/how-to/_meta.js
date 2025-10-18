@@ -1,4 +1,5 @@
 export default {
+  'index': '如何用 Claude Code 做这些事',
   'understand-new-codebases': '理解新代码库',
   'fix-bugs-efficiently': '高效修复 Bug',
   'refactor-code': '重构代码',
