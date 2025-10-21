@@ -1,0 +1,325 @@
+import { Callout, Table } from 'nextra/components'
+
+# 套餐和计费规则
+
+本页将帮助你全面了解 CC Club 提供的各种套餐选项，及详细的用量限制规则。
+
+## CC Club 的计费规则
+
+CC Club 提供多个档位的套餐，满足不同强度的使用需求：
+
+<Table>
+  <thead>
+    <tr>
+      <th></th>
+      <th style={{width: '25%'}}>Free</th>
+      <th style={{width: '25%'}}>Pro</th>
+      <th style={{width: '25%'}}>Max</th>
+      <th style={{width: '25%'}}>Ultra</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>适合用户</strong></td>
+      <td>简单尝鲜</td>
+      <td>每天 4{'~'}5 小时中度使用</td>
+      <td>每天 8{'~'}10 小时高强度使用（满足 95% 的程序员）</td>
+      <td>肆无忌惮的高强度使用</td>
+    </tr>
+    <tr>
+      <td><strong>我们的价格</strong></td>
+      <td><strong>免费</strong></td>
+      <td><strong>¥129 / 月</strong></td>
+      <td><strong>¥499 / 月</strong></td>
+      <td><strong>¥1699 / 月</strong></td>
+    </tr>
+    <tr>
+      <td><strong>用量限制</strong></td>
+      <td>45 消息</td>
+      <td>45 消息 / 5 小时</td>
+      <td>225 消息 / 5 小时</td>
+      <td>900+ 消息 / 5 小时</td>
+    </tr>
+    <tr>
+      <td><strong>可用时段</strong></td>
+      <td>全天可用</td>
+      <td>全天可用</td>
+      <td>全天可用</td>
+      <td>全天可用</td>
+    </tr>
+    <tr>
+      <td><strong>对应官方套餐</strong></td>
+      <td>-</td>
+      <td>Pro (¥142/月)</td>
+      <td>Max 5X (¥710/月)</td>
+      <td>Max 20X (¥1420/月)</td>
+    </tr>
+    <tr>
+      <td><strong>比官方节省</strong></td>
+      <td>-</td>
+      <td><strong>¥23 / 月 (~17%)</strong></td>
+      <td><strong>¥211 / 月 (~30%)</strong></td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td><strong>Claude 4.5 Sonnet</strong></td>
+      <td>✅ 可用</td>
+      <td>✅ 可用</td>
+      <td>✅ 可用</td>
+      <td>✅ 可用 + 更高优先级</td>
+    </tr>
+    <tr>
+      <td><strong>Claude 4.1 Opus</strong></td>
+      <td>❌ 不可用</td>
+      <td>❌ 不可用</td>
+      <td>✅ 可用</td>
+      <td>✅ 可用 + 专属加速</td>
+    </tr>
+    <tr>
+      <td><strong>可用 token 价值</strong></td>
+      <td>7 美元</td>
+      <td>7 美元 / 5 小时</td>
+      <td>35 美元 / 5 小时</td>
+      <td>150 美元 / 5 小时</td>
+    </tr>
+    <tr>
+      <td><strong>周限制</strong></td>
+      <td>-</td>
+      <td>暂无</td>
+      <td>暂无</td>
+      <td>暂无</td>
+    </tr>
+  </tbody>
+</Table>
+
+### 用量承诺
+
+<Callout type="info">
+* **Free 套餐**：这是免费体验套餐，CC Club 不对其可用量做承诺。会随着 Claude 官方价格调整和账号封锁策略来调整，甚至有可能临时取消 Free 套餐。  
+* **付费套餐**：CC Club 承诺保证您已经支付的订阅时长内，按照您下单时的用量履约。就算 Claude 官方涨价，我们也不会对已经支付的订阅用户改变用量限制。
+
+</Callout>
+
+
+### 定价原则
+
+CC Club 采用**成本定价**策略，维持团队基本经营，让更多开发者能够以合理的价格使用 Claude Code。
+
+
+
+## Claude 官方的计费规则
+
+<Callout type="info">
+CC Club 的套餐规格严格与 Claude 官方的套餐规格保持一致。
+</Callout>
+
+以下是 Claude 官方各个套餐的详细对比：
+
+<Table>
+  <thead>
+    <tr>
+      <th>套餐项目</th>
+      <th>Pro</th>
+      <th>Max 5X</th>
+      <th>Max 20X</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>官方价格</strong></td>
+      <td>$20 / 月<br/>（¥142 / 月）</td>
+      <td>$100 / 月<br/>（¥710 / 月）</td>
+      <td>$200 / 月<br/>（¥1420 / 月）</td>
+    </tr>
+    <tr>
+      <td><strong>适用场景</strong></td>
+      <td>小型代码库的轻度编码工作</td>
+      <td>经常使用 Claude 处理各种任务</td>
+      <td>每天使用 Claude 协作处理大部分任务</td>
+    </tr>
+    <tr>
+      <td><strong>使用量倍数</strong></td>
+      <td>免费服务的 5 倍（基准）</td>
+      <td>Pro 的 5 倍</td>
+      <td>Pro 的 20 倍</td>
+    </tr>
+    <tr>
+      <td><strong>每 5 小时消息数</strong></td>
+      <td>约 45 条消息</td>
+      <td>约 225 条消息</td>
+      <td>约 900 条消息</td>
+    </tr>
+    <tr>
+      <td><strong>Claude Code 提示数</strong></td>
+      <td>10-40 个提示 / 5 小时</td>
+      <td>50-200 个提示 / 5 小时</td>
+      <td>200-800 个提示 / 5 小时</td>
+    </tr>
+    <tr>
+      <td><strong>每周 Sonnet 4 时长</strong></td>
+      <td>40-80 小时</td>
+      <td>140-280 小时</td>
+      <td>240-480 小时</td>
+    </tr>
+    <tr>
+      <td><strong>每周 Opus 4 时长</strong></td>
+      <td>❌ 不支持</td>
+      <td>15-35 小时</td>
+      <td>24-40 小时</td>
+    </tr>
+    <tr>
+      <td><strong>Claude 4.5 Sonnet</strong></td>
+      <td>✅ 支持</td>
+      <td>✅ 支持</td>
+      <td>✅ 支持</td>
+    </tr>
+    <tr>
+      <td><strong>Claude 4.1 Opus</strong></td>
+      <td>❌ 不支持</td>
+      <td>✅ 支持</td>
+      <td>✅ 支持</td>
+    </tr>
+    <tr>
+      <td><strong>限制重置</strong></td>
+      <td>每 5 小时</td>
+      <td>每 5 小时</td>
+      <td>每 5 小时</td>
+    </tr>
+    <tr>
+      <td><strong>上下文窗口</strong></td>
+      <td>200K</td>
+      <td>200K</td>
+      <td>200K</td>
+    </tr>
+    <tr>
+      <td><strong>最适合</strong></td>
+      <td>小型代码库（&lt;1000 行代码）的轻度工作</td>
+      <td>日常使用较大代码库</td>
+      <td>高级用户、大型代码库</td>
+    </tr>
+  </tbody>
+</Table>
+
+<Callout type="info">
+消息数量会根据消息长度（包括附件）、当前对话长度、使用的模型或功能而有所不同。
+</Callout>
+
+<Callout type="warning">
+虽然 Max 套餐提供扩展的使用限制，但**上下文窗口大小**在所有计划中都保持在 **200K**。这意味着您可以发送更多消息，但单个聊天的长度与其他计划具有相同的上下文窗口限制。
+</Callout>
+
+### 影响使用量的因素
+
+以下因素会影响您的实际使用量：
+
+1. **代码库大小**：更大的代码库会消耗更多使用量
+2. **用户设置**：如自动接受模式等
+3. **并行使用**：同时运行多个 Claude Code 实例会更快达到限制
+4. **模型选择**：Opus 4 比 Sonnet 4 消耗更多使用量
+5. **消息长度**：更长的消息和附件会消耗更多使用量
+6. **对话长度**：更长的对话会消耗更多使用量
+
+
+
+
+## 什么是会话窗口限制？
+
+**会话窗口限制**是指在一个固定时间段内（通常是 5 小时）您可以使用的最大消息数或 token 数。
+
+### 工作原理
+
+1. **5 小时滚动窗口**：从您开始使用的时间点开始计算，每 5 小时自动重置
+2. **动态计算**：限制基于您发送的消息数量、对话总长度、文件附件大小等因素
+3. **达到限制**：如果在 5 小时内用完限制，需要等待窗口重置才能继续使用
+
+### 实际可用量
+
+根据社区实际测量经验，各套餐的 Token 价值限制为：
+
+- **Pro 套餐**：5 小时内约 **$6** 的 token 使用价值
+- **Max 5X 套餐**：5 小时内约 **$30** 的 token 使用价值
+- **Max 20X 套餐**：5 小时内约 **$120** 的 token 使用价值
+
+### 示例
+
+假设您下午 1:00 开始使用 Claude Code：
+- 如果您使用量较大，在下午 3:00 用完了 5 小时限制
+- 您需要等到下午 6:00（5 小时后）才能继续使用
+- 系统会在接近限制时显示警告
+
+<Callout type="info">
+Claude Code 会在您接近使用限制时显示警告，帮助您合理安排工作。
+</Callout>
+
+
+
+## 什么是周限？
+
+**周限**（Weekly Limit）是 Claude 官方为防止滥用而设置的额外限制机制。
+
+### 基本原理
+
+根据社区讨论和实际使用经验：
+
+1. **双层限制系统**：
+   - **5 小时窗口限制**：短期使用限制，每 5 小时重置
+   - **1 周窗口限制**：长期使用限制，1 周内的总使用量
+
+3. **累积计算**：
+   - 周限会累积计算一周内的所有使用量
+   - 如果连续高强度使用，可能会触发周限
+   - 周限重置后才能继续使用
+
+### 实际使用体验
+
+根据社区实际测量经验，各套餐的周限 Token 价值限制为：
+
+- **Pro 套餐**：1 周约 **$32** 的 token 使用价值
+- **Max 5X 套餐**：1 周约 **$160** 的 token 使用价值
+- **Max 20X 套餐**：1 周约 **$650** 的 token 使用价值
+
+社区用户反馈：
+
+- 使用 Opus 4 时更容易达到限制（因为成本更高）
+- 同时运行多个 Claude Code 实例会加速达到限制
+- 大多数正常使用的用户不会触发周限
+- 高强度持续使用才可能遇到周限
+
+<Callout type="warning">
+**CC Club 当前政策**：目前 CC Club 还未引入周限规则。根据成本压力情况，未来有可能会引入此规则。我们会提前通知用户任何政策变更。
+</Callout>
+
+
+
+## 常见问题
+
+#### Q: 如果我用超了会怎么样？
+
+- **不会额外收费**：没有"超额"收费机制
+- **暂时停用**：达到限制后会被暂时切断访问
+- **等待重置**：需要等待相应的时间窗口重置（5 小时或 1 周）
+
+#### Q: Pro 和 Max 的限制有什么区别？
+
+主要区别在于使用量倍数：
+- **Pro**：基准使用量
+- **Max 5X**：Pro 的 5 倍
+- **Max 20X**：Pro 的 20 倍
+
+此外，Max 套餐可以使用 Opus 4 模型，而 Pro 套餐只能使用 Sonnet 4。
+
+#### Q: 如何查看我的当前使用情况？
+
+在「[自助服务系统](https://customer.claude-code.club/)」中的「[概览](https://customer.claude-code.club/dashboard)」页面，可以查看当前用量。
+
+
+
+
+## 相关资源
+
+- [获取 API Key](/getting-started/get-api-key)
+- [安装和配置](/getting-started/installation)
+- [常见问题](/getting-started/faq)
+- [Claude 官方文档：Pro 计划使用情况](https://support.claude.com/zh-CN/articles/8324991-%E5%85%B3%E4%BA%8Eclaude%E4%B8%93%E4%B8%9A%E7%89%88%E8%AE%A1%E5%88%92%E4%BD%BF%E7%94%A8%E6%83%85%E5%86%B5)
+- [Claude 官方文档：Max 计划使用情况](https://support.claude.com/zh-CN/articles/11014257-%E5%85%B3%E4%BA%8Eclaude%E7%9A%84max%E8%AE%A1%E5%88%92%E4%BD%BF%E7%94%A8%E6%83%85%E5%86%B5)
+- [Claude 官方文档：在 Pro 或 Max 计划中使用 Claude Code](https://support.claude.com/zh-CN/articles/11145838-%E5%9C%A8%E6%82%A8%E7%9A%84-pro-%E6%88%96-max-%E8%AE%A1%E5%88%92%E4%B8%AD%E4%BD%BF%E7%94%A8-claude-code)

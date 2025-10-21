@@ -6,5 +6,6 @@ export default {
   'how-to': {
     title: '如何用 Claude Code 做这些事',
   },
+  pricing: '套餐和计费规则',
   faq: '常见问题'
 }

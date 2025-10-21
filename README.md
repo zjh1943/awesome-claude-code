@@ -43,6 +43,7 @@
 - **[什么是 Claude Code](https://academy.claude-code.club/getting-started/introduction)** - 了解基本概念和核心特性
 - **[获取 API Key](https://academy.claude-code.club/getting-started/get-api-key)** - 完整的 API Key 获取流程
 - **[安装和配置](https://academy.claude-code.club/getting-started/installation)** - 详细的安装配置指南
+- **[套餐和计费规则](https://academy.claude-code.club/getting-started/pricing)** - CC Club 套餐对比和官方用量限制详解
 - **[快速体验](https://academy.claude-code.club/getting-started/quick-start)** - 5 分钟体验 Claude Code 的强大
 - **[如何用 Claude Code 做这些事](https://academy.claude-code.club/getting-started/how-to)** - 常见场景的使用指南
 - **[常见问题](https://academy.claude-code.club/getting-started/faq)** - 新手常见问题解答
