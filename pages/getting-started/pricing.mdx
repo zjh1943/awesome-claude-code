@@ -5,6 +5,7 @@ tocDepth: 3
 ---
 
 import { Callout, Table } from 'nextra/components'
+import InfoTooltip from '@/components/InfoTooltip'
 
 # 套餐和计费规则
 
@@ -17,11 +18,11 @@ CC Club 提供多个档位的套餐，满足不同强度的使用需求：
 <Table>
   <thead>
     <tr>
-      <th></th>
-      <th style={{width: '25%'}}>Free</th>
-      <th style={{width: '25%'}}>Pro</th>
-      <th style={{width: '25%'}}>Max</th>
-      <th style={{width: '25%'}}>Ultra</th>
+      <th style={{width: '14%'}}></th>
+      <th style={{width: '20%'}}>Free</th>
+      <th style={{width: '22%'}}>Pro</th>
+      <th style={{width: '22%'}}>Max</th>
+      <th style={{width: '22%'}}>Ultra</th>
     </tr>
   </thead>
   <tbody>
@@ -40,11 +41,32 @@ CC Club 提供多个档位的套餐，满足不同强度的使用需求：
       <td><strong>¥1699 / 月</strong></td>
     </tr>
     <tr>
-      <td><strong>用量限制</strong></td>
+      <td><strong>可用消息数</strong><InfoTooltip content="消息数是指用户在 claude code 界面中实际发出的自然语言消息数量" /></td>
       <td>45 消息</td>
       <td>45 消息 / 5 小时</td>
       <td>225 消息 / 5 小时</td>
       <td>900+ 消息 / 5 小时</td>
+    </tr>
+    <tr>
+      <td><strong>可用 token 价值</strong></td>
+      <td>7 美元</td>
+      <td>7 美元 / 5 小时</td>
+      <td>35 美元 / 5 小时</td>
+      <td>150 美元 / 5 小时</td>
+    </tr>
+    <tr>
+      <td><strong>可用请求数</strong><InfoTooltip content="实际调用 claude 大模型的网络请求数量" /></td>
+      <td>350 次</td>
+      <td>350 次 / 5 小时</td>
+      <td>1750 次 / 5 小时</td>
+      <td>7000 次 / 5 小时</td>
+    </tr>
+     <tr>
+      <td><strong>周用量限制<InfoTooltip content="官方有用每周用量限制，我们暂时没有" /></strong></td>
+      <td>-</td>
+      <td>暂无</td>
+      <td>暂无</td>
+      <td>暂无</td>
     </tr>
     <tr>
       <td><strong>可用时段</strong></td>
@@ -81,20 +103,9 @@ CC Club 提供多个档位的套餐，满足不同强度的使用需求：
       <td>✅ 可用</td>
       <td>✅ 可用 + 专属加速</td>
     </tr>
-    <tr>
-      <td><strong>可用 token 价值</strong></td>
-      <td>7 美元</td>
-      <td>7 美元 / 5 小时</td>
-      <td>35 美元 / 5 小时</td>
-      <td>150 美元 / 5 小时</td>
-    </tr>
-    <tr>
-      <td><strong>周限制</strong></td>
-      <td>-</td>
-      <td>暂无</td>
-      <td>暂无</td>
-      <td>暂无</td>
-    </tr>
+    
+    
+   
   </tbody>
 </Table>
 
@@ -124,10 +135,10 @@ CC Club 的套餐规格严格与 Claude 官方的套餐规格保持一致。
 <Table>
   <thead>
     <tr>
-      <th>套餐项目</th>
-      <th>Pro</th>
-      <th>Max 5X</th>
-      <th>Max 20X</th>
+      <th style={{width: '15%'}}>套餐项目</th>
+      <th style={{width: '24%'}}>Pro</th>
+      <th style={{width: '28%'}}>Max 5X</th>
+      <th style={{width: '28%'}}>Max 20X</th>
     </tr>
   </thead>
   <tbody>
@@ -145,21 +156,27 @@ CC Club 的套餐规格严格与 Claude 官方的套餐规格保持一致。
     </tr>
     <tr>
       <td><strong>使用量倍数</strong></td>
-      <td>免费服务的 5 倍（基准）</td>
+      <td>基准用量</td>
       <td>Pro 的 5 倍</td>
       <td>Pro 的 20 倍</td>
     </tr>
     <tr>
-      <td><strong>每 5 小时消息数</strong></td>
-      <td>约 45 条消息</td>
-      <td>约 225 条消息</td>
-      <td>约 900 条消息</td>
-    </tr>
-    <tr>
-      <td><strong>Claude Code 提示数</strong></td>
+      <td><strong>可用消息数</strong><InfoTooltip content="消息数是指用户在 claude code 界面中实际发出的自然语言消息数量" /></td>
       <td>10-40 个提示 / 5 小时</td>
       <td>50-200 个提示 / 5 小时</td>
       <td>200-800 个提示 / 5 小时</td>
+    </tr>
+    <tr>
+      <td><strong>可用 token 价值<InfoTooltip content="官方未公布此数据，此数据由行业实际测量所得" /></strong></td>
+      <td>7 美元 / 5 小时</td>
+      <td>25-30 美元 / 5 小时</td>
+      <td>100-120 美元 / 5 小时</td>
+    </tr>
+    <tr>
+      <td><strong>周用量限制<InfoTooltip content="官方未公布此数据，此数据由行业实际测量所得" /></strong></td>
+      <td>32 美元 / 周</td>
+      <td>160 美元 / 周</td>
+      <td>650 美元 / 周</td>
     </tr>
     <tr>
       <td><strong>每周 Sonnet 4 时长</strong></td>
