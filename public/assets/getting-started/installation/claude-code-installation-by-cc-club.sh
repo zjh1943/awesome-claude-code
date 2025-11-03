@@ -66,9 +66,9 @@ detect_environment() {
             print_info "正在下载 PowerShell 安装脚本..."
             local ps_script="install-claude-code.ps1"
             if command -v curl &> /dev/null; then
-                curl -sSL "https://1.api5.ai/install-claude-code.ps1" -o "$ps_script"
+                curl -sSL "https://academy.claude-code.club/assets/getting-started/installation/claude-code-installation-by-cc-club.ps1" -o "$ps_script"
             elif command -v wget &> /dev/null; then
-                wget -q "https://1.api5.ai/install-claude-code.ps1" -O "$ps_script"
+                wget -q "https://academy.claude-code.club/assets/getting-started/installation/claude-code-installation-by-cc-club.ps1" -O "$ps_script"
             else
                 print_error "需要 curl 或 wget 来下载脚本"
                 return 1
@@ -1094,7 +1094,7 @@ API_BASE_URL="${API_BASE_URL:-${ANTHROPIC_BASE_URL:-https://claude-code.club/api
 # 如果没有配置，提示用户
 if [ -z "$API_KEY" ]; then
     echo "错误：未找到 API 配置"
-    echo "请运行安装脚本：curl -sSL https://1.api5.ai/install.sh | bash"
+    echo "请运行安装脚本：curl -sSL https://academy.claude-code.club/assets/getting-started/installation/claude-code-installation-by-cc-club.sh | bash"
     exit 1
 fi
 
@@ -1233,7 +1233,7 @@ get_api_config() {
             fi
         done
         
-        # 默认使用 api5.ai
+        # 默认使用 claude-code.club 作为 API URL
         API_BASE_URL="https://claude-code.club/api"
     fi
     

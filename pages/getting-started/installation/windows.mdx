@@ -1,0 +1,292 @@
+---
+title: Windows 安装指南
+description: Claude Code 在 Windows 系统上的安装和配置
+---
+
+import { Callout, Cards } from 'nextra/components'
+import Image from 'next/image'
+
+# Windows 安装指南
+
+跟着这个教程，你可以轻松在 Windows 电脑上安装并使用 Claude Code。
+
+我们提供两种安装方式：
+
+<Cards>
+  <Cards.Card
+    icon="⚡"
+    title="方法一：一键脚本安装"
+    href="#方法一一键脚本安装推荐"
+  >
+    全自动安装，适合新手，5分钟快速完成
+  </Cards.Card>
+
+  <Cards.Card
+    icon="🛠️"
+    title="方法二：手工安装"
+    href="#方法二手工安装"
+  >
+    完全掌控安装过程，适合有经验的用户
+  </Cards.Card>
+</Cards>
+
+
+## 方法一：一键脚本安装（推荐）
+
+使用我们提供的一键安装脚本，可以快速完成所有配置。
+
+### 运行安装脚本
+
+1. 以**管理员身份**运行 PowerShell
+2. 执行以下命令：
+
+```powershell
+irm https://academy.claude-code.club/assets/getting-started/installation/claude-code-installation-by-cc-club.ps1 | iex
+```
+
+<Callout type="info">
+  脚本会自动完成以下操作：
+  - 检测并安装 Git Bash（如果未安装）
+  - 检测并安装 Node.js（如果未安装）
+  - 安装 Claude Code
+  - 配置环境变量
+</Callout>
+
+<Callout type="warning">
+  **重要提示：** 安装过程中需要输入你的 `ANTHROPIC_AUTH_TOKEN`（API 密钥），请提前准备好。
+</Callout>
+
+<Callout type="success">
+  安装完成后，脚本会显示配置信息和使用说明。请继续阅读[验证和使用](#验证和使用)章节。
+</Callout>
+
+
+
+## 方法二：手工安装
+
+如果你希望完全掌控安装过程，可以按照以下步骤手动安装。
+
+### 1. 安装 Node.js 环境
+
+Claude Code 需要 Node.js 环境才能运行。
+
+#### Windows 安装方法
+
+**方法一：官网下载（推荐）**
+
+1. 打开浏览器访问 https://nodejs.org/
+2. 点击 "LTS" 版本进行下载（推荐长期支持版本）
+3. 下载完成后双击 .msi 文件
+4. 按照安装向导完成安装，保持默认设置即可
+
+**方法二：使用包管理器**
+
+如果你安装了 Chocolatey 或 Scoop，可以使用命令行安装：
+
+```bash
+# 使用 Chocolatey
+choco install nodejs
+
+# 或使用 Scoop
+scoop install nodejs
+```
+
+<Callout type="warning">
+  **Windows 注意事项**
+  - 建议使用 PowerShell 而不是 CMD
+  - 如果遇到权限问题，尝试以管理员身份运行
+  - 某些杀毒软件可能会误报，需要添加白名单
+</Callout>
+
+#### 验证安装是否成功
+
+安装完成后，打开 PowerShell 或 CMD，输入以下命令：
+
+```bash
+node --version
+npm --version
+```
+
+如果显示版本号，说明安装成功了！
+
+### 2. 安装 Claude Code
+
+#### 安装 Claude Code
+
+打开 PowerShell 或 CMD，运行以下命令：
+
+```bash
+# 全局安装 Claude Code
+npm install -g @anthropic-ai/claude-code
+```
+
+这个命令会从 npm 官方仓库下载并安装最新版本的 Claude Code。
+
+<Callout type="info">
+  **提示**
+  - 建议使用 PowerShell 而不是 CMD，功能更强大
+  - **安装时提示 "permission denied" 错误**：以管理员身份运行 PowerShell 或 CMD
+  - **PowerShell 执行策略错误**：如果遇到执行策略限制，运行：
+    ```powershell
+    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+    ```
+</Callout>
+
+#### 验证 Claude Code 安装
+
+安装完成后，输入以下命令检查是否安装成功：
+
+```bash
+claude --version
+```
+
+如果显示版本号，恭喜你！Claude Code 已经成功安装了。
+
+### 3. 设置环境变量
+
+#### 配置 Claude Code 环境变量
+
+为了让 Claude Code 连接到你的中转服务，需要设置两个环境变量。
+
+在 PowerShell 中运行以下命令设置用户级环境变量（一条一条执行）：
+
+```powershell
+# 设置用户级环境变量（永久生效）
+[System.Environment]::SetEnvironmentVariable("ANTHROPIC_BASE_URL", "https://claude-code.club/api", "User")
+[System.Environment]::SetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", "你的API密钥", "User")
+```
+
+<Callout type="warning">
+  记得将 "你的API密钥" 替换为在上方 "API Keys" 标签页中创建的实际密钥。
+  设置后需要重新打开 PowerShell 窗口才能生效。
+</Callout>
+
+设置完后用如下命令检查环境变量是否成功（一条一条执行）：
+
+```powershell
+# 查看已设置的环境变量
+[System.Environment]::GetEnvironmentVariable("ANTHROPIC_BASE_URL", "User")
+[System.Environment]::GetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", "User")
+```
+
+
+#### VSCode Claude 插件配置
+
+如果使用 VSCode 的 Claude 插件，需要在配置文件中进行设置：
+
+**配置文件位置：** `C:\Users\<你的用户名>\.claude\config.json`
+
+<Callout type="info">
+  如果该文件不存在，请手动创建。
+</Callout>
+
+```json
+{
+  "primaryApiKey": "crs"
+}
+```
+
+ <Callout type="info">
+  **验证配置文件是否设置成功：**
+
+  ```powershell
+  cat ~\.claude\config.json
+  ```
+</Callout>
+
+
+#### 验证环境变量设置
+
+设置完环境变量后，可以通过以下命令验证是否设置成功：
+
+在 PowerShell 中验证：
+```powershell
+echo $env:ANTHROPIC_BASE_URL
+echo $env:ANTHROPIC_AUTH_TOKEN
+```
+
+在 CMD 中验证：
+```cmd
+echo %ANTHROPIC_BASE_URL%
+echo %ANTHROPIC_AUTH_TOKEN%
+```
+
+预期输出示例：
+```
+https://claude-code.club/api
+cr_xxxxxxxxxxxxxxxxxx
+```
+
+<Callout type="warning">
+  如果输出为空或显示变量名本身，说明环境变量设置失败，请重新设置。
+</Callout>
+
+
+
+## 验证和使用
+
+### 验证安装
+
+安装完成后，重新打开 PowerShell，运行：
+
+```powershell
+claude --version
+```
+
+如果显示版本号，说明安装成功！
+
+### 开始使用 Claude Code
+
+现在你可以开始使用 Claude Code 了！
+
+#### 启动 Claude Code
+
+```bash
+claude
+```
+
+#### 在特定项目中使用
+
+```bash
+# 进入你的项目目录
+cd C:\path\to\your\project
+
+# 启动 Claude Code
+claude
+```
+
+🎉 恭喜你！你已经成功安装并配置了 Claude Code，现在可以开始享受 AI 编程助手带来的便利了。
+
+## Windows 常见问题
+
+### 安装时提示 "permission denied" 错误
+
+以管理员身份运行 PowerShell 或 CMD
+
+### PowerShell 执行策略错误
+
+如果遇到执行策略限制，运行：
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+### 环境变量设置后不生效
+
+设置永久环境变量后需要：
+- 重新启动 PowerShell 或 CMD
+- 或者注销并重新登录 Windows
+- 验证设置：`echo $env:ANTHROPIC_BASE_URL`
+
+## 需要帮助？
+
+如果安装遇到疑难杂症，请扫描下方二维码，加入 Claude Code Club 技术交流群。在这里你可以：
+- 与 3000+ 名优秀开发者交流 AI 编程经验，答疑解惑
+- 获取最新的 Claude Code 使用技巧
+
+<div style={{ display: 'flex', justifyContent: 'top', margin: '2rem 0' }}>
+  <Image src="/images/cc-club-group-qrcode.png" alt="CC Club 技术交流群" width={300} height={300} />
+</div>
+
+
+
+

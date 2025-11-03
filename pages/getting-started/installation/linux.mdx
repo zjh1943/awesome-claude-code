@@ -1,0 +1,266 @@
+---
+title: Linux / WSL2 安装指南
+description: Claude Code 在 Linux 和 WSL2 系统上的安装和配置
+---
+
+import { Callout, Cards } from 'nextra/components'
+import Image from 'next/image'
+
+# Linux / WSL2 安装指南
+
+跟着这个教程，你可以轻松在 Linux 或 WSL2 上安装并使用 Claude Code。
+
+我们提供两种安装方式：
+
+<Cards>
+  <Cards.Card
+    icon="⚡"
+    title="方法一：一键脚本安装"
+    href="#方法一一键脚本安装推荐"
+  >
+    全自动安装，适合新手，5分钟快速完成
+  </Cards.Card>
+
+  <Cards.Card
+    icon="🛠️"
+    title="方法二：手工安装"
+    href="#方法二手工安装"
+  >
+    完全掌控安装过程，适合有经验的用户
+  </Cards.Card>
+</Cards>
+
+
+## 方法一：一键脚本安装（推荐）
+
+使用我们提供的一键安装脚本，可以快速完成所有配置。
+
+### 运行安装脚本
+
+打开终端，执行以下命令：
+
+```bash
+curl -fsSL https://academy.claude-code.club/assets/getting-started/installation/claude-code-installation-by-cc-club.sh | bash
+```
+
+<Callout type="info">
+  脚本会自动完成以下操作：
+  - 检测 Linux 发行版和环境（包括 WSL2）
+  - 检测并安装必要的系统工具
+  - 检测并安装 Node.js（如果未安装）
+  - 安装 Claude Code
+  - 配置环境变量和 Shell 配置文件
+</Callout>
+
+<Callout type="warning">
+  **重要提示：** 安装过程中需要输入你的 `ANTHROPIC_AUTH_TOKEN`（API 密钥），请提前准备好。
+</Callout>
+
+<Callout type="success">
+  安装完成后，脚本会显示配置信息和使用说明。请继续阅读[验证和使用](#验证和使用)章节。
+</Callout>
+
+
+
+## 方法二：手工安装
+
+如果你希望完全掌控安装过程，可以按照以下步骤手动安装。
+
+### 1. 安装 Node.js 环境
+
+Claude Code 需要 Node.js 环境才能运行。
+
+#### Linux 安装方法
+
+**方法一：使用官方仓库（推荐）**
+
+```bash
+# 添加 NodeSource 仓库
+curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+
+# 安装 Node.js
+sudo apt-get install -y nodejs
+```
+
+**方法二：使用系统包管理器**
+
+虽然版本可能不是最新的，但对于基本使用已经足够：
+
+```bash
+# Ubuntu/Debian
+sudo apt update
+sudo apt install nodejs npm
+
+# CentOS/RHEL/Fedora
+sudo dnf install nodejs npm
+```
+
+<Callout type="warning">
+  **Linux 注意事项**
+  - 某些发行版可能需要安装额外的依赖
+  - 如果遇到权限问题，使用 sudo
+  - 确保你的用户在 npm 的全局目录有写权限
+</Callout>
+
+#### 验证安装是否成功
+
+安装完成后，打开终端，输入以下命令：
+
+```bash
+node --version
+npm --version
+```
+
+如果显示版本号，说明安装成功了！
+
+### 2. 安装 Claude Code
+
+#### 安装 Claude Code
+
+打开终端，运行以下命令：
+
+```bash
+# 全局安装 Claude Code
+npm install -g @anthropic-ai/claude-code
+```
+
+如果遇到权限问题，可以使用 sudo：
+
+```bash
+sudo npm install -g @anthropic-ai/claude-code
+```
+
+#### 验证 Claude Code 安装
+
+安装完成后，输入以下命令检查是否安装成功：
+
+```bash
+claude --version
+```
+
+如果显示版本号，恭喜你！Claude Code 已经成功安装了。
+
+### 3. 设置环境变量
+
+#### 配置 Claude Code 环境变量
+
+为了让 Claude Code 连接到你的中转服务，需要设置两个环境变量。
+
+在终端中运行以下命令设置永久环境变量（一条一条执行）：
+
+```bash
+# 对于 bash (默认)
+echo 'export ANTHROPIC_BASE_URL="https://claude-code.club/api"' >> ~/.bashrc
+echo 'export ANTHROPIC_AUTH_TOKEN="你的API密钥"' >> ~/.bashrc
+source ~/.bashrc
+
+# 对于 zsh
+echo 'export ANTHROPIC_BASE_URL="https://claude-code.club/api"' >> ~/.zshrc
+echo 'export ANTHROPIC_AUTH_TOKEN="你的API密钥"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+<Callout type="warning">
+  记得将 "你的API密钥" 替换为在上方 "API Keys" 标签页中创建的实际密钥。
+  设置后需要重新打开终端窗口才能生效。
+</Callout>
+
+设置完后用如下命令检查环境变量是否成功：
+
+```bash
+echo $ANTHROPIC_BASE_URL
+echo $ANTHROPIC_AUTH_TOKEN
+```
+
+#### VSCode Claude 插件配置
+
+如果使用 VSCode 的 Claude 插件，需要在配置文件中进行设置：
+
+**配置文件位置：** `~/.claude/config.json`
+
+<Callout type="info">
+  如果该文件不存在，请手动创建。
+</Callout>
+
+```json
+{
+  "primaryApiKey": "crs"
+}
+```
+
+ <Callout type="info">
+  **验证配置文件是否设置成功：**
+
+  ```bash
+  cat ~/.claude/config.json
+  ```
+</Callout>
+
+
+
+## 验证和使用
+
+### 验证安装
+
+安装完成后，重新打开终端或运行 `source ~/.bashrc`，然后执行：
+
+```bash
+claude --version
+```
+
+如果显示版本号，说明安装成功！
+
+### 开始使用 Claude Code
+
+现在你可以开始使用 Claude Code 了！
+
+#### 启动 Claude Code
+
+```bash
+claude
+```
+
+#### 在特定项目中使用
+
+```bash
+# 进入你的项目目录
+cd /path/to/your/project
+
+# 启动 Claude Code
+claude
+```
+
+🎉 恭喜你！你已经成功安装并配置了 Claude Code，现在可以开始享受 AI 编程助手带来的便利了。
+
+
+## Linux 常见问题
+
+### 安装时提示权限错误
+
+使用 sudo 命令进行安装
+
+### 缺少依赖库
+
+根据错误提示安装相应的依赖包
+
+### 环境变量不生效
+
+确认修改了正确的配置文件（bashrc 或 zshrc），并重新加载配置文件
+
+### WSL2 特殊情况
+
+在 WSL2 环境中，确保：
+- Windows 防火墙允许 WSL2 网络访问
+- 包管理器已更新：`sudo apt update`
+
+
+
+## 需要帮助？
+
+如果安装遇到疑难杂症，请扫描下方二维码，加入 Claude Code Club 技术交流群。在这里你可以：
+- 与 3000+ 名优秀开发者交流 AI 编程经验，答疑解惑
+- 获取最新的 Claude Code 使用技巧
+
+<div style={{ display: 'flex', justifyContent: 'top', margin: '2rem 0' }}>
+  <Image src="/images/cc-club-group-qrcode.png" alt="CC Club 技术交流群" width={300} height={300} />
+</div>
