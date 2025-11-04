@@ -478,7 +478,7 @@ try {
     Write-Host "[CONFIG] Saving configuration..." -ForegroundColor Yellow
     [System.Environment]::SetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", $apiToken, "User")
     [System.Environment]::SetEnvironmentVariable("ANTHROPIC_BASE_URL", $apiUrl, "User")
-    [System.Environment]::SetEnvironmentVariable("ANTHROPIC_API_KEY", $apiToken, "User")
+    # [System.Environment]::SetEnvironmentVariable("ANTHROPIC_API_KEY", $apiToken, "User")
     
     # Only set environment variables, don't create config files
     Write-Host "[SUCCESS] Environment variables configured!" -ForegroundColor Green
