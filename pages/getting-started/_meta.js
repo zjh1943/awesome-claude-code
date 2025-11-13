@@ -7,5 +7,8 @@ export default {
     title: '如何用 Claude Code 做这些事',
   },
   pricing: '套餐和计费规则',
+  'common-errors': {
+    title: '常见错误处理',
+  },
   faq: '常见问题'
 }
