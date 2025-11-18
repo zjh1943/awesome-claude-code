@@ -1,3 +1,5 @@
+import { useConfig } from 'nextra-theme-docs'
+
 export default {
   logo:
     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', height: '100%' }}>
@@ -10,19 +12,19 @@ export default {
     link: 'https://github.com/zjh1943/awesome-claude-code'
   },
   docsRepositoryBase: 'https://github.com/zjh1943/awesome-claude-code/tree/main',
-  useNextSeoProps() {
-    return {
-      titleTemplate: 'CC Academy - %s'
-    }
+  head: () => {
+    const { frontMatter, title } = useConfig()
+    const pageTitle = title ? `CC Academy - ${title}` : 'CC Academy'
+    return (
+      <>
+        <title>{pageTitle}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={frontMatter.description || "为 Claude Code 开发者提供的中文学习资源库"} />
+        <link rel="icon" type="image/svg+xml" href="/cc-club.svg" />
+      </>
+    )
   },
-  head: (
-    <>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta property="og:title" content="Claude Code Academy - by CC Club" />
-      <meta property="og:description" content="为 Claude Code 开发者提供的中文学习资源库" />
-      <link rel="icon" type="image/svg+xml" href="/cc-club.svg" />
-    </>
-  ),
   primaryHue: 220,
   primarySaturation: 90,
   banner: {
