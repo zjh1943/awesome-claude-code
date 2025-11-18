@@ -1,6 +1,6 @@
 export default {
   index: {
-    title: '首页',
+    title: 'Academy 首页',
     type: 'page',
     // display: 'hidden',
     // theme: {
@@ -27,10 +27,10 @@ export default {
     title: '社区',
     type: 'page'
   },
-  'back-to-website': {
-    title: '返回CC Club',
-    type: 'page',
-    href: 'https://www.claude-code.club',
-    newWindow: true
-  }
+  // 'back-to-website': {
+  //   title: 'CC Club 官网',
+  //   type: 'page',
+  //   href: 'https://www.claude-code.club',
+  //   newWindow: true
+  // }
 }

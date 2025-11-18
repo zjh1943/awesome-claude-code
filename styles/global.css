@@ -255,3 +255,13 @@ html.dark .nextra-content table tbody tr:nth-child(even) {
 html.dark .nextra-content table tbody tr:hover {
   background-color: #374151;
 }
+
+/* HeaderBar 选中菜单项样式 */
+nav a[aria-current="true"] {
+  color: hsl(var(--nextra-primary-hue), var(--nextra-primary-saturation), 50%) !important;
+  font-weight: 600;
+}
+
+html.dark nav a[aria-current="true"] {
+  color: hsl(var(--nextra-primary-hue), var(--nextra-primary-saturation), 60%) !important;
+}

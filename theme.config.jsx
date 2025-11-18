@@ -2,17 +2,17 @@ export default {
   logo:
     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', height: '100%' }}>
       <img src="/cc-club.svg" alt="Logo" style={{ width: '40px', height: '40px', backgroundColor: '#030219', borderRadius: '4px' }} />
-      <span style={{ marginLeft: 8, fontWeight: 'bold', fontSize: '24px' }}>CC Academy</span>
+      <span style={{ marginLeft: 8, fontWeight: 'bold', fontSize: '24px' }}>CC Club</span>
       {/* <a href="https://claude-code.club" target="_blank" rel="noopener noreferrer" style={{ marginLeft: 8, fontSize: '14px', color: '#888' }}>by CC Club</a> */}
     </div>,
-  // logoLink: '/',
+  logoLink: 'https://claude-code.club',
   project: {
     link: 'https://github.com/zjh1943/awesome-claude-code'
   },
   docsRepositoryBase: 'https://github.com/zjh1943/awesome-claude-code/tree/main',
   useNextSeoProps() {
     return {
-      titleTemplate: '%s – Claude Code Academy - by CC Club'
+      titleTemplate: 'CC Academy - %s'
     }
   },
   head: (
