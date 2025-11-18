@@ -1,0 +1,225 @@
+---
+title: 省钱秘笈 - 如何最大化你的 Claude Code 使用时长
+description: 掌握 Token 管理技巧，让同样的套餐用更久
+---
+
+import { Callout, Steps, Tabs } from 'nextra/components'
+
+# 省钱秘笈
+
+## 为什么有人能用一整天，而你只能用 3 小时？
+
+同样购买 Max 套餐，有些开发者可以使用一整天，而有些人却只能用 3 小时就耗尽了额度。这个巨大的差异背后，关键在于对 **Token 消耗的理解和管理**。
+
+Claude Code 使用基于 Token 的计费方式，每次对话都会消耗一定数量的 Token。如果不了解 Token 的消耗机制，很容易在不知不觉中浪费大量配额。
+
+<Callout type="info">
+**实测数据**：经过 200+ 小时的编程实测，合理使用 MCP 并保持良好的 `/clear` 习惯，7 美金可以用 2 小时。按一天开发 10 小时计算，也只需约 35 美金。
+</Callout>
+
+## 理解 Token 消耗：`/context` 命令详解
+
+要优化 Token 使用，首先要了解 Token 都花在哪里了。Claude Code 提供了 `/context` 命令来帮助你查看当前的 Token 使用情况。
+
+### 查看 Token 使用情况
+
+在 Claude Code 中输入 `/context` 命令，你会看到类似以下的输出：
+
+```
+Context Usage
+⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁   claude-sonnet-4-5-20250929 · 81k/200k tokens (40%)
+⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛀ ⛀ ⛀
+⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ System prompt: 2.8k tokens (1.4%)
+⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ System tools: 13.4k tokens (6.7%)
+⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ MCP tools: 19.2k tokens (9.6%)
+⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ Memory files: 457 tokens (0.2%)
+⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ Messages: 105 tokens (0.1%)
+⛶ ⛶ ⛶ ⛶ ⛶ ⛝ ⛝ ⛝ ⛝ ⛝   ⛶ Free space: 119k (59.5%)
+⛝ ⛝ ⛝ ⛝ ⛝ ⛝ ⛝ ⛝ ⛝ ⛝   ⛝ Autocompact buffer: 45.0k tokens (22.5%)
+  
+MCP tools · /mcp
+     └ mcp__chrome-devtools__click (chrome-devtools): 651 tokens
+     └ mcp__chrome-devtools__close_page (chrome-devtools): 639 tokens
+     └ mcp__chrome-devtools__drag (chrome-devtools): 653 tokens
+     └ mcp__chrome-devtools__emulate (chrome-devtools): 731 tokens
+     └ mcp__chrome-devtools__evaluate_script (chrome-devtools): 795 tokens
+     └ mcp__chrome-devtools__fill (chrome-devtools): 659 tokens
+     └ mcp__chrome-devtools__fill_form (chrome-devtools): 691 tokens
+     └ mcp__chrome-devtools__get_console_message (chrome-devtools): 646 tokens
+     └ mcp__chrome-devtools__get_network_request (chrome-devtools): 650 tokens
+...
+```
+
+### 输出解读
+
+让我们逐项解析这些信息：
+
+| 项目 | 说明 | 示例值 |
+|------|------|--------|
+| **总览** | 当前已使用的 Token 数量和总容量 | 81k/200k tokens (40%) |
+| **System prompt** | Claude Code 的系统提示词占用 | 2.8k tokens (1.4%) |
+| **System tools** | 系统内置工具的描述文本 | 13.4k tokens (6.7%) |
+| **MCP tools** | MCP 服务器提供的工具描述 | 19.2k tokens (9.6%) |
+| **Memory files** | CLAUDE.md 等记忆文件 | 457 tokens (0.2%) |
+| **Messages** | 当前对话历史记录 | 105 tokens (0.1%) |
+| **Free space** | 剩余可用空间 | 119k (59.5%) |
+| **Autocompact buffer** | 自动压缩缓冲区 | 45.0k tokens (22.5%) |
+
+<Callout type="warning">
+**重点关注**：在这个示例中，MCP tools 占用了 19.2k tokens（9.6%），是除系统组件外的最大消耗项。如果你安装了很多 MCP 服务器，这个数字可能会更高。
+</Callout>
+
+## Token 消耗的主要因素
+
+Claude Code 的 Token 消耗主要来自以下几个方面：
+
+1. **MCP 服务器工具**：每个 MCP 工具都包含详细的文档和使用说明，会持续占用 context
+2. **对话历史**：每次交互的历史记录都会保留在 context 中
+3. **项目文件**：CLAUDE.md 等项目配置文件会随每次请求发送
+4. **代码文件**：Claude Code 读取的代码文件内容
+5. **系统组件**：系统提示词和内置工具（这部分相对固定，无法优化）
+
+## 六大省钱技巧
+
+<Steps>
+
+### 关闭不必要的 MCP Server
+
+**问题**：每个 MCP Server 的工具都有大量文本描述，即使不使用也会占用 Token。
+
+**解决方案**：
+- 定期检查已安装的 MCP 服务器
+- 只保留当前项目真正需要的服务器
+- 临时不用的服务器可以先禁用，需要时再启用
+
+<Callout type="tip">
+在上面的示例中，MCP tools 占用了 19.2k tokens。如果你只是做纯后端开发，可以暂时关闭 chrome-devtools 等前端相关的 MCP 服务器。
+</Callout>
+
+### 养成经常 `/clear` 的习惯
+
+**问题**：对话历史会不断累积，占用越来越多的 Token。
+
+**解决方案**：
+- 每完成一个独立任务后，执行 `/clear` 清除历史
+- 开始新功能或新需求时，使用 `/clear` 重置 context
+- 清除历史不仅省 Token，还能提高模型的精准度
+
+<Callout type="info">
+**最佳实践**：把 `/clear` 当成 Git commit 一样，完成一个功能点就清理一次。这样既能节省 Token，又能让每个对话都保持专注。
+</Callout>
+
+### 主动使用 `/compact` 压缩历史
+
+**问题**：某些任务需要较长的上下文，但又不想完全清除历史。
+
+**解决方案**：
+- 当 Token 消耗较多但任务还未完成时，使用 `/compact` 压缩历史记录
+- 压缩会保留关键信息，但移除冗余内容
+- 适合在长时间对话中阶段性使用
+
+### 经常用 `/context` 监控 Token 使用
+
+**问题**：不清楚 Token 花在哪里，无法有针对性地优化。
+
+**解决方案**：
+- 养成定期查看 `/context` 的习惯
+- 发现异常的 Token 消耗时及时处理
+- 了解哪些操作会大量消耗 Token
+
+<Callout>
+**建议频率**：每开始一个新的开发阶段，或感觉响应变慢时，都可以用 `/context` 检查一下。
+</Callout>
+
+### 精简 CLAUDE.md 文档
+
+**问题**：CLAUDE.md 文件会随每个请求一起发送，过长的文档会持续消耗 Token。
+
+**解决方案**：
+- 只在 CLAUDE.md 中保留核心的项目信息
+- 删除冗余的说明和示例代码
+- 使用简洁的语言描述规则和约定
+- 将详细文档放在其他地方，需要时再引用
+
+**优化前后对比**：
+
+<Tabs items={['优化前', '优化后']}>
+  <Tabs.Tab>
+  ```markdown
+  # 项目说明
+
+  这是一个使用 React 和 TypeScript 构建的现代化 Web 应用。
+
+  ## 技术栈详细说明
+
+  我们使用了以下技术：
+  1. React 18.2.0 - 用于构建用户界面
+  2. TypeScript 5.0 - 提供类型安全
+  3. Vite 4.0 - 作为构建工具
+
+  ### React 的使用
+  React 是一个用于构建用户界面的 JavaScript 库...
+  （省略大量详细说明）
+
+  ## 代码规范
+  我们遵循以下代码规范...
+  （省略大量示例代码）
+  ```
+  </Tabs.Tab>
+
+  <Tabs.Tab>
+  ```markdown
+  # 项目说明
+
+  React 18 + TypeScript 5 + Vite 4 项目
+
+  ## 核心约定
+  - 组件使用函数式写法 + hooks
+  - 类型定义统一放在 types/ 目录
+  - 使用 ESLint + Prettier
+  ```
+  </Tabs.Tab>
+</Tabs>
+
+### 保持代码文件精简
+
+**问题**：Claude Code 读取代码的最小单元是文件，文件越大消耗的 Token 越多。
+
+**解决方案**：
+- 遵循单一职责原则，避免超大文件
+- 将大文件拆分成多个小模块
+- 及时删除无用代码和注释
+- 使用代码组织工具（如 barrel exports）管理导出
+
+<Callout type="warning">
+如果单个文件超过 500 行，考虑是否可以拆分成多个文件。这不仅能节省 Token，也符合良好的代码设计原则。
+</Callout>
+
+</Steps>
+
+## 实测数据参考
+
+基于 **200 小时**的真实编程实测数据：
+
+- **平均成本**：7 美金 ≈ 2 小时高强度开发
+- **日常开发**：10 小时/天 ≈ 35 美金
+- **前提条件**：
+  - 合理管理 MCP 服务器（只开启必要的）
+  - 保持良好的 `/clear` 习惯
+  - 定期使用 `/context` 监控
+  - 精简 CLAUDE.md 文档
+
+<Callout type="success">
+**效果显著**：掌握这些技巧后，同样的预算可以让你的开发时间延长 2-3 倍！
+</Callout>
+
+## 总结
+
+Token 管理不是限制你的创造力，而是帮助你更高效地使用 Claude Code。通过养成良好的习惯，你可以：
+
+- ✅ 大幅延长每日的开发时间
+- ✅ 减少不必要的成本支出
+- ✅ 保持更清晰的对话上下文
+- ✅ 提高 Claude Code 的响应精准度
+
+记住：**每次完成一个任务就 `/clear`，定期 `/context` 检查，关闭不用的 MCP**。这三个习惯就能帮你节省 50% 以上的 Token 消耗。
