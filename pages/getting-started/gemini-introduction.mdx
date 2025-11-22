@@ -1,0 +1,67 @@
+---
+title: Google Gemini CLI
+description: 了解 Google Gemini CLI 的核心功能和独特优势
+---
+
+# Google Gemini CLI
+
+Google Gemini CLI 是一款强大的命令行 AI 助手，依托于 Google 最先进的 Gemini 模型，专为开发者打造。它不仅具备强大的代码理解和生成能力，还能无缝集成到你的终端工作流中。
+
+## 核心优势
+
+### 1. 超长上下文窗口
+Gemini CLI 支持超大规模的上下文窗口（高达 1M+ tokens），这意味着它可以：
+- 一次性读取和理解整个大型项目的代码库
+- 保持长时间的对话记忆，无需频繁重复背景信息
+- 处理极其复杂的依赖关系分析
+
+### 2. 多模态能力
+Gemini 原生支持多模态交互：
+- **图像理解**：可以直接分析 UI 设计图并生成前端代码
+- **文档分析**：处理 PDF、图片等格式的技术文档
+- **音频/视频处理**：(取决于具体版本) 可能支持从多媒体内容中提取信息
+
+### 3. 极速响应与推理
+得益于 Gemini 模型的架构优化，Gemini CLI 在处理复杂逻辑推理和代码生成时表现出极快的速度，显著减少等待时间。
+
+## 功能对比：Claude Code vs Gemini CLI
+
+虽然两者都是顶级的 AI CLI 工具，但它们各有侧重：
+
+| 功能点 | Claude Code | Gemini CLI |
+|--------|-------------|------------|
+| **擅长领域** | 复杂的逻辑推理、极其人性化的交互 | 海量上下文处理、多模态输入、响应速度 |
+| **生态集成** | 强大的 MCP 协议支持 | Google Cloud 生态深度集成 |
+| **上下文** | 优秀 | 极致 (1M+ Tokens) |
+
+## 典型使用场景
+
+### 遗留代码重构
+利用 Gemini CLI 的超长上下文，将整个旧项目的代码库一次性加载，进行全面的依赖分析和重构建议，而无需分批处理。
+
+### UI/UX 开发
+上传一张设计草图或截图，让 Gemini CLI 直接生成对应的 React/Vue 组件代码。
+
+```bash
+# 示例：基于图片生成代码
+$ gemini "实现这个登录页面，使用 Tailwind CSS。参考图片文件：./design-mockup.png"
+```
+
+### 跨语言迁移
+在不同编程语言之间进行大规模迁移时，Gemini CLI 的多语言理解能力和长窗口能确保迁移的一致性和准确性。
+
+## 安装与配置
+
+*(此处添加具体的安装步骤，例如 npm 或 pip 命令)*
+
+```bash
+# 示例安装命令
+npm install -g @google/gemini-cli
+# 或
+pip install google-gemini-cli
+```
+
+## 下一步
+
+- [获取 API Key](/getting-started/get-api-key) (如果是通用的)
+- [查看常见问题](/getting-started/faq)
