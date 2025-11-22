@@ -26,8 +26,14 @@ export default {
   },
   'gemini-installation': '安装和配置',
   'gemini-quick-start': '快速体验',
-  'gemini-how-to': '常用功能指南',
-  'gemini-pricing': '计费说明',
+  'gemini-how-to': {
+    title: '常用功能指南',
+    href: '/getting-started/how-to'
+  },
+  'gemini-pricing': {
+    title: '计费说明',
+    href: '/getting-started/pricing'
+  },
   'gemini-common-errors': '常见错误',
   'gemini-faq': '常见问题'
 }
