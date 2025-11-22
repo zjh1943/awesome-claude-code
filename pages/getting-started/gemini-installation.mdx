@@ -1,0 +1,277 @@
+---
+title: 安装和配置
+description: Google Gemini CLI 的安装和配置指南
+---
+
+import { Callout, Tabs } from 'nextra/components'
+
+# Google Gemini CLI 安装和配置指南
+
+本指南将帮助你手动安装和配置 Google Gemini CLI。无论你是 macOS、Windows 还是 Linux 用户，只要配置好 Node.js 环境，即可轻松使用。
+
+## 1. 环境准备：安装 Node.js
+
+Gemini CLI 基于 Node.js 开发，因此你需要先确保系统中安装了 Node.js 环境。
+
+<Callout type="info">
+  **版本要求：** Node.js 版本需 **v18.0.0** 或更高。
+</Callout>
+
+### 检查现有环境
+打开终端（Terminal 或 PowerShell），输入以下命令检查是否已安装：
+```bash
+node --version
+```
+如果显示版本号且高于 v18，可直接跳到下一步。
+
+### 安装 Node.js
+如果未安装，请根据你的操作系统选择安装方式：
+
+<Tabs items={['macOS', 'Windows', 'Linux']}>
+  <Tabs.Tab>
+    **推荐使用 Homebrew 安装：**
+    ```bash
+    brew install node
+    ```
+    或者访问 [Node.js 官网](https://nodejs.org/) 下载 macOS 安装包 (.pkg)。
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **推荐使用官网安装包：**
+    1. 访问 [Node.js 官网](https://nodejs.org/)
+    2. 下载 **LTS 版本** 的 Windows 安装包 (.msi)
+    3. 运行安装程序并按提示完成安装
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Ubuntu/Debian 系统：**
+    ```bash
+    curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+    sudo apt-get install -y nodejs
+    ```
+  </Tabs.Tab>
+</Tabs>
+
+## 2. 安装 Gemini CLI
+
+环境准备好后，使用 `npm` 包管理器进行全局安装。
+
+在终端中执行以下命令：
+
+```bash
+npm install -g @google/gemini-cli
+```
+
+<Callout type="warning">
+  **macOS/Linux 用户注意：**  
+  如果遇到权限错误（EACCES），请在命令前加上 `sudo`：
+  ```bash
+  sudo npm install -g @google/gemini-cli
+  ```
+</Callout>
+
+## 3. 配置环境变量
+
+claude-code.club AI API 系统现在支持通过兼容 Gemini Assist API 的方式访问 Google Gemini CLI。为了确保您能够顺利连接到我们的服务，请按照以下步骤配置环境变量。
+
+### 首选方式：通过兼容 Gemini Assist API 方式访问 (推荐)
+
+此方式通过我们的 API 系统兼容 Gemini Assist API，稳定高效。
+
+<Tabs items={['macOS / Linux', 'Windows (PowerShell)', 'Windows (CMD)']}>
+  <Tabs.Tab>
+    **临时生效（当前窗口）：**
+    ```bash
+    export CODE_ASSIST_ENDPOINT="https://claude-code.club/gemini"
+    export GOOGLE_CLOUD_ACCESS_TOKEN="您的API密钥" # 请替换为您的实际密钥
+    export GOOGLE_GENAI_USE_GCA="true"
+    export GEMINI_MODEL="gemini-2.5-flash"
+    ```
+
+    **永久生效（推荐）：**
+    
+    对于 zsh（macOS 默认）：
+    ```bash
+    echo 'export CODE_ASSIST_ENDPOINT="https://claude-code.club/gemini"' >> ~/.zshrc
+    echo 'export GOOGLE_CLOUD_ACCESS_TOKEN="您的API密钥"' >> ~/.zshrc
+    echo 'export GOOGLE_GENAI_USE_GCA="true"' >> ~/.zshrc
+    echo 'export GEMINI_MODEL="gemini-2.5-flash"' >> ~/.zshrc
+    source ~/.zshrc
+    ```
+    
+    对于 bash：
+    ```bash
+    echo 'export CODE_ASSIST_ENDPOINT="https://claude-code.club/gemini"' >> ~/.bashrc
+    echo 'export GOOGLE_CLOUD_ACCESS_TOKEN="您的API密钥"' >> ~/.bashrc
+    echo 'export GOOGLE_GENAI_USE_GCA="true"' >> ~/.bashrc
+    echo 'export GEMINI_MODEL="gemini-2.5-flash"' >> ~/.bashrc
+    source ~/.bashrc
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **当前会话生效：**
+    ```powershell
+    $env:CODE_ASSIST_ENDPOINT="https://claude-code.club/gemini"
+    $env:GOOGLE_CLOUD_ACCESS_TOKEN="您的API密钥" # 请替换为您的实际密钥
+    $env:GOOGLE_GENAI_USE_GCA="true"
+    $env:GEMINI_MODEL="gemini-2.5-flash"
+    ```
+
+    **永久生效：**
+    ```powershell
+    [System.Environment]::SetEnvironmentVariable('CODE_ASSIST_ENDPOINT', 'https://claude-code.club/gemini', 'User')
+    [System.Environment]::SetEnvironmentVariable('GOOGLE_CLOUD_ACCESS_TOKEN', '您的API密钥', 'User') # 请替换为您的实际密钥
+    [System.Environment]::SetEnvironmentVariable('GOOGLE_GENAI_USE_GCA', 'true', 'User')
+    [System.Environment]::SetEnvironmentVariable('GEMINI_MODEL', 'gemini-2.5-flash', 'User')
+    ```
+    *设置后需要重启 PowerShell 窗口。*
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **永久生效：**
+    ```cmd
+    setx CODE_ASSIST_ENDPOINT "https://claude-code.club/gemini"
+    setx GOOGLE_CLOUD_ACCESS_TOKEN "您的API密钥" # 请替换为您的实际密钥
+    setx GOOGLE_GENAI_USE_GCA "true"
+    setx GEMINI_MODEL "gemini-2.5-flash"
+    ```
+    *设置后需要重启 CMD 窗口。*
+  </Tabs.Tab>
+</Tabs>
+
+<Callout type="info">
+  **注意：**  
+  在 Gemini CLI 控制台中，您可能会看到 `Failed to fetch user info: 401 Unauthorized` 的提示。这属于正常现象，且不影响工具的正常使用。
+</Callout>
+
+### 错误方式：通过 Gemini API 方式访问 (不能用)
+
+<Callout type="error">
+  **强烈警告：请勿使用此方式！**
+  <br />
+  此方式通过直接使用 Gemini API不能利用额度，会触发 `429 Too Many Requests` 错误，导致服务中断。
+  <br />
+  **无论您从何处了解此配置，都请勿在此处使用。**
+</Callout>
+
+如果您不慎配置了与 Gemini API 相关的环境变量，或不确定是否已配置，请按照以下步骤检查并清除它们，以避免干扰首选的 Gemini Assist API 方式。
+
+<Tabs items={['macOS / Linux', 'Windows (PowerShell)', 'Windows (CMD)']}>
+  <Tabs.Tab>
+    **检查是否已配置：**
+    ```bash
+    echo $GOOGLE_GEMINI_BASE_URL
+    echo $GEMINI_API_KEY
+    ```
+    **取消配置：**
+    ```bash
+    unset GOOGLE_GEMINI_BASE_URL
+    unset GEMINI_API_KEY
+    ```
+    为确保更改永久生效，请记得保存您的 `.zshrc` 或 `.bashrc` 文件，并重新加载配置（例如 `source ~/.zshrc`）。
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **检查是否已配置：**
+    ```powershell
+    Write-Host $env:GOOGLE_GEMINI_BASE_URL
+    Write-Host $env:GEMINI_API_KEY
+    ```
+    **取消配置：**
+    ```powershell
+    Remove-Item Env:GOOGLE_GEMINI_BASE_URL -ErrorAction SilentlyContinue
+    Remove-Item Env:GEMINI_API_KEY -ErrorAction SilentlyContinue
+    ```
+    如果您曾使用 `[System.Environment]::SetEnvironmentVariable` 进行永久设置，请使用以下命令清除：
+    ```powershell
+    [System.Environment]::SetEnvironmentVariable('GOOGLE_GEMINI_BASE_URL', $null, 'User')
+    [System.Environment]::SetEnvironmentVariable('GEMINI_API_KEY', $null, 'User')
+    ```
+    *设置后需要重启 PowerShell 窗口。*
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **检查是否已配置：**
+    ```cmd
+    echo %GOOGLE_GEMINI_BASE_URL%
+    echo %GEMINI_API_KEY%
+    ```
+    **取消配置：**
+    要彻底清除，请在系统环境变量设置中手动删除这些变量，或者使用以下命令将它们设置为空（此方法可能不如手动删除彻底）：
+    ```cmd
+    setx GOOGLE_GEMINI_BASE_URL ""
+    setx GEMINI_API_KEY ""
+    ```
+    *设置后需要重启 CMD 窗口。*
+  </Tabs.Tab>
+</Tabs>
+
+### 重要提示：关于 `/auth` 命令和环境变量
+
+在 Gemini CLI 内部执行 `/auth` 命令时，请特别注意以下几点：
+
+1.  **如果曾在 `/auth` 中选择 "2. Use Gemini API Key" 并输入过密钥：**
+    *   您需要再次选择此项，但输入 **空内容** 进行覆盖，否则它可能会覆盖您在系统环境变量中设置的值，导致配置不生效。
+
+2.  **如果曾在 `/auth` 中选择过 "2. Use Gemini API Key" 进行认证：**
+    *   您需要进入 `/auth` 菜单，重新选择一次 **"1. Login with Google"**，即使无需成功登录。这有助于清除可能存在的旧认证状态。
+
+3.  **网络限制：**
+    *   如果在无法访问 Google 服务的网络环境中启动 Gemini CLI，在进入终端之前可能会遇到报错。通常情况下，这可以忽略，不影响通过 `claude-code.club` 服务的使用。
+
+### 检查环境变量设置
+
+为了确保环境变量正确设置，您可以在启动 Gemini CLI 之前执行以下命令进行检查：
+
+#### Bash/Zsh/或其他兼容 Shell 环境：
+
+-   **检查 Gemini API 配置（避免干扰）：**
+    ```bash
+    echo $GOOGLE_GEMINI_BASE_URL $GEMINI_API_KEY
+    ```
+    如果变量已设置，您可能需要执行 `unset GOOGLE_GEMINI_BASE_URL GEMINI_API_KEY` 来避免干扰。
+
+-   **检查 Gemini Assist API 配置：**
+    ```bash
+    echo $CODE_ASSIST_ENDPOINT $GOOGLE_CLOUD_ACCESS_TOKEN $GOOGLE_GENAI_USE_GCA
+    ```
+
+#### Windows PowerShell 环境：
+
+-   **检查 Gemini API 配置（避免干扰）：**
+    ```powershell
+    Write-Host $env:GOOGLE_GEMINI_BASE_URL $env:GEMINI_API_KEY
+    ```
+    如果变量已设置，您可能需要执行 `Remove-Item Env:GOOGLE_GEMINI_BASE_URL -ErrorAction SilentlyContinue; Remove-Item Env:GEMINI_API_KEY -ErrorAction SilentlyContinue` 来避免干扰。
+
+-   **检查 Gemini Assist API 配置：**
+    ```powershell
+    Write-Host $env:CODE_ASSIST_ENDPOINT $env:GOOGLE_CLOUD_ACCESS_TOKEN $env:GOOGLE_GENAI_USE_GCA
+    ```
+
+
+## 4. 验证安装
+
+配置完成后，让我们验证一下 Gemini CLI 是否安装成功并能正常运行。
+
+### 检查版本
+在终端输入：
+```bash
+gemini --version
+```
+如果输出了版本号（例如 `1.0.0`），说明工具已安装。
+
+### 首次运行
+输入 `gemini` 启动工具：
+```bash
+gemini
+```
+如果是首次运行，你可能会看到欢迎信息或被要求进行简单的初始化设置。
+
+<Callout type="success">
+  **🎉 恭喜！**  
+  你已经成功安装并配置了 Google Gemini CLI。现在可以开始体验 AI 辅助编码的强大功能了。
+</Callout>
+
+## 常见问题
+
+**Q: 运行 `gemini` 提示 "command not found"？**  
+A: 请检查 Node.js 的全局 bin 目录是否在系统的 PATH 环境变量中。重新安装 Node.js 通常能解决此问题。
+
+**Q: 提示 API Key 无效？**  
+A: 请检查环境变量是否配置正确。在终端输入 `echo $GEMINI_API_KEY` (macOS/Linux) 或 `$env:GEMINI_API_KEY` (Windows) 查看当前值。

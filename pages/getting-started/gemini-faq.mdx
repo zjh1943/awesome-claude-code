@@ -1,0 +1,46 @@
+# Gemini 常见问题 (FAQ)
+
+随着 Gemini 3 Pro 的发布以及 Gemini CLI 的推出，许多用户对 Gemini 和 Claude Code 之间的区别以及如何选择感到好奇。以下是关于 Gemini 及其与 Claude 对比的常见问题解答。
+
+## Gemini 3 Pro 与 Claude (如 4.5 Sonnet) 有什么主要区别？
+
+Gemini 和 Claude 都是顶尖的 AI 模型，但在设计理念和优势上有所不同，适合不同的场景：
+
+*   **速度与原型设计 (Gemini)**: Gemini (特别是 3 Pro) 以**极快的响应速度**著称。它非常适合快速构建原型、生成脚手架代码 (scaffolding)、快速调试以及在短时间内进行多次迭代。如果你需要“快糙猛”地把想法变成代码，Gemini 是不二之选。
+*   **深度推理与复杂逻辑 (Claude)**: Claude (如 4.5 Sonnet) 通常在**深度推理**、复杂系统架构设计和生成高质量、可维护的生产级代码方面表现更稳健。它在理解复杂的指令细微差别和边缘情况处理上往往更细腻。
+
+## 为什么我应该尝试 Gemini CLI？
+
+即使你已经习惯了 Claude Code，Gemini CLI 也有几个独特的优势值得尝试：
+
+1.  **超大上下文窗口 (Context Window)**: Gemini 3 Pro 拥有行业领先的上下文窗口（远超 Claude 的 200k，可达 1M 甚至更多）。这意味着你可以将**整个大型项目的代码库**、大量的文档或长篇技术规范一次性喂给它，而不用担心丢失上下文。这对于理解遗留代码库或进行全项目重构非常有帮助。
+2.  **多模态能力 (Multimodal)**: Gemini 在处理图像和视频方面具有原生优势。如果你需要将 Figma 设计稿、UI截图或白板草图直接转化为前端代码 (HTML/CSS/React)，Gemini 的准确率和理解力通常优于 Claude。
+3.  **生态系统集成**: 如果你的开发环境深度依赖 Google Cloud 或其他 Google 服务，Gemini CLI 的集成度会更高。
+
+## 在编程能力上，Gemini 3 Pro 具体强在哪里？
+
+*   **前端与 UI 开发**: 得益于强大的多模态能力，Gemini 非常擅长从视觉输入生成代码，是前端开发的利器。
+*   **多语言支持**: Gemini 支持超过 20 种编程语言（Python, Java, Go, C++, TypeScript 等），并且对于新语法的跟进非常迅速。
+*   **代码解释与修复**: 在解释冗长的错误日志或复杂的堆栈跟踪 (Stack Trace) 时，Gemini 的大上下文优势使其能看到更完整的错误全貌，从而给出更精准的修复建议。
+
+## 为什么 Gemini API 的费用比 Claude Code 低这么多？
+
+根据社区用户的实测反馈，即便在没有启用 Context Caching（上下文缓存）的情况下，Gemini API（尤其是 Flash 系列）的费用依然远低于 Claude Code（组合使用了 Haiku 和 Sonnet）。这主要有以下几个原因：
+
+1.  **极其激进的基础定价**: Gemini 的 Flash 系列模型定价极具破坏力。以 **Input Token**（输入端）为例，Gemini Flash 的每百万 Token 价格通常仅为 Claude Haiku 的 **1/10** 左右，更是 Claude Sonnet 的 **1/40**。
+2.  **击穿“缓存”底价**: Claude Code 通过 Context Caching 技术将重复读取的成本降低了 90%。但惊人的是，Gemini Flash 的**标准未缓存价格**甚至比 Claude Haiku 的**缓存后价格**还要便宜。这意味着 Gemini 即便“每次都重读”，成本依然低于 Claude 的“读取缓存”。
+3.  **编程助手的流量特征**: CLI 编程助手是典型的“读多写少”场景（Read-Heavy）。为了理解代码库，工具需要读取海量上下文（Input），但生成的代码（Output）相对较少。Gemini 在 Input 端的价格优势在这种场景下被无限放大，从而导致了总账单的巨大差异。
+
+## 我可以同时使用 Claude 和 Gemini 吗？
+
+**绝对推荐！** 许多资深开发者采用“混合模式”：
+1.  **使用 Gemini** 进行快速的头脑风暴、生成项目骨架、将设计图转代码以及处理超长文档。
+2.  **使用 Claude** 进行核心逻辑编写、代码审查 (Code Review)、架构设计以及优化复杂的算法。
+3.  **Gemini CLI** 可以作为你工具箱里的又一个强大工具，在 Claude 遇到瓶颈（如上下文长度限制或响应速度要求高）时提供完美互补。
+
+## Gemini CLI 如何处理隐私和数据安全？
+
+与 Claude Code 类似，Gemini CLI 在设计时也考虑了企业级安全性。默认情况下，通过 API 传输的数据遵循 Google Cloud 的数据隐私政策（通常不用于训练通用模型，但请务必在企业设置中确认具体的隐私条款）。对于敏感项目，建议使用 Google Cloud Vertex AI 提供的企业级端点。
+
+---
+*更多关于安装和配置的问题，请参阅 [Gemini 快速开始](/getting-started/gemini-quick-start)。*

@@ -1,0 +1,53 @@
+# 常见错误
+
+## Error retrieving user info: TypeError: Connect Timeout Error
+
+**问题描述:**
+
+当尝试获取用户信息时，CLI 出现 `TypeError: Connect Timeout Error`，并伴随以下堆栈信息：
+
+```
+Error retrieving user info: TypeError:
+at node:internal/deps/undici/undici: 13510:13
+at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+at async fetchAndCacheUserInfo (file:///usr/local/lib/node_modules/@google/gemini-cli/node_modules/@google/gemini-cli-core/dist/src/code_assist/oauth2.js:409:26) at async initOauthClient (file:///usr/local/lib/node_modules/@google/gemini-cli/node_modules/@google/gemini-cli-core/dist/src/code_assist/oauth2.js:76:9) at async createCodeAssistContentGenerator (file:///usr/local/lib/node_modules/@google/gemini-cli/node_modules/@google/gemini-cli-core/dist/src/code_assist/codeAssist.js:14:28) at async file:///usr/local/lib/node_modules/@google/gemini-cli/node_modules/@google/gemini-cli-core/dist/src/core/contentGenerator.js:63:48
+at async createContentGenerator (file:///usr/local/lib/node_modules/@google/gemini-cli/node_modules/@google/gemini-cli-core/dist/src/core/contentGenerator.js:51:23) at async Config.refreshAuth (file:///usr/local/lib/node_modules/@google/gemini-cli/node_modules/@google/gemini-cli-core/dist/src/config/config.js:435:33)
+at async performInitialAuth (file:///usr/local/lib/node_modules/@google/gemini-cli/dist/src/core/auth.js:18:9)
+at async initializeApp (file:///usr/local/lib/node_modules/@google/gemini-cli/dist/src/core/initializer.js:18:23) {
+[cause]: ConnectTimeoutError:
+Connect Timeout Error (attempted addresses: 142.250.73.106:443, 142.250.73.138:443, 142.250.69.170:443, timeout: 10000ms)
+code: 'UND_ERR_CONNECT_TIMEOUT'
+}
+```
+
+**解决方案:**
+
+这个错误通常表示 Gemini CLI 在尝试连接 Google 认证服务器时遇到了网络问题，导致连接超时。一种常见的解决方案是在本地配置一个激活的 Google 账号信息，以避免 CLI 每次都尝试在线获取。
+
+在 `~/.gemini/` 目录下创建一个名为 `google_accounts.json` 的文件，并填入以下内容：
+
+```json
+{
+  "active": "dummy@example.com",
+  "old": []
+}
+```
+
+将 `"dummy@example.com"` 替换为你用于 Gemini 的实际 Google 账户邮箱。这样，CLI 就可以使用本地存储的账户信息，而无需再次尝试连接远程服务器，从而避免连接超时错误。
+
+**注意:** 确保 `~/.gemini/` 目录存在。如果不存在，请先创建它。
+
+## Failed to fetch user info: 401 Unauthorized
+
+**问题描述:**
+
+如果 Gemini CLI 所在的终端无法访问 Google 服务器，可能会看到错误信息：`Failed to fetch user info: 401 Unauthorized`。
+
+**解决方案:**
+
+这是一个网络问题，通常表示 CLI 无法与 Google 认证服务器正常通信。如果能访问 Google 服务器，这个错误就不会出现。
+
+**重要提示:** 即使出现此错误，也不会影响 Gemini CLI 的功能。您可以安全地忽略此错误信息。
+
+
+
