@@ -23,12 +23,13 @@ Gemini 和 Claude 都是顶尖的 AI 模型，但在设计理念和优势上有�
 *   **多语言支持**: Gemini 支持超过 20 种编程语言（Python, Java, Go, C++, TypeScript 等），并且对于新语法的跟进非常迅速。
 *   **代码解释与修复**: 在解释冗长的错误日志或复杂的堆栈跟踪 (Stack Trace) 时，Gemini 的大上下文优势使其能看到更完整的错误全貌，从而给出更精准的修复建议。
 
-## Gemini 的 API 价格如何？与 Claude 相比呢？
+## 为什么 Gemini API 的费用比 Claude Code 低这么多？
 
-通常情况下，Gemini 的 API 定价策略非常有竞争力。
-*   **性价比**: 对于高频调用或大 token 量的任务，Gemini 往往提供更低的每百万 token 成本。
-*   **免费层级**: Google AI Studio 通常提供较为慷慨的免费试用配额，适合开发者个人项目或小规模测试。
-*   *具体价格请参考最新的官方定价页面，因为市场价格变动频繁。*
+根据社区用户的实测反馈，即便在没有启用 Context Caching（上下文缓存）的情况下，Gemini API（尤其是 Flash 系列）的费用依然远低于 Claude Code（组合使用了 Haiku 和 Sonnet）。这主要有以下几个原因：
+
+1.  **极其激进的基础定价**: Gemini 的 Flash 系列模型定价极具破坏力。以 **Input Token**（输入端）为例，Gemini Flash 的每百万 Token 价格通常仅为 Claude Haiku 的 **1/10** 左右，更是 Claude Sonnet 的 **1/40**。
+2.  **击穿“缓存”底价**: Claude Code 通过 Context Caching 技术将重复读取的成本降低了 90%。但惊人的是，Gemini Flash 的**标准未缓存价格**甚至比 Claude Haiku 的**缓存后价格**还要便宜。这意味着 Gemini 即便“每次都重读”，成本依然低于 Claude 的“读取缓存”。
+3.  **编程助手的流量特征**: CLI 编程助手是典型的“读多写少”场景（Read-Heavy）。为了理解代码库，工具需要读取海量上下文（Input），但生成的代码（Output）相对较少。Gemini 在 Input 端的价格优势在这种场景下被无限放大，从而导致了总账单的巨大差异。
 
 ## 我可以同时使用 Claude 和 Gemini 吗？
 
