@@ -1,0 +1,1277 @@
+---
+title: 编码标准配置
+description: 让 Claude 写出 Clean Code：命名规范、函数规范、错误处理
+---
+
+import { Callout, Steps, Tabs } from 'nextra/components'
+
+# 编码标准配置
+
+编码标准是确保 Claude Code 输出高质量、可维护代码的关键配置。本文涵盖 TypeScript、Python、PHP 三种语言的最佳实践。
+
+## 一、为什么需要编码标准配置
+
+### 1.1 没有编码标准的问题
+
+没有明确的编码标准时，Claude 的输出往往会出现以下问题：
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px', margin: '16px 0' }}>
+  <div style={{ padding: '12px', backgroundColor: '#fef2f2', borderRadius: '8px', border: '1px solid #fecaca' }}>
+    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#dc2626' }}>命名风格混乱</div>
+    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>camelCase 和 snake_case 混用，同一项目风格不统一</div>
+  </div>
+  <div style={{ padding: '12px', backgroundColor: '#fef2f2', borderRadius: '8px', border: '1px solid #fecaca' }}>
+    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#dc2626' }}>函数长度失控</div>
+    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>一个函数动辄上百行，难以理解和测试</div>
+  </div>
+  <div style={{ padding: '12px', backgroundColor: '#fef2f2', borderRadius: '8px', border: '1px solid #fecaca' }}>
+    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#dc2626' }}>代码重复</div>
+    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>相似逻辑散落各处，修改时容易遗漏</div>
+  </div>
+  <div style={{ padding: '12px', backgroundColor: '#fef2f2', borderRadius: '8px', border: '1px solid #fecaca' }}>
+    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#dc2626' }}>难以维护</div>
+    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>接手代码时看不懂，维护成本极高</div>
+  </div>
+</div>
+
+### 1.2 编码标准的价值
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px', margin: '16px 0' }}>
+  <div style={{ padding: '12px', backgroundColor: '#f0fdf4', borderRadius: '8px', border: '1px solid #bbf7d0' }}>
+    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#166534' }}>可读性提升</div>
+    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>统一的风格让代码一目了然</div>
+  </div>
+  <div style={{ padding: '12px', backgroundColor: '#f0fdf4', borderRadius: '8px', border: '1px solid #bbf7d0' }}>
+    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#166534' }}>协作效率提高</div>
+    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>团队成员能快速理解彼此的代码</div>
+  </div>
+  <div style={{ padding: '12px', backgroundColor: '#f0fdf4', borderRadius: '8px', border: '1px solid #bbf7d0' }}>
+    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#166534' }}>Review 时间减少</div>
+    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>不再纠结风格问题，专注业务逻辑</div>
+  </div>
+  <div style={{ padding: '12px', backgroundColor: '#f0fdf4', borderRadius: '8px', border: '1px solid #bbf7d0' }}>
+    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#166534' }}>维护成本降低</div>
+    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>规范的代码更容易修改和扩展</div>
+  </div>
+</div>
+
+<Callout type="info">
+**核心原则**：编码标准不是为了限制，而是为了让代码更容易被人（包括未来的你）理解。
+</Callout>
+
+---
+
+## 二、命名规范配置
+
+命名是编码标准中最基础也最重要的部分。好的命名能让代码"自文档化"。
+
+### 2.1 文件命名
+
+<div style={{ maxWidth: '700px' }}>
+
+| 语言 | 普通文件 | 类/组件文件 | 测试文件 |
+|:------|:---------|:------------|:---------|
+| TypeScript | `kebab-case.ts` | `PascalCase.tsx` | `*.test.ts` / `*.spec.ts` |
+| Python | `snake_case.py` | `snake_case.py` | `test_*.py` / `*_test.py` |
+| PHP | `snake_case.php` | `PascalCase.php` | `*Test.php` |
+
+</div>
+
+### 2.2 变量与函数命名
+
+<Tabs items={['TypeScript', 'Python', 'PHP']}>
+  <Tabs.Tab>
+```typescript
+// 变量：camelCase，名词性
+const userName = 'john';
+const itemCount = 10;
+const isActive = true;
+
+// 函数：camelCase，动词开头
+function getUserById(id: string) { }
+function calculateTotal(items: Item[]) { }
+function validateEmail(email: string) { }
+
+// 常量：SCREAMING_SNAKE_CASE
+const MAX_RETRY_COUNT = 3;
+const API_BASE_URL = 'https://api.example.com';
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+# 变量：snake_case，名词性
+user_name = 'john'
+item_count = 10
+is_active = True
+
+# 函数：snake_case，动词开头
+def get_user_by_id(user_id: str) -> User:
+    pass
+
+def calculate_total(items: list[Item]) -> float:
+    pass
+
+def validate_email(email: str) -> bool:
+    pass
+
+# 常量：SCREAMING_SNAKE_CASE
+MAX_RETRY_COUNT = 3
+API_BASE_URL = 'https://api.example.com'
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```php
+// 变量：camelCase，名词性
+$userName = 'john';
+$itemCount = 10;
+$isActive = true;
+
+// 方法：camelCase，动词开头
+public function getUserById(string $id): User { }
+public function calculateTotal(array $items): float { }
+public function validateEmail(string $email): bool { }
+
+// 常量：SCREAMING_SNAKE_CASE
+const MAX_RETRY_COUNT = 3;
+const API_BASE_URL = 'https://api.example.com';
+```
+  </Tabs.Tab>
+</Tabs>
+
+### 2.3 类与接口命名
+
+所有语言统一使用 **PascalCase**：
+
+<Tabs items={['TypeScript', 'Python', 'PHP']}>
+  <Tabs.Tab>
+```typescript
+// 类：PascalCase，名词
+class UserService { }
+class OrderRepository { }
+
+// 接口：PascalCase，可选 I 前缀（按团队约定）
+interface User { }
+interface IUserService { }  // 可选风格
+
+// 类型：PascalCase
+type UserRole = 'admin' | 'user' | 'guest';
+type ApiResponse<T> = { data: T; error?: string };
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+# 类：PascalCase，名词
+class UserService:
+    pass
+
+class OrderRepository:
+    pass
+
+# 协议/抽象类：PascalCase
+from typing import Protocol
+
+class UserRepositoryProtocol(Protocol):
+    def get_by_id(self, user_id: str) -> User: ...
+
+# 类型别名：PascalCase
+UserRole = Literal['admin', 'user', 'guest']
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```php
+// 类：PascalCase，名词
+class UserService { }
+class OrderRepository { }
+
+// 接口：PascalCase，可选 Interface 后缀
+interface UserRepositoryInterface { }
+interface Authenticatable { }
+
+// Trait：PascalCase
+trait HasTimestamps { }
+trait Notifiable { }
+```
+  </Tabs.Tab>
+</Tabs>
+
+### 2.4 布尔值命名
+
+布尔值应使用 `is`/`has`/`can`/`should` 前缀，让含义一目了然：
+
+```
+✅ 好的命名          ❌ 差的命名
+isActive            active
+hasPermission       permission
+canEdit             editable
+shouldUpdate        update
+isValid             valid
+```
+
+### 2.5 命名规范配置示例
+
+<Tabs items={['TypeScript', 'Python', 'PHP']}>
+  <Tabs.Tab>
+```markdown
+## 命名规范（TypeScript）
+
+### 文件命名
+- 普通文件：kebab-case.ts（如 user-service.ts）
+- React 组件：PascalCase.tsx（如 UserProfile.tsx）
+- 测试文件：*.test.ts 或 *.spec.ts
+
+### 标识符命名
+- 变量/函数：camelCase（如 getUserById）
+- 类/接口/类型：PascalCase（如 UserService）
+- 常量：SCREAMING_SNAKE_CASE（如 MAX_RETRY）
+- 布尔值：is/has/can/should 前缀（如 isActive）
+
+### 命名原则
+- 变量名用名词，函数名用动词
+- 名称要有意义，避免 a, b, x, temp
+- 不使用缩写，除非是广泛认可的（如 id, url）
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```markdown
+## 命名规范（Python）
+
+### 文件命名
+- 模块文件：snake_case.py（如 user_service.py）
+- 测试文件：test_*.py 或 *_test.py
+
+### 标识符命名
+- 变量/函数：snake_case（如 get_user_by_id）
+- 类：PascalCase（如 UserService）
+- 常量：SCREAMING_SNAKE_CASE（如 MAX_RETRY）
+- 私有成员：_leading_underscore（如 _internal_method）
+- 布尔值：is/has/can/should 前缀（如 is_active）
+
+### 命名原则
+- 遵循 PEP 8 规范
+- 变量名用名词，函数名用动词
+- 避免单字符命名（循环变量除外）
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```markdown
+## 命名规范（PHP）
+
+### 文件命名
+- 类文件：PascalCase.php（如 UserService.php）
+- 普通文件：snake_case.php（如 helpers.php）
+- 测试文件：*Test.php（如 UserServiceTest.php）
+
+### 标识符命名
+- 变量：camelCase（如 $userName）
+- 方法：camelCase（如 getUserById）
+- 类/接口/Trait：PascalCase（如 UserService）
+- 常量：SCREAMING_SNAKE_CASE（如 MAX_RETRY）
+- 布尔值：is/has/can/should 前缀（如 $isActive）
+
+### 命名原则
+- 遵循 PSR-12 规范
+- 类名与文件名一致
+- 命名空间与目录结构一致
+```
+  </Tabs.Tab>
+</Tabs>
+
+---
+
+## 三、函数规范配置
+
+函数是代码的基本单元，好的函数设计是高质量代码的基础。
+
+### 3.1 函数长度限制
+
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', margin: '16px 0' }}>
+  <div style={{ padding: '16px', backgroundColor: '#f0fdf4', borderRadius: '8px', border: '1px solid #bbf7d0' }}>
+    <h4 style={{ margin: '0 0 12px 0', color: '#166534' }}>推荐标准</h4>
+    <div style={{ fontSize: '14px', lineHeight: '1.8' }}>
+      <p><strong>30 行以内</strong>：理想长度</p>
+      <p><strong>50 行以内</strong>：可接受上限</p>
+      <p><strong>超过 50 行</strong>：必须拆分</p>
+    </div>
+  </div>
+  <div style={{ padding: '16px', backgroundColor: '#fef2f2', borderRadius: '8px', border: '1px solid #fecaca' }}>
+    <h4 style={{ margin: '0 0 12px 0', color: '#dc2626' }}>为什么限制长度</h4>
+    <div style={{ fontSize: '14px', lineHeight: '1.8' }}>
+      <p>• 长函数难以理解</p>
+      <p>• 长函数难以测试</p>
+      <p>• 长函数往往职责不单一</p>
+    </div>
+  </div>
+</div>
+
+### 3.2 单一职责原则
+
+一个函数只做一件事，函数名能准确描述其功能。
+
+<Tabs items={['TypeScript', 'Python', 'PHP']}>
+  <Tabs.Tab>
+```typescript
+// ❌ 差：一个函数做多件事
+function processUser(user: User) {
+  // 验证用户
+  if (!user.email) throw new Error('Invalid email');
+  // 保存到数据库
+  db.save(user);
+  // 发送欢迎邮件
+  sendEmail(user.email, 'Welcome!');
+  // 记录日志
+  logger.info('User created');
+}
+
+// ✅ 好：每个函数只做一件事
+function validateUser(user: User): void {
+  if (!user.email) throw new Error('Invalid email');
+}
+
+function saveUser(user: User): void {
+  db.save(user);
+}
+
+function sendWelcomeEmail(email: string): void {
+  sendEmail(email, 'Welcome!');
+}
+
+function createUser(user: User): void {
+  validateUser(user);
+  saveUser(user);
+  sendWelcomeEmail(user.email);
+  logger.info('User created');
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+# ❌ 差：一个函数做多件事
+def process_user(user: User) -> None:
+    # 验证用户
+    if not user.email:
+        raise ValueError('Invalid email')
+    # 保存到数据库
+    db.save(user)
+    # 发送欢迎邮件
+    send_email(user.email, 'Welcome!')
+    # 记录日志
+    logger.info('User created')
+
+# ✅ 好：每个函数只做一件事
+def validate_user(user: User) -> None:
+    if not user.email:
+        raise ValueError('Invalid email')
+
+def save_user(user: User) -> None:
+    db.save(user)
+
+def send_welcome_email(email: str) -> None:
+    send_email(email, 'Welcome!')
+
+def create_user(user: User) -> None:
+    validate_user(user)
+    save_user(user)
+    send_welcome_email(user.email)
+    logger.info('User created')
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```php
+// ❌ 差：一个函数做多件事
+public function processUser(User $user): void {
+    // 验证用户
+    if (!$user->email) throw new Exception('Invalid email');
+    // 保存到数据库
+    $this->db->save($user);
+    // 发送欢迎邮件
+    $this->sendEmail($user->email, 'Welcome!');
+    // 记录日志
+    $this->logger->info('User created');
+}
+
+// ✅ 好：每个函数只做一件事
+public function validateUser(User $user): void {
+    if (!$user->email) throw new InvalidArgumentException('Invalid email');
+}
+
+public function saveUser(User $user): void {
+    $this->db->save($user);
+}
+
+public function sendWelcomeEmail(string $email): void {
+    $this->sendEmail($email, 'Welcome!');
+}
+
+public function createUser(User $user): void {
+    $this->validateUser($user);
+    $this->saveUser($user);
+    $this->sendWelcomeEmail($user->email);
+    $this->logger->info('User created');
+}
+```
+  </Tabs.Tab>
+</Tabs>
+
+### 3.3 参数数量限制
+
+<div style={{ padding: '16px', backgroundColor: '#f8fafc', borderRadius: '8px', margin: '16px 0' }}>
+  <div style={{ fontWeight: 'bold', marginBottom: '12px' }}>参数数量建议</div>
+  <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+    <div style={{ padding: '8px 16px', backgroundColor: '#dcfce7', borderRadius: '4px' }}>
+      <span style={{ fontWeight: 'bold' }}>0-2 个</span>：理想
+    </div>
+    <div style={{ padding: '8px 16px', backgroundColor: '#fef9c3', borderRadius: '4px' }}>
+      <span style={{ fontWeight: 'bold' }}>3-4 个</span>：可接受
+    </div>
+    <div style={{ padding: '8px 16px', backgroundColor: '#fee2e2', borderRadius: '4px' }}>
+      <span style={{ fontWeight: 'bold' }}>5+ 个</span>：必须重构
+    </div>
+  </div>
+</div>
+
+超过 3-4 个参数时，使用对象/DTO：
+
+<Tabs items={['TypeScript', 'Python', 'PHP']}>
+  <Tabs.Tab>
+```typescript
+// ❌ 差：参数过多
+function createUser(
+  name: string,
+  email: string,
+  age: number,
+  address: string,
+  phone: string,
+  role: string
+) { }
+
+// ✅ 好：使用对象参数
+interface CreateUserParams {
+  name: string;
+  email: string;
+  age: number;
+  address: string;
+  phone: string;
+  role: string;
+}
+
+function createUser(params: CreateUserParams) { }
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+# ❌ 差：参数过多
+def create_user(
+    name: str,
+    email: str,
+    age: int,
+    address: str,
+    phone: str,
+    role: str
+) -> User:
+    pass
+
+# ✅ 好：使用 dataclass
+@dataclass
+class CreateUserParams:
+    name: str
+    email: str
+    age: int
+    address: str
+    phone: str
+    role: str
+
+def create_user(params: CreateUserParams) -> User:
+    pass
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```php
+// ❌ 差：参数过多
+public function createUser(
+    string $name,
+    string $email,
+    int $age,
+    string $address,
+    string $phone,
+    string $role
+): User { }
+
+// ✅ 好：使用 DTO
+class CreateUserDto {
+    public function __construct(
+        public string $name,
+        public string $email,
+        public int $age,
+        public string $address,
+        public string $phone,
+        public string $role,
+    ) {}
+}
+
+public function createUser(CreateUserDto $dto): User { }
+```
+  </Tabs.Tab>
+</Tabs>
+
+### 3.4 返回值规范
+
+<Tabs items={['TypeScript', 'Python', 'PHP']}>
+  <Tabs.Tab>
+```typescript
+// ✅ 明确返回类型
+function getUserById(id: string): User | null {
+  const user = db.find(id);
+  return user ?? null;
+}
+
+// ✅ 使用 Result 模式处理错误
+type Result<T, E> = { ok: true; value: T } | { ok: false; error: E };
+
+function parseJson(str: string): Result<unknown, Error> {
+  try {
+    return { ok: true, value: JSON.parse(str) };
+  } catch (e) {
+    return { ok: false, error: e as Error };
+  }
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+from typing import Optional
+
+# ✅ 明确返回类型
+def get_user_by_id(user_id: str) -> Optional[User]:
+    user = db.find(user_id)
+    return user if user else None
+
+# ✅ 使用 Result 模式（或返回元组）
+from dataclasses import dataclass
+from typing import Generic, TypeVar, Union
+
+T = TypeVar('T')
+E = TypeVar('E')
+
+@dataclass
+class Ok(Generic[T]):
+    value: T
+
+@dataclass
+class Err(Generic[E]):
+    error: E
+
+Result = Union[Ok[T], Err[E]]
+
+def parse_json(s: str) -> Result[dict, str]:
+    try:
+        return Ok(json.loads(s))
+    except json.JSONDecodeError as e:
+        return Err(str(e))
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```php
+// ✅ 明确返回类型（PHP 8+）
+public function getUserById(string $id): ?User {
+    $user = $this->db->find($id);
+    return $user ?? null;
+}
+
+// ✅ 使用 Result 模式
+class Result {
+    private function __construct(
+        public readonly bool $ok,
+        public readonly mixed $value = null,
+        public readonly ?string $error = null,
+    ) {}
+
+    public static function ok(mixed $value): self {
+        return new self(true, $value);
+    }
+
+    public static function err(string $error): self {
+        return new self(false, error: $error);
+    }
+}
+
+public function parseJson(string $str): Result {
+    try {
+        return Result::ok(json_decode($str, true, flags: JSON_THROW_ON_ERROR));
+    } catch (JsonException $e) {
+        return Result::err($e->getMessage());
+    }
+}
+```
+  </Tabs.Tab>
+</Tabs>
+
+### 3.5 函数规范配置示例
+
+```markdown
+## 函数规范
+
+### 长度限制
+- 单个函数不超过 30 行（推荐）
+- 绝对上限 50 行，超过必须拆分
+- 嵌套层级不超过 3 层
+
+### 单一职责
+- 一个函数只做一件事
+- 函数名必须准确描述功能
+- 如果函数名需要用 "and" 连接，说明应该拆分
+
+### 参数限制
+- 参数不超过 4 个
+- 超过时使用对象/DTO 封装
+- 布尔参数尽量避免（用枚举或分成两个函数）
+
+### 返回值
+- 必须声明返回类型
+- 避免返回 null（使用 Optional/Result 模式）
+- 一个函数只有一种返回类型
+```
+
+---
+
+## 四、错误处理规范
+
+错误处理是代码健壮性的关键，不同语言有不同的最佳实践。
+
+### 4.1 TypeScript 错误处理
+
+```typescript
+// ❌ 差：使用 any
+try {
+  await fetchData();
+} catch (error: any) {
+  console.log(error.message);  // 可能崩溃
+}
+
+// ✅ 好：使用 unknown + 类型守卫
+try {
+  await fetchData();
+} catch (error: unknown) {
+  if (error instanceof Error) {
+    console.log(error.message);
+  } else {
+    console.log('Unknown error:', String(error));
+  }
+}
+
+// ✅ 更好：自定义错误类
+class ApiError extends Error {
+  constructor(
+    message: string,
+    public statusCode: number,
+    public context?: Record<string, unknown>
+  ) {
+    super(message);
+    this.name = 'ApiError';
+  }
+}
+
+function handleError(error: unknown): void {
+  if (error instanceof ApiError) {
+    logger.error(`API Error ${error.statusCode}: ${error.message}`, error.context);
+  } else if (error instanceof Error) {
+    logger.error(`Error: ${error.message}`);
+  } else {
+    logger.error('Unknown error', { error });
+  }
+}
+```
+
+### 4.2 Python 错误处理
+
+```python
+# ❌ 差：bare except
+try:
+    fetch_data()
+except:  # 捕获所有异常，包括 KeyboardInterrupt
+    print('Error')
+
+# ❌ 差：过于宽泛
+try:
+    fetch_data()
+except Exception as e:
+    pass  # 吞掉异常
+
+# ✅ 好：捕获具体异常
+try:
+    fetch_data()
+except ConnectionError as e:
+    logger.error(f'Connection failed: {e}')
+    raise
+except TimeoutError as e:
+    logger.error(f'Request timed out: {e}')
+    raise
+
+# ✅ 更好：自定义异常类
+class ApiError(Exception):
+    def __init__(self, message: str, status_code: int, context: dict = None):
+        super().__init__(message)
+        self.status_code = status_code
+        self.context = context or {}
+
+def handle_error(error: Exception) -> None:
+    if isinstance(error, ApiError):
+        logger.error(f'API Error {error.status_code}: {error}', extra=error.context)
+    else:
+        logger.error(f'Error: {error}')
+```
+
+### 4.3 PHP 错误处理
+
+```php
+// ❌ 差：使用 @ 抑制错误
+$data = @file_get_contents($url);
+
+// ❌ 差：捕获 Exception 但不处理
+try {
+    $this->fetchData();
+} catch (Exception $e) {
+    // 空的 catch 块
+}
+
+// ✅ 好：捕获具体异常
+try {
+    $this->fetchData();
+} catch (ConnectionException $e) {
+    $this->logger->error('Connection failed: ' . $e->getMessage());
+    throw $e;
+} catch (TimeoutException $e) {
+    $this->logger->error('Request timed out: ' . $e->getMessage());
+    throw $e;
+}
+
+// ✅ 更好：自定义异常层次结构
+class ApiException extends Exception {
+    public function __construct(
+        string $message,
+        public readonly int $statusCode,
+        public readonly array $context = [],
+        ?Throwable $previous = null
+    ) {
+        parent::__construct($message, $statusCode, $previous);
+    }
+}
+
+class ValidationException extends ApiException {}
+class AuthenticationException extends ApiException {}
+```
+
+### 4.4 空值处理
+
+<Tabs items={['TypeScript', 'Python', 'PHP']}>
+  <Tabs.Tab>
+```typescript
+// ✅ 可选链
+const userName = user?.profile?.name;
+
+// ✅ 空值合并
+const displayName = userName ?? 'Anonymous';
+
+// ✅ 提前返回，避免深层嵌套
+function getDisplayName(user: User | null): string {
+  if (!user) return 'Anonymous';
+  if (!user.profile) return user.email;
+  return user.profile.name ?? user.email;
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+from typing import Optional
+
+# ✅ 使用 Optional 类型注解
+def get_user_name(user: Optional[User]) -> str:
+    if user is None:
+        return 'Anonymous'
+    return user.name or 'Anonymous'
+
+# ✅ 使用 or 提供默认值
+display_name = user_name or 'Anonymous'
+
+# ✅ getattr 带默认值
+name = getattr(user, 'name', 'Anonymous')
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```php
+// ✅ 空值合并运算符
+$userName = $user?->profile?->name;
+
+// ✅ 空值合并赋值
+$displayName = $userName ?? 'Anonymous';
+
+// ✅ 提前返回
+public function getDisplayName(?User $user): string {
+    if ($user === null) return 'Anonymous';
+    if ($user->profile === null) return $user->email;
+    return $user->profile->name ?? $user->email;
+}
+```
+  </Tabs.Tab>
+</Tabs>
+
+### 4.5 错误处理配置示例
+
+<Tabs items={['TypeScript', 'Python', 'PHP']}>
+  <Tabs.Tab>
+```markdown
+## 错误处理规范（TypeScript）
+
+### 类型安全
+- 绝不使用 any，catch 块使用 unknown
+- 使用类型守卫验证错误类型
+- 自定义错误类继承 Error
+
+### 错误处理原则
+- 绝不吞掉异常（空 catch 块）
+- 捕获的异常必须记录或重新抛出
+- 错误信息必须包含上下文
+
+### 空值处理
+- 使用可选链 (?.) 访问可能为空的属性
+- 使用空值合并 (??) 提供默认值
+- 显式检查 null/undefined，不依赖隐式转换
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```markdown
+## 错误处理规范（Python）
+
+### 异常处理
+- 绝不使用 bare except
+- 捕获具体的异常类型
+- 使用 raise from 保留异常链
+
+### 自定义异常
+- 继承合适的内置异常类
+- 包含有意义的错误信息和上下文
+- 遵循异常类命名规范（*Error 或 *Exception）
+
+### 空值处理
+- 使用 Optional 类型注解
+- 使用 is None 而非 == None
+- 使用 or 运算符提供默认值
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```markdown
+## 错误处理规范（PHP）
+
+### 异常处理
+- 绝不使用 @ 错误抑制符
+- 捕获具体的异常类型
+- 使用 previous 参数保留异常链
+
+### 自定义异常
+- 建立项目异常层次结构
+- 异常类包含错误码和上下文
+- 遵循 PSR 规范
+
+### 空值处理
+- 使用 ?-> 空值安全运算符（PHP 8+）
+- 使用 ?? 空值合并运算符
+- 参数和返回值使用 nullable 类型
+```
+  </Tabs.Tab>
+</Tabs>
+
+---
+
+## 五、代码组织规范
+
+### 5.1 DRY 原则（Don't Repeat Yourself）
+
+相同逻辑出现两次以上，就应该抽取为独立函数或模块。
+
+```
+规则：
+- 相同代码出现 2 次 → 考虑抽取
+- 相同代码出现 3 次 → 必须抽取
+- 相似代码 → 抽取为带参数的通用函数
+```
+
+### 5.2 文件结构与导入顺序
+
+<Tabs items={['TypeScript', 'Python', 'PHP']}>
+  <Tabs.Tab>
+```typescript
+// 1. 外部库（node_modules）
+import express from 'express';
+import { z } from 'zod';
+
+// 2. 内部模块（绝对路径）
+import { UserService } from '@/services/user';
+import { logger } from '@/utils/logger';
+
+// 3. 相对路径
+import { validateUser } from './validators';
+import type { User } from './types';
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+# 1. 标准库
+import os
+import sys
+from datetime import datetime
+
+# 2. 第三方库
+import requests
+from pydantic import BaseModel
+
+# 3. 本地模块
+from app.services.user import UserService
+from app.utils.logger import logger
+
+from .validators import validate_user
+from .types import User
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```php
+<?php
+
+// 严格类型声明
+declare(strict_types=1);
+
+namespace App\Services;
+
+// use 语句按字母排序
+use App\Exceptions\ApiException;
+use App\Models\User;
+use App\Repositories\UserRepository;
+use Psr\Log\LoggerInterface;
+
+class UserService
+{
+    // ...
+}
+```
+  </Tabs.Tab>
+</Tabs>
+
+### 5.3 注释规范
+
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', margin: '16px 0' }}>
+  <div style={{ padding: '16px', backgroundColor: '#f0fdf4', borderRadius: '8px', border: '1px solid #bbf7d0' }}>
+    <h4 style={{ margin: '0 0 12px 0', color: '#166534' }}>何时写注释</h4>
+    <div style={{ fontSize: '14px', lineHeight: '1.8' }}>
+      <p>• 复杂的业务逻辑</p>
+      <p>• 非显而易见的设计决策</p>
+      <p>• 公开 API 的用法说明</p>
+      <p>• 临时的 workaround（附带 issue 链接）</p>
+    </div>
+  </div>
+  <div style={{ padding: '16px', backgroundColor: '#fef2f2', borderRadius: '8px', border: '1px solid #fecaca' }}>
+    <h4 style={{ margin: '0 0 12px 0', color: '#dc2626' }}>何时不写注释</h4>
+    <div style={{ fontSize: '14px', lineHeight: '1.8' }}>
+      <p>• 代码本身已经清晰</p>
+      <p>• 注释只是重复代码内容</p>
+      <p>• 用注释来弥补糟糕的命名</p>
+      <p>• 注释掉的代码（应该删除）</p>
+    </div>
+  </div>
+</div>
+
+<Tabs items={['TypeScript (TSDoc)', 'Python (Docstring)', 'PHP (PHPDoc)']}>
+  <Tabs.Tab>
+```typescript
+/**
+ * 根据用户 ID 获取用户信息
+ *
+ * @param id - 用户唯一标识符
+ * @returns 用户对象，如果不存在返回 null
+ * @throws {ApiError} 当数据库连接失败时
+ *
+ * @example
+ * ```ts
+ * const user = await getUserById('123');
+ * if (user) {
+ *   console.log(user.name);
+ * }
+ * ```
+ */
+async function getUserById(id: string): Promise<User | null> {
+  // ...
+}
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```python
+def get_user_by_id(user_id: str) -> Optional[User]:
+    """根据用户 ID 获取用户信息
+
+    Args:
+        user_id: 用户唯一标识符
+
+    Returns:
+        用户对象，如果不存在返回 None
+
+    Raises:
+        ApiError: 当数据库连接失败时
+
+    Example:
+        >>> user = get_user_by_id('123')
+        >>> if user:
+        ...     print(user.name)
+    """
+    # ...
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```php
+/**
+ * 根据用户 ID 获取用户信息
+ *
+ * @param string $id 用户唯一标识符
+ * @return User|null 用户对象，如果不存在返回 null
+ * @throws ApiException 当数据库连接失败时
+ *
+ * @example
+ * $user = $this->getUserById('123');
+ * if ($user !== null) {
+ *     echo $user->getName();
+ * }
+ */
+public function getUserById(string $id): ?User
+{
+    // ...
+}
+```
+  </Tabs.Tab>
+</Tabs>
+
+---
+
+## 六、完整配置模板
+
+### 6.1 TypeScript 项目模板
+
+```markdown
+## 编码标准（TypeScript）
+
+### 命名规范
+- 文件：kebab-case.ts，组件 PascalCase.tsx
+- 变量/函数：camelCase
+- 类/接口/类型：PascalCase
+- 常量：SCREAMING_SNAKE_CASE
+- 布尔值：is/has/can/should 前缀
+
+### 函数规范
+- 单个函数不超过 30 行
+- 参数不超过 4 个，超过使用对象
+- 必须声明返回类型
+- 一个函数只做一件事
+
+### 错误处理
+- catch 块使用 unknown，不用 any
+- 绝不吞掉异常
+- 使用可选链 (?.) 和空值合并 (??)
+
+### 代码组织
+- 导入顺序：外部库 → 内部模块 → 相对路径
+- 公开 API 必须有 TSDoc 注释
+- 相同代码出现 3 次必须抽取
+```
+
+### 6.2 Python 项目模板
+
+```markdown
+## 编码标准（Python）
+
+### 命名规范
+- 文件/变量/函数：snake_case
+- 类：PascalCase
+- 常量：SCREAMING_SNAKE_CASE
+- 私有成员：_leading_underscore
+- 布尔值：is/has/can/should 前缀
+
+### 函数规范
+- 单个函数不超过 30 行
+- 参数不超过 4 个，超过使用 dataclass
+- 必须添加类型注解
+- 一个函数只做一件事
+
+### 错误处理
+- 绝不使用 bare except
+- 捕获具体异常类型
+- 使用 Optional 处理可能为 None 的值
+
+### 代码组织
+- 导入顺序：标准库 → 第三方库 → 本地模块
+- 公开函数必须有 Docstring
+- 遵循 PEP 8 规范
+```
+
+### 6.3 PHP 项目模板
+
+```markdown
+## 编码标准（PHP）
+
+### 命名规范
+- 类文件：PascalCase.php
+- 变量/方法：camelCase
+- 类/接口/Trait：PascalCase
+- 常量：SCREAMING_SNAKE_CASE
+- 布尔值：is/has/can/should 前缀
+
+### 函数规范
+- 单个方法不超过 30 行
+- 参数不超过 4 个，超过使用 DTO
+- 必须声明参数类型和返回类型
+- 一个方法只做一件事
+
+### 错误处理
+- 绝不使用 @ 错误抑制符
+- 捕获具体异常类型
+- 使用 nullable 类型和 ?? 运算符
+
+### 代码组织
+- 遵循 PSR-12 规范
+- use 语句按字母排序
+- 公开方法必须有 PHPDoc 注释
+```
+
+### 6.4 多语言混合项目模板
+
+```markdown
+## 编码标准（多语言项目）
+
+### 通用原则
+- 遵循各语言官方风格指南
+- 保持项目内部一致性
+- 新代码遵循现有代码风格
+
+### 语言特定规范
+详见各语言独立配置：
+- TypeScript: 见上方 6.1
+- Python: 见上方 6.2
+- PHP: 见上方 6.3
+
+### 跨语言一致性
+- 常量统一使用 SCREAMING_SNAKE_CASE
+- 类名统一使用 PascalCase
+- 布尔值统一使用 is/has/can/should 前缀
+- API 命名风格统一（REST/GraphQL）
+```
+
+---
+
+## 七、常见问题
+
+### Q: Claude 不遵守命名规范怎么办？
+
+<Callout type="warning">
+**解决方案**：在配置中添加具体示例，并强调"必须"而非"建议"。
+</Callout>
+
+```markdown
+## 命名规范（强制）
+
+**必须严格遵循以下规范，没有例外：**
+
+### 变量命名
+- ✅ 正确：`userName`, `orderCount`, `isActive`
+- ❌ 错误：`user_name`, `OrderCount`, `active`
+
+### 函数命名
+- ✅ 正确：`getUserById`, `calculateTotal`
+- ❌ 错误：`get_user_by_id`, `GetUserById`
+
+**如果输出的代码不符合以上规范，视为不合格**
+```
+
+### Q: 如何让 Claude 自动拆分长函数？
+
+<Callout type="info">
+**解决方案**：明确长度限制，并要求拆分时说明理由。
+</Callout>
+
+```markdown
+## 函数长度限制
+
+**绝对禁止超过 50 行的函数**
+
+当函数超过 30 行时，必须：
+1. 识别可以独立的子任务
+2. 将每个子任务抽取为独立函数
+3. 使用有意义的函数名描述每个子任务
+4. 在主函数中调用这些子函数
+
+**拆分后的每个函数都应该能用一句话描述其功能**
+```
+
+### Q: 项目已有代码风格混乱，如何渐进式统一？
+
+<Callout type="info">
+**解决方案**：添加"遵循现有风格"的原则，同时设定长期目标。
+</Callout>
+
+```markdown
+## 代码风格原则
+
+### 短期原则（现有代码）
+- 修改现有文件时，遵循该文件的现有风格
+- 不要在一次 PR 中混合功能修改和风格修改
+- 风格统一应该是独立的重构任务
+
+### 长期目标（新代码）
+- 新文件必须遵循本文档的编码标准
+- 新模块应该成为风格统一的示范
+- 逐步在重构中统一旧代码风格
+```
+
+### Q: 多语言项目如何统一配置？
+
+<Callout type="info">
+**解决方案**：提取通用原则，同时保留语言特定规范。
+</Callout>
+
+```markdown
+## 多语言项目配置
+
+### 通用原则（所有语言）
+- 类名：PascalCase
+- 常量：SCREAMING_SNAKE_CASE
+- 布尔值：is/has/can/should 前缀
+- 函数长度：不超过 30 行
+
+### 语言特定（按需选择）
+根据当前文件的语言，遵循对应的详细规范：
+- .ts/.tsx 文件 → TypeScript 规范
+- .py 文件 → Python 规范
+- .php 文件 → PHP 规范
+```
+
+---
+
+## 八、总结
+
+编码标准配置是提升代码质量的基础：
+
+<div style={{ maxWidth: '600px' }}>
+
+| 模块 | 核心要点 |
+|:------|:---------|
+| 命名规范 | 统一风格，名副其实 |
+| 函数规范 | 短小精悍，单一职责 |
+| 错误处理 | 类型安全，不吞异常 |
+| 代码组织 | DRY 原则，清晰结构 |
+
+</div>
+
+<Callout type="info">
+**与其他配置的配合**：
+- 配合[质量红线](/practical-skills/config/quality-gates)：将关键规范升级为红线
+- 配合[三阶段工作流](/practical-skills/config/workflow)：在实现阶段遵循编码标准
+</Callout>
+
+## 下一步
+
+- [质量红线配置](/practical-skills/config/quality-gates) - 设置不可逾越的底线
+- [三阶段工作流配置](/practical-skills/config/workflow) - 确保规范被执行
+- [返回配置指南首页](/practical-skills/config)
