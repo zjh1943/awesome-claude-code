@@ -1,0 +1,235 @@
+---
+title: 快速体验 Gemini CLI
+description: 本页介绍如何使用 Gemini CLI 进行项目初始化、会话、代码修改、Git 操作及常见工作流程。
+---
+
+import { Cards, Card, Callout } from 'nextra/components'
+
+# 快速体验 Gemini CLI
+
+## Step 1: 开始你的第一个会话
+
+在任何项目目录中打开终端并启动 Gemini CLI:
+
+```bash
+cd /path/to/your/project
+gemini
+```
+
+你将看到 Gemini CLI 的欢迎界面,包含会话信息、最近的对话和最新更新。输入 `/help` 查看可用命令,或输入 `/resume` 继续之前的对话。
+
+<Callout type="info">
+你的凭证来自环境变量配置的api信息。
+</Callout>
+
+## Step 2: 提出你的第一个问题
+
+让我们从了解你的代码库开始。试试这些命令:
+
+```
+> what does this project do?
+```
+
+Gemini 会分析你的文件并提供摘要。你也可以提出更具体的问题:
+
+```
+> what technologies does this project use?
+```
+
+```
+> where is the main entry point?
+```
+
+```
+> explain the folder structure
+```
+
+你还可以询问 Gemini 关于它自己的功能:
+
+```
+> what can Gemini CLI do?
+```
+
+```
+> how do I use slash commands in Gemini CLI?
+```
+
+```
+> can Gemini CLI work with Docker?
+```
+
+<Callout type="info">
+Gemini CLI 会根据需要读取你的文件 - 你不需要手动添加上下文。Gemini 也可以访问它自己的文档,并能回答关于其功能和特性的问题。
+</Callout>
+
+## Step 3: 进行第一次代码修改
+
+现在让 Gemini CLI 进行一些实际的编码。尝试一个简单的任务:
+
+```
+> add a hello world function to the main file
+```
+
+Gemini CLI 将会:
+
+1. 找到合适的文件
+2. 向你展示建议的更改
+3. 请求你的批准
+4. 执行编辑
+
+<Callout type="info">
+Gemini CLI 在修改文件之前总是会请求许可。你可以批准单个更改,或在会话中启用 "Accept all" 模式。
+</Callout>
+
+## Step 4: 在 Gemini CLI 中使用 Git
+
+Gemini CLI 让 Git 操作变得对话化:
+
+```
+> what files have I changed?
+```
+
+```
+> commit my changes with a descriptive message
+```
+
+你也可以执行更复杂的 Git 操作:
+
+```
+> create a new branch called feature/quickstart
+```
+
+```
+> show me the last 5 commits
+```
+
+```
+> help me resolve merge conflicts
+```
+
+## Step 5: 修复 bug 或添加功能
+
+Gemini 擅长调试和功能实现。
+
+用自然语言描述你想要的:
+
+```
+> add input validation to the user registration form
+```
+
+或修复现有问题:
+
+```
+> there's a bug where users can submit empty forms - fix it
+```
+
+Gemini CLI 将会:
+
+* 定位相关代码
+* 理解上下文
+* 实现解决方案
+* 如果可用,运行测试
+
+## Step 6: 尝试其他常见工作流程
+
+有多种方式与 Gemini 协作:
+
+**重构代码**
+
+```
+> refactor the authentication module to use async/await instead of callbacks
+```
+
+**编写测试**
+
+```
+> write unit tests for the calculator functions
+```
+
+**更新文档**
+
+```
+> update the README with installation instructions
+```
+
+**代码审查**
+
+```
+> review my changes and suggest improvements
+```
+
+<Callout type="info">
+**记住**: Gemini CLI 是你的 AI 结对编程伙伴。像对待一位乐于助人的同事那样与它交流 - 描述你想要实现什么,它会帮助你达成目标。
+</Callout>
+
+## 基本命令
+
+以下是日常使用中最重要的命令:
+
+| 命令                | 作用                     | 示例                                |
+| ------------------- | ------------------------ | ----------------------------------- |
+| `gemini`            | 启动交互模式             | `gemini`                            |
+| `gemini "task"`     | 运行一次性任务           | `gemini "fix the build error"`      |
+| `gemini -p "query"` | 运行一次性查询后退出     | `gemini -p "explain this function"` |
+| `gemini -c`         | 继续最近的对话           | `gemini -c`                         |
+| `gemini -r`         | 恢复之前的对话           | `gemini -r`                         |
+| `gemini commit`     | 创建 Git commit          | `gemini commit`                     |
+| `/clear`            | 清除对话历史             | `> /clear`                          |
+| `/help`             | 显示可用命令             | `> /help`                           |
+| `exit` 或 Ctrl+C    | 退出 Gemini CLI          | `> exit`                            |
+
+## 新手实用技巧
+
+### 请求要具体
+
+不要说: "fix the bug"
+
+应该说: "fix the login bug where users see a blank screen after entering wrong credentials"
+
+### 使用分步指令
+
+将复杂任务分解为步骤:
+
+```
+> 1. create a new database table for user profiles
+```
+
+```
+> 2. create an API endpoint to get and update user profiles
+```
+
+```
+> 3. build a webpage that allows users to see and edit their information
+```
+
+### 让 Gemini 先探索
+
+在做出更改之前,让 Gemini 理解你的代码:
+
+```
+> analyze the database schema
+```
+
+```
+> build a dashboard showing products that are most frequently returned by our UK customers
+```
+
+### 使用快捷方式节省时间
+
+* 使用 Tab 进行命令补全
+* 按 ↑ 查看命令历史
+* 输入 `/` 查看所有 slash 命令
+
+
+## 获取帮助
+
+* **在 Gemini CLI 中**: 输入 `/help` 或询问 "how do I..."
+
+## 下一步
+
+掌握了这些基础操作后，你可以开始探索 Gemini CLI 在实际开发场景中的应用。
+
+<Cards>
+  <Cards.Card title="常用功能指南" href="/getting-started/how-to" />
+  <Cards.Card title="常见错误" href="/getting-started/gemini-common-errors" />
+</Cards>
