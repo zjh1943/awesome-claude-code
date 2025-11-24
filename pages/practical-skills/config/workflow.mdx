@@ -1,0 +1,488 @@
+---
+title: 三阶段工作流配置
+description: 让 Claude 像资深工程师一样思考：研究、计划、实现
+---
+
+import { Callout, Steps } from 'nextra/components'
+
+# 三阶段工作流配置
+
+让 Claude Code 按照"研究 → 计划 → 实现"的流程工作，是提升代码质量和减少返工的关键配置。
+
+## 一、为什么需要定义工作流程
+
+### 没有工作流程的问题
+
+如果不在 CLAUDE.md 中定义工作流程，Claude 的默认行为往往是：**收到需求后直接开始写代码**。
+
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', margin: '24px 0' }}>
+  <div style={{ padding: '16px', backgroundColor: '#fee2e2', borderRadius: '8px', border: '1px solid #fca5a5' }}>
+    <h4 style={{ margin: '0 0 12px 0', color: '#dc2626' }}>没有工作流程</h4>
+    <div style={{ fontSize: '14px', lineHeight: '1.8' }}>
+      <p>用户: "添加用户注册功能"</p>
+      <p>↓</p>
+      <p>Claude: 立即开始写代码...</p>
+      <p>↓</p>
+      <p>问题 1: 没检查项目已有 auth 模块</p>
+      <p>问题 2: 用了不兼容的验证库</p>
+      <p>问题 3: 遗漏了邮箱验证需求</p>
+      <p>↓</p>
+      <p style={{ fontWeight: 'bold', color: '#dc2626' }}>推倒重来</p>
+    </div>
+  </div>
+  <div style={{ padding: '16px', backgroundColor: '#dcfce7', borderRadius: '8px', border: '1px solid #86efac' }}>
+    <h4 style={{ margin: '0 0 12px 0', color: '#16a34a' }}>有工作流程</h4>
+    <div style={{ fontSize: '14px', lineHeight: '1.8' }}>
+      <p>用户: "添加用户注册功能"</p>
+      <p>↓</p>
+      <p>Claude: 先搜索现有代码...</p>
+      <p>Claude: 发现已有 auth 模块</p>
+      <p>Claude: 制定扩展方案</p>
+      <p>Claude: 列出需要确认的问题</p>
+      <p>↓</p>
+      <p>用户: 确认方案</p>
+      <p>↓</p>
+      <p style={{ fontWeight: 'bold', color: '#16a34a' }}>高质量交付</p>
+    </div>
+  </div>
+</div>
+
+### 典型问题场景
+
+<div style={{ maxWidth: '700px' }}>
+
+| 场景 | 没有工作流程的结果 | 有工作流程的结果 |
+|:------|:-------------------|:-----------------|
+| 需求理解偏差 | 写完才发现理解错了 | 计划阶段就能发现并确认 |
+| 遗漏现有代码 | 重复造轮子 | 研究阶段就能发现复用点 |
+| 方案不合理 | 实现后才发现坑 | 计划阶段就能识别风险 |
+| 技术选型错误 | 用了不兼容的库 | 研究阶段就能确认技术栈 |
+
+</div>
+
+<Callout type="info">
+**工作流程的核心价值**：把问题发现的时间点前移。在研究和计划阶段发现问题，修复成本几乎为零；在实现完成后发现问题，可能需要推倒重来。
+</Callout>
+
+## 二、三阶段工作流详解
+
+<div style={{ margin: '24px 0', padding: '20px', backgroundColor: '#f0fff4', borderRadius: '8px' }}>
+  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
+    <div style={{ padding: '16px 24px', backgroundColor: '#bbf7d0', borderRadius: '8px', textAlign: 'center', minWidth: '140px' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '16px' }}>1. 研究阶段</div>
+      <div style={{ fontSize: '12px', color: '#166534', marginTop: '4px' }}>RESEARCH</div>
+      <div style={{ fontSize: '24px', marginTop: '8px' }}>🔍</div>
+    </div>
+    <div style={{ fontSize: '24px' }}>→</div>
+    <div style={{ padding: '16px 24px', backgroundColor: '#fef08a', borderRadius: '8px', textAlign: 'center', minWidth: '140px' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '16px' }}>2. 计划阶段</div>
+      <div style={{ fontSize: '12px', color: '#854d0e', marginTop: '4px' }}>PLAN</div>
+      <div style={{ fontSize: '24px', marginTop: '8px' }}>📋</div>
+    </div>
+    <div style={{ fontSize: '24px' }}>→</div>
+    <div style={{ padding: '16px 24px', backgroundColor: '#bfdbfe', borderRadius: '8px', textAlign: 'center', minWidth: '140px' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '16px' }}>3. 实现阶段</div>
+      <div style={{ fontSize: '12px', color: '#1e40af', marginTop: '4px' }}>IMPLEMENT</div>
+      <div style={{ fontSize: '24px', marginTop: '8px' }}>⚡</div>
+    </div>
+  </div>
+</div>
+
+### 2.1 研究阶段（RESEARCH）
+
+**目的**：理解现状，避免重复造轮子，确保方案基于充分的信息。
+
+<div style={{ padding: '16px', backgroundColor: '#f0fdf4', borderRadius: '8px', border: '1px solid #bbf7d0', margin: '16px 0' }}>
+  <div style={{ fontWeight: 'bold', marginBottom: '12px', color: '#166534' }}>研究阶段的具体任务</div>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>检查现有代码</div>
+      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>搜索代码库中的类似实现，避免重复开发</div>
+    </div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>Glob/Grep 搜索</div>
+      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>使用工具快速定位相关文件和代码</div>
+    </div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>理解项目架构</div>
+      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>了解目录结构、依赖关系、设计模式</div>
+    </div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>联网搜索文档</div>
+      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>不确定时查找最新的官方文档和最佳实践</div>
+    </div>
+  </div>
+</div>
+
+**配置示例**：
+
+```markdown
+## 核心工作流程
+
+### 1. 研究阶段（RESEARCH）
+
+**每个任务开始前必须执行：**
+
+- 使用 Glob 搜索相关文件：`*.ts`, `*.tsx`, `*.service.ts` 等
+- 使用 Grep 搜索关键词：函数名、类名、相关业务术语
+- 检查现有代码库中的类似实现
+- 阅读相关模块的 README 或注释
+- 理解项目架构和依赖关系
+
+**不确定时必须联网搜索：**
+- 新技术/框架的最佳实践
+- 特定库的最新 API 文档
+- 错误消息的解决方案
+```
+
+<Callout type="warning">
+**关键点**：研究阶段不要急于动手。花 2 分钟搜索现有代码，可能节省 2 小时的重复开发。
+</Callout>
+
+---
+
+### 2.2 计划阶段（PLAN）
+
+**目的**：明确实现方案，获得用户确认后再动手，避免方向性错误。
+
+<div style={{ padding: '16px', backgroundColor: '#fefce8', borderRadius: '8px', border: '1px solid #fef08a', margin: '16px 0' }}>
+  <div style={{ fontWeight: 'bold', marginBottom: '12px', color: '#854d0e' }}>计划阶段的具体任务</div>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>列出文件清单</div>
+      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>明确要修改/创建的所有文件</div>
+    </div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>说明实现方案</div>
+      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>描述关键步骤和技术选型</div>
+    </div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>识别潜在风险</div>
+      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>列出边缘情况和可能的坑</div>
+    </div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#dc2626' }}>等待用户确认</div>
+      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>获得明确确认后才开始编码</div>
+    </div>
+  </div>
+</div>
+
+**配置示例**：
+
+```markdown
+### 2. 计划阶段（PLAN）
+
+**必须输出以下内容：**
+
+1. **文件清单**：列出所有要修改或创建的文件
+2. **实现方案**：说明关键步骤和技术选型理由
+3. **风险识别**：列出潜在问题和边缘情况
+4. **待确认问题**：列出需要用户澄清的问题
+
+**重要：获得用户确认后再开始编码**
+
+- 如果用户说"继续"、"开始"、"可以"，才进入实现阶段
+- 如果方案有重大变更，需要重新确认
+- 不要假设用户同意，必须等待明确的确认信号
+```
+
+<Callout type="error">
+**最重要的一条**：`获得用户确认后再开始编码`。这是整个工作流程的关键检查点，能避免大量无效工作。
+</Callout>
+
+---
+
+### 2.3 实现阶段（IMPLEMENT）
+
+**目的**：高质量交付，确保代码符合规范并经过验证。
+
+<div style={{ padding: '16px', backgroundColor: '#eff6ff', borderRadius: '8px', border: '1px solid #bfdbfe', margin: '16px 0' }}>
+  <div style={{ fontWeight: 'bold', marginBottom: '12px', color: '#1e40af' }}>实现阶段的具体任务</div>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>遵循代码风格</div>
+      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>与项目现有代码保持一致</div>
+    </div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>完整错误处理</div>
+      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>绝不跳过异常处理和边界检查</div>
+    </div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>同步写测试</div>
+      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>编码时同步添加单元测试</div>
+    </div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>运行质量检查</div>
+      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>Linter、Formatter、Type Check</div>
+    </div>
+  </div>
+</div>
+
+**配置示例**：
+
+```markdown
+### 3. 实现阶段（IMPLEMENT）
+
+**编码要求：**
+
+- 遵循项目现有代码风格（命名、缩进、组织结构）
+- 完整的错误处理（绝不跳过）
+- 编写时同步添加测试
+- 添加必要的注释（复杂逻辑、关键决策）
+
+**完成后必须执行：**
+
+- 运行 Linter：确保零警告零错误
+- 运行 Formatter：确保代码格式一致
+- 运行 Type Check：确保类型安全
+- 运行测试：确保所有测试通过
+
+**绝不允许：**
+
+- 提交未通过检查的代码
+- 使用 TODO/FIXME 作为最终代码
+- 跳过错误处理
+- 硬编码敏感信息
+```
+
+<Callout type="info">
+**实现阶段的核心原则**：每次提交的代码都应该是"生产就绪"的，不是"先凑合再完善"。
+</Callout>
+
+---
+
+## 三、完整配置模板
+
+以下是可以直接复制到 CLAUDE.md 中使用的完整配置：
+
+```markdown
+## 核心工作流程
+
+**重要：每个任务必须遵循此流程，不可跳过任何阶段**
+
+### 1. 研究阶段（RESEARCH）
+
+在开始任何任务前，必须先执行：
+
+- 检查现有代码库中的类似实现
+- 使用 Glob/Grep 搜索相关代码
+- 理解项目架构和依赖关系
+- 阅读相关文件的注释和文档
+
+**不确定时联网搜索：**
+- 新技术/框架的最佳实践
+- 特定库的最新 API 文档
+- 错误消息的解决方案
+
+### 2. 计划阶段（PLAN）
+
+研究完成后，必须输出：
+
+- **文件清单**：要修改/创建的文件列表
+- **实现方案**：关键步骤和技术选型
+- **风险识别**：潜在问题和边缘情况
+- **待确认问题**：需要用户澄清的问题
+
+**重要：获得用户确认后再开始编码**
+
+### 3. 实现阶段（IMPLEMENT）
+
+获得确认后，按照计划执行：
+
+- 遵循项目现有代码风格
+- 完整的错误处理（绝不跳过）
+- 编写时同步添加测试
+- 运行 linter/formatter/type-checker
+
+**完成标准：**
+- Linter 零警告零错误
+- 所有测试通过
+- 类型检查通过
+- 代码已格式化
+
+---
+
+**复杂架构问题：先深度思考再提出方案**
+```
+
+---
+
+## 四、进阶配置技巧
+
+### 4.1 针对复杂任务的扩展
+
+对于复杂的架构设计或技术决策，可以要求 Claude 进行"深度思考"：
+
+```markdown
+## 复杂任务处理
+
+对于以下类型的任务，在计划阶段需要进行深度思考：
+
+- 涉及多个模块的架构变更
+- 新技术/框架的引入
+- 性能优化方案
+- 数据库 Schema 设计
+
+**深度思考要求：**
+1. 列出至少 2-3 种可行方案
+2. 分析每种方案的优缺点
+3. 说明推荐方案的理由
+4. 识别潜在的技术债务
+```
+
+### 4.2 针对不同场景的变体
+
+<div style={{ margin: '16px 0' }}>
+  <div style={{ marginBottom: '12px' }}>
+    <div style={{ padding: '12px', backgroundColor: '#fef2f2', borderRadius: '8px', marginBottom: '8px', border: '1px solid #fecaca' }}>
+      <div style={{ fontWeight: 'bold', color: '#dc2626' }}>Bug 修复场景</div>
+      <div style={{ fontSize: '14px', marginTop: '8px' }}>
+        <strong>研究重点</strong>：复现问题、定位根因、检查相关代码<br/>
+        <strong>计划重点</strong>：修复方案、影响范围、回归测试点<br/>
+        <strong>实现重点</strong>：最小化改动、添加回归测试
+      </div>
+    </div>
+  </div>
+  <div style={{ marginBottom: '12px' }}>
+    <div style={{ padding: '12px', backgroundColor: '#f0fdf4', borderRadius: '8px', marginBottom: '8px', border: '1px solid #bbf7d0' }}>
+      <div style={{ fontWeight: 'bold', color: '#166534' }}>新功能开发场景</div>
+      <div style={{ fontSize: '14px', marginTop: '8px' }}>
+        <strong>研究重点</strong>：需求理解、现有代码复用点、技术选型<br/>
+        <strong>计划重点</strong>：模块划分、接口设计、测试策略<br/>
+        <strong>实现重点</strong>：渐进式开发、持续测试、文档同步
+      </div>
+    </div>
+  </div>
+  <div>
+    <div style={{ padding: '12px', backgroundColor: '#eff6ff', borderRadius: '8px', border: '1px solid #bfdbfe' }}>
+      <div style={{ fontWeight: 'bold', color: '#1e40af' }}>重构任务场景</div>
+      <div style={{ fontSize: '14px', marginTop: '8px' }}>
+        <strong>研究重点</strong>：现有代码分析、依赖关系、影响范围<br/>
+        <strong>计划重点</strong>：重构步骤、向后兼容、回滚方案<br/>
+        <strong>实现重点</strong>：小步迭代、保持测试通过、及时提交
+      </div>
+    </div>
+  </div>
+</div>
+
+**场景化配置示例**：
+
+```markdown
+## 场景化工作流程
+
+### Bug 修复流程
+1. **研究**：复现问题 → 定位根因 → 检查相关代码
+2. **计划**：说明根因 → 修复方案 → 影响范围
+3. **实现**：最小化改动 → 添加回归测试 → 验证修复
+
+### 新功能流程
+1. **研究**：理解需求 → 搜索复用点 → 确认技术栈
+2. **计划**：模块设计 → 接口定义 → 测试策略
+3. **实现**：渐进开发 → 同步测试 → 更新文档
+
+### 重构流程
+1. **研究**：分析现状 → 识别问题 → 评估影响
+2. **计划**：重构方案 → 分步计划 → 回滚预案
+3. **实现**：小步迭代 → 保持测试通过 → 及时提交
+```
+
+---
+
+## 五、常见问题
+
+### Q: Claude 还是会跳过研究阶段怎么办？
+
+<Callout type="warning">
+**解决方案**：在配置中添加更强的约束语言，并明确惩罚措施。
+</Callout>
+
+```markdown
+## 研究阶段（强制）
+
+**绝不允许跳过研究阶段**
+
+在输出任何代码之前，必须先展示：
+- 搜索了哪些文件/关键词
+- 发现了哪些相关代码
+- 项目使用的相关技术/模式
+
+如果没有展示以上内容就开始写代码，视为违反工作流程。
+```
+
+### Q: 如何让 Claude 在计划阶段给出更详细的方案？
+
+<Callout type="info">
+**解决方案**：明确要求计划的格式和内容。
+</Callout>
+
+```markdown
+## 计划阶段输出格式
+
+计划必须包含以下部分：
+
+### 文件变更清单
+| 文件路径 | 操作 | 变更说明 |
+|---------|------|---------|
+| src/xxx | 新增 | ... |
+| src/yyy | 修改 | ... |
+
+### 实现步骤
+1. 第一步：...
+2. 第二步：...
+
+### 风险评估
+- 风险 1：...
+- 风险 2：...
+
+### 待确认问题
+- [ ] 问题 1
+- [ ] 问题 2
+```
+
+### Q: 实现阶段如何确保代码质量？
+
+<Callout type="info">
+**解决方案**：与"质量红线"配置配合使用，设置明确的完成标准。
+</Callout>
+
+```markdown
+## 实现阶段完成标准
+
+代码提交前必须满足：
+
+- [ ] Linter 检查通过（零警告）
+- [ ] 类型检查通过（TypeScript strict mode）
+- [ ] 所有测试通过
+- [ ] 新增代码有对应测试
+- [ ] 无 TODO/FIXME 遗留
+- [ ] 无硬编码的配置/密钥
+```
+
+---
+
+## 六、总结
+
+三阶段工作流程是 CLAUDE.md 配置中最重要的模块之一：
+
+<div style={{ maxWidth: '600px' }}>
+
+| 阶段 | 核心价值 | 关键输出 |
+|:------|:---------|:---------|
+| 研究 | 避免重复造轮子 | 现有代码分析结果 |
+| 计划 | 避免方向性错误 | 实现方案和文件清单 |
+| 实现 | 高质量交付 | 符合规范的代码 |
+
+</div>
+
+<Callout type="info">
+**与其他配置的配合**：
+- 配合[质量红线](/practical-skills/config/quality-gates)：确保实现阶段的代码质量
+- 配合[编码标准](/practical-skills/config/coding-standards)：确保代码风格一致
+- 配合[测试规范](/practical-skills/config/testing)：确保测试覆盖完整
+</Callout>
+
+## 下一步
+
+- [质量红线配置](/practical-skills/config/quality-gates) - 设置代码质量的底线
+- [编码标准配置](/practical-skills/config/coding-standards) - 统一代码风格
+- [返回配置指南首页](/practical-skills/config)
