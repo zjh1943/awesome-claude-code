@@ -145,12 +145,12 @@ claude-code.club AI API 系统现在支持通过兼容 Gemini Assist API 的方�
   在 Gemini CLI 控制台中，您可能会看到 `Failed to fetch user info: 401 Unauthorized` 的提示。这属于正常现象，且不影响工具的正常使用。
 </Callout>
 
-### 错误方式：通过 Gemini API 方式访问 (不能用)
+### 错误配置：直接使用 Gemini API Key (请避免)
 
 <Callout type="error">
   **强烈警告：请勿使用此方式！**
   <br />
-  此方式通过直接使用 Gemini API不能利用额度，会触发 `429 Too Many Requests` 错误，导致服务中断。
+  此方式通过直接使用 Gemini API 无法利用额度，会触发 `429 Too Many Requests` 错误，导致服务中断。
   <br />
   **无论您从何处了解此配置，都请勿在此处使用。**
 </Callout>
@@ -266,7 +266,7 @@ gemini --version
 gemini
 ```
 如果是首次运行，你可能会看到欢迎信息或被要求进行简单的初始化设置。  
-如果提示认证，请选择 `1. Login with Google`，检查到已配置环境变量`CODE_ASSIST_ENDPOINT`会尝试登录对应系统。
+如果提示认证，请选择 `1. Login with Google`。工具检测到已配置 `CODE_ASSIST_ENDPOINT` 环境变量后，将自动连接至我们的服务。
 <Callout type="success">
   **🎉 恭喜！**  
   你已经成功安装并配置了 Google Gemini CLI。现在可以开始体验 AI 辅助编码的强大功能了。
