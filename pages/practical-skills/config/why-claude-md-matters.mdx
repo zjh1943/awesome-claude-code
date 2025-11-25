@@ -15,9 +15,9 @@ CLAUDE.md 是 Claude Code 的核心配置文件，它决定了 AI 助手如何�
 
 {/* 对比图：有无 CLAUDE.md 的差异 */}
 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', margin: '24px 0' }}>
-  <div style={{ padding: '16px', backgroundColor: '#fee2e2', borderRadius: '8px', border: '1px solid #fca5a5' }}>
-    <h4 style={{ margin: '0 0 12px 0', color: '#dc2626' }}>没有 CLAUDE.md</h4>
-    <div style={{ fontSize: '14px', lineHeight: '1.8' }}>
+  <div style={{ padding: '16px', backgroundColor: '#fff5f5', borderRadius: '8px', border: '2px solid #fc8181' }}>
+    <h4 style={{ margin: '0 0 12px 0', color: '#c53030' }}>没有 CLAUDE.md</h4>
+    <div style={{ fontSize: '14px', lineHeight: '1.8', color: '#2d3748' }}>
       <p>用户: "写一个登录函数"</p>
       <p>↓</p>
       <p>Claude: 直接开始写代码</p>
@@ -28,12 +28,12 @@ CLAUDE.md 是 Claude Code 的核心配置文件，它决定了 AI 助手如何�
       <p>用户: "加上错误处理"</p>
       <p>用户: "不要用 any"</p>
       <p>↓</p>
-      <p style={{ fontWeight: 'bold', color: '#dc2626' }}>反复修改 3-5 次</p>
+      <p style={{ fontWeight: 'bold', color: '#c53030' }}>反复修改 3-5 次</p>
     </div>
   </div>
-  <div style={{ padding: '16px', backgroundColor: '#dcfce7', borderRadius: '8px', border: '1px solid #86efac' }}>
-    <h4 style={{ margin: '0 0 12px 0', color: '#16a34a' }}>有 CLAUDE.md</h4>
-    <div style={{ fontSize: '14px', lineHeight: '1.8' }}>
+  <div style={{ padding: '16px', backgroundColor: '#f0fff4', borderRadius: '8px', border: '2px solid #48bb78' }}>
+    <h4 style={{ margin: '0 0 12px 0', color: '#22543d' }}>有 CLAUDE.md</h4>
+    <div style={{ fontSize: '14px', lineHeight: '1.8', color: '#2d3748' }}>
       <p>用户: "写一个登录函数"</p>
       <p>↓</p>
       <p>Claude: 先研究现有代码</p>
@@ -44,7 +44,7 @@ CLAUDE.md 是 Claude Code 的核心配置文件，它决定了 AI 助手如何�
       <p>↓</p>
       <p>输出: 符合项目规范、完整错误处理、正确类型定义</p>
       <p>↓</p>
-      <p style={{ fontWeight: 'bold', color: '#16a34a' }}>一次到位</p>
+      <p style={{ fontWeight: 'bold', color: '#22543d' }}>一次到位</p>
     </div>
   </div>
 </div>
@@ -99,50 +99,50 @@ CLAUDE.md 的本质是一份**工作契约**：你只需定义一次规范，Cla
 {/* CLAUDE.md 模块架构图 */}
 <div style={{ margin: '24px 0' }}>
   <div style={{ marginBottom: '16px' }}>
-    <div style={{ padding: '12px', backgroundColor: '#fef2f2', borderRadius: '8px', marginBottom: '8px', border: '1px solid #fecaca' }}>
-      <div style={{ fontWeight: 'bold', marginBottom: '8px', color: '#dc2626' }}>高优先级（必须配置）</div>
+    <div style={{ padding: '12px', backgroundColor: '#fff5f5', borderRadius: '8px', marginBottom: '8px', border: '2px solid #fc8181' }}>
+      <div style={{ fontWeight: 'bold', marginBottom: '8px', color: '#c53030' }}>高优先级（必须配置）</div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
-        <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', textAlign: 'center', fontSize: '13px' }}>
+        <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', textAlign: 'center', fontSize: '13px', color: '#2d3748' }}>
           <div style={{ fontWeight: 'bold' }}>核心工作流程</div>
-          <div style={{ color: '#666' }}>研究→计划→实现</div>
+          <div style={{ color: '#718096' }}>研究→计划→实现</div>
         </div>
-        <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', textAlign: 'center', fontSize: '13px' }}>
+        <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', textAlign: 'center', fontSize: '13px', color: '#2d3748' }}>
           <div style={{ fontWeight: 'bold' }}>质量红线</div>
-          <div style={{ color: '#666' }}>禁止清单+检查清单</div>
+          <div style={{ color: '#718096' }}>禁止清单+检查清单</div>
         </div>
-        <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', textAlign: 'center', fontSize: '13px' }}>
+        <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', textAlign: 'center', fontSize: '13px', color: '#2d3748' }}>
           <div style={{ fontWeight: 'bold' }}>编码标准</div>
-          <div style={{ color: '#666' }}>命名+函数规范</div>
+          <div style={{ color: '#718096' }}>命名+函数规范</div>
         </div>
-        <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', textAlign: 'center', fontSize: '13px' }}>
+        <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', textAlign: 'center', fontSize: '13px', color: '#2d3748' }}>
           <div style={{ fontWeight: 'bold' }}>安全标准</div>
-          <div style={{ color: '#666' }}>输入验证+数据安全</div>
+          <div style={{ color: '#718096' }}>输入验证+数据安全</div>
         </div>
       </div>
     </div>
-    <div style={{ padding: '12px', backgroundColor: '#fef9c3', borderRadius: '8px', marginBottom: '8px', border: '1px solid #fde047' }}>
-      <div style={{ fontWeight: 'bold', marginBottom: '8px', color: '#ca8a04' }}>中优先级（推荐配置）</div>
+    <div style={{ padding: '12px', backgroundColor: '#fffbeb', borderRadius: '8px', marginBottom: '8px', border: '2px solid #fbbf24' }}>
+      <div style={{ fontWeight: 'bold', marginBottom: '8px', color: '#92400e' }}>中优先级（推荐配置）</div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
-        <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', textAlign: 'center', fontSize: '13px' }}>
+        <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', textAlign: 'center', fontSize: '13px', color: '#2d3748' }}>
           <div style={{ fontWeight: 'bold' }}>技术栈适配</div>
-          <div style={{ color: '#666' }}>框架+依赖管理</div>
+          <div style={{ color: '#718096' }}>框架+依赖管理</div>
         </div>
-        <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', textAlign: 'center', fontSize: '13px' }}>
+        <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', textAlign: 'center', fontSize: '13px', color: '#2d3748' }}>
           <div style={{ fontWeight: 'bold' }}>测试规范</div>
-          <div style={{ color: '#666' }}>覆盖率+文件组织</div>
+          <div style={{ color: '#718096' }}>覆盖率+文件组织</div>
         </div>
-        <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', textAlign: 'center', fontSize: '13px' }}>
+        <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', textAlign: 'center', fontSize: '13px', color: '#2d3748' }}>
           <div style={{ fontWeight: 'bold' }}>Git 规范</div>
-          <div style={{ color: '#666' }}>分支+提交格式</div>
+          <div style={{ color: '#718096' }}>分支+提交格式</div>
         </div>
       </div>
     </div>
-    <div style={{ padding: '12px', backgroundColor: '#f0f9ff', borderRadius: '8px', border: '1px solid #bae6fd' }}>
-      <div style={{ fontWeight: 'bold', marginBottom: '8px', color: '#0284c7' }}>低优先级（可选配置）</div>
+    <div style={{ padding: '12px', backgroundColor: '#eff6ff', borderRadius: '8px', border: '2px solid #60a5fa' }}>
+      <div style={{ fontWeight: 'bold', marginBottom: '8px', color: '#1e40af' }}>低优先级（可选配置）</div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(1, 1fr)', gap: '8px', maxWidth: '200px' }}>
-        <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', textAlign: 'center', fontSize: '13px' }}>
+        <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', textAlign: 'center', fontSize: '13px', color: '#2d3748' }}>
           <div style={{ fontWeight: 'bold' }}>沟通风格</div>
-          <div style={{ color: '#666' }}>语言偏好+交互方式</div>
+          <div style={{ color: '#718096' }}>语言偏好+交互方式</div>
         </div>
       </div>
     </div>
@@ -154,39 +154,39 @@ CLAUDE.md 的本质是一份**工作契约**：你只需定义一次规范，Cla
 **作用**：定义 Claude 处理任务的标准流程，避免"上来就写代码"的冲动。
 
 {/* 三阶段工作流流程图 */}
-<div style={{ margin: '24px 0', padding: '20px', backgroundColor: '#f0fff4', borderRadius: '8px' }}>
+<div style={{ margin: '24px 0', padding: '20px', backgroundColor: '#f0fff4', borderRadius: '8px', border: '1px solid #86efac' }}>
   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
-    <div style={{ padding: '16px 24px', backgroundColor: '#bbf7d0', borderRadius: '8px', textAlign: 'center' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '16px' }}>1. 研究阶段</div>
-      <div style={{ fontSize: '12px', color: '#166534', marginTop: '4px' }}>RESEARCH</div>
-      <div style={{ fontSize: '12px', marginTop: '8px', textAlign: 'left' }}>
+    <div style={{ padding: '16px 24px', backgroundColor: '#d1fae5', borderRadius: '8px', textAlign: 'center', border: '1px solid #6ee7b7' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '16px', color: '#065f46' }}>1. 研究阶段</div>
+      <div style={{ fontSize: '12px', color: '#047857', marginTop: '4px' }}>RESEARCH</div>
+      <div style={{ fontSize: '12px', marginTop: '8px', textAlign: 'left', color: '#1f2937' }}>
         - 检查现有代码<br/>
         - Glob/Grep 搜索<br/>
         - 理解架构
       </div>
     </div>
-    <div style={{ fontSize: '24px' }}>→</div>
-    <div style={{ padding: '16px 24px', backgroundColor: '#fef08a', borderRadius: '8px', textAlign: 'center' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '16px' }}>2. 计划阶段</div>
-      <div style={{ fontSize: '12px', color: '#854d0e', marginTop: '4px' }}>PLAN</div>
-      <div style={{ fontSize: '12px', marginTop: '8px', textAlign: 'left' }}>
+    <div style={{ fontSize: '24px', color: '#059669' }}>→</div>
+    <div style={{ padding: '16px 24px', backgroundColor: '#fef3c7', borderRadius: '8px', textAlign: 'center', border: '1px solid #fcd34d' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '16px', color: '#78350f' }}>2. 计划阶段</div>
+      <div style={{ fontSize: '12px', color: '#92400e', marginTop: '4px' }}>PLAN</div>
+      <div style={{ fontSize: '12px', marginTop: '8px', textAlign: 'left', color: '#1f2937' }}>
         - 列出文件清单<br/>
         - 说明方案<br/>
         - 识别风险
       </div>
     </div>
-    <div style={{ fontSize: '24px' }}>→</div>
-    <div style={{ padding: '16px 24px', backgroundColor: '#bfdbfe', borderRadius: '8px', textAlign: 'center' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '16px' }}>3. 实现阶段</div>
+    <div style={{ fontSize: '24px', color: '#059669' }}>→</div>
+    <div style={{ padding: '16px 24px', backgroundColor: '#dbeafe', borderRadius: '8px', textAlign: 'center', border: '1px solid #93c5fd' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '16px', color: '#1e3a8a' }}>3. 实现阶段</div>
       <div style={{ fontSize: '12px', color: '#1e40af', marginTop: '4px' }}>IMPLEMENT</div>
-      <div style={{ fontSize: '12px', marginTop: '8px', textAlign: 'left' }}>
+      <div style={{ fontSize: '12px', marginTop: '8px', textAlign: 'left', color: '#1f2937' }}>
         - 遵循代码风格<br/>
         - 完整错误处理<br/>
         - 同步写测试
       </div>
     </div>
   </div>
-  <div style={{ textAlign: 'center', marginTop: '16px', padding: '8px', backgroundColor: '#fecaca', borderRadius: '4px', maxWidth: '200px', margin: '16px auto 0' }}>
+  <div style={{ textAlign: 'center', marginTop: '16px', padding: '8px', backgroundColor: '#fee2e2', borderRadius: '4px', maxWidth: '200px', margin: '16px auto 0', border: '1px solid #fca5a5', color: '#991b1b', fontWeight: 'bold' }}>
     等待用户确认再编码
   </div>
 </div>
@@ -453,25 +453,25 @@ CLAUDE.md 的本质是一份**工作契约**：你只需定义一次规范，Cla
 {/* 配置文件层次结构图 */}
 <div style={{ margin: '24px 0' }}>
   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxWidth: '500px' }}>
-    <div style={{ padding: '16px', backgroundColor: '#dcfce7', borderRadius: '8px', border: '2px solid #22c55e' }}>
+    <div style={{ padding: '16px', backgroundColor: '#f0fdf4', borderRadius: '8px', border: '2px solid #4ade80' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <div style={{ fontWeight: 'bold', color: '#166534' }}>项目级配置（优先级最高）</div>
-          <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>位置：项目根目录/CLAUDE.md</div>
-          <div style={{ fontSize: '13px', color: '#666' }}>作用：当前项目特定规范</div>
+          <div style={{ fontWeight: 'bold', color: '#15803d' }}>项目级配置（优先级最高）</div>
+          <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>位置：项目根目录/CLAUDE.md</div>
+          <div style={{ fontSize: '13px', color: '#4b5563' }}>作用：当前项目特定规范</div>
         </div>
-        <div style={{ fontSize: '24px' }}>1</div>
+        <div style={{ fontSize: '24px', color: '#15803d', fontWeight: 'bold' }}>1</div>
       </div>
     </div>
-    <div style={{ textAlign: 'center', fontSize: '20px' }}>↓ 覆盖</div>
-    <div style={{ padding: '16px', backgroundColor: '#f0f9ff', borderRadius: '8px', border: '2px solid #0ea5e9' }}>
+    <div style={{ textAlign: 'center', fontSize: '20px', color: '#059669' }}>↓ 覆盖</div>
+    <div style={{ padding: '16px', backgroundColor: '#eff6ff', borderRadius: '8px', border: '2px solid #3b82f6' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <div style={{ fontWeight: 'bold', color: '#0369a1' }}>全局配置（优先级较低）</div>
-          <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>位置：~/.claude/CLAUDE.md</div>
-          <div style={{ fontSize: '13px', color: '#666' }}>作用：所有项目通用偏好</div>
+          <div style={{ fontWeight: 'bold', color: '#1e40af' }}>全局配置（优先级较低）</div>
+          <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>位置：~/.claude/CLAUDE.md</div>
+          <div style={{ fontSize: '13px', color: '#4b5563' }}>作用：所有项目通用偏好</div>
         </div>
-        <div style={{ fontSize: '24px' }}>2</div>
+        <div style={{ fontSize: '24px', color: '#1e40af', fontWeight: 'bold' }}>2</div>
       </div>
     </div>
   </div>
