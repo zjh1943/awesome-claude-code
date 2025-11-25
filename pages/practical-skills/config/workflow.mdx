@@ -16,9 +16,9 @@ import { Callout, Steps } from 'nextra/components'
 如果不在 CLAUDE.md 中定义工作流程，Claude 的默认行为往往是：**收到需求后直接开始写代码**。
 
 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', margin: '24px 0' }}>
-  <div style={{ padding: '16px', backgroundColor: '#fee2e2', borderRadius: '8px', border: '1px solid #fca5a5' }}>
-    <h4 style={{ margin: '0 0 12px 0', color: '#dc2626' }}>没有工作流程</h4>
-    <div style={{ fontSize: '14px', lineHeight: '1.8' }}>
+  <div style={{ padding: '16px', backgroundColor: '#fff5f5', borderRadius: '8px', border: '2px solid #fc8181' }}>
+    <h4 style={{ margin: '0 0 12px 0', color: '#c53030' }}>没有工作流程</h4>
+    <div style={{ fontSize: '14px', lineHeight: '1.8', color: '#2d3748' }}>
       <p>用户: "添加用户注册功能"</p>
       <p>↓</p>
       <p>Claude: 立即开始写代码...</p>
@@ -27,12 +27,12 @@ import { Callout, Steps } from 'nextra/components'
       <p>问题 2: 用了不兼容的验证库</p>
       <p>问题 3: 遗漏了邮箱验证需求</p>
       <p>↓</p>
-      <p style={{ fontWeight: 'bold', color: '#dc2626' }}>推倒重来</p>
+      <p style={{ fontWeight: 'bold', color: '#c53030' }}>推倒重来</p>
     </div>
   </div>
-  <div style={{ padding: '16px', backgroundColor: '#dcfce7', borderRadius: '8px', border: '1px solid #86efac' }}>
-    <h4 style={{ margin: '0 0 12px 0', color: '#16a34a' }}>有工作流程</h4>
-    <div style={{ fontSize: '14px', lineHeight: '1.8' }}>
+  <div style={{ padding: '16px', backgroundColor: '#f0fff4', borderRadius: '8px', border: '2px solid #48bb78' }}>
+    <h4 style={{ margin: '0 0 12px 0', color: '#22543d' }}>有工作流程</h4>
+    <div style={{ fontSize: '14px', lineHeight: '1.8', color: '#2d3748' }}>
       <p>用户: "添加用户注册功能"</p>
       <p>↓</p>
       <p>Claude: 先搜索现有代码...</p>
@@ -42,7 +42,7 @@ import { Callout, Steps } from 'nextra/components'
       <p>↓</p>
       <p>用户: 确认方案</p>
       <p>↓</p>
-      <p style={{ fontWeight: 'bold', color: '#16a34a' }}>高质量交付</p>
+      <p style={{ fontWeight: 'bold', color: '#22543d' }}>高质量交付</p>
     </div>
   </div>
 </div>
@@ -66,22 +66,22 @@ import { Callout, Steps } from 'nextra/components'
 
 ## 二、三阶段工作流详解
 
-<div style={{ margin: '24px 0', padding: '20px', backgroundColor: '#f0fff4', borderRadius: '8px' }}>
+<div style={{ margin: '24px 0', padding: '20px', backgroundColor: '#f0fff4', borderRadius: '8px', border: '1px solid #86efac' }}>
   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
-    <div style={{ padding: '16px 24px', backgroundColor: '#bbf7d0', borderRadius: '8px', textAlign: 'center', minWidth: '140px' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '16px' }}>1. 研究阶段</div>
-      <div style={{ fontSize: '12px', color: '#166534', marginTop: '4px' }}>RESEARCH</div>
+    <div style={{ padding: '16px 24px', backgroundColor: '#d1fae5', borderRadius: '8px', textAlign: 'center', minWidth: '140px', border: '1px solid #6ee7b7' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '16px', color: '#065f46' }}>1. 研究阶段</div>
+      <div style={{ fontSize: '12px', color: '#047857', marginTop: '4px' }}>RESEARCH</div>
       <div style={{ fontSize: '24px', marginTop: '8px' }}>🔍</div>
     </div>
-    <div style={{ fontSize: '24px' }}>→</div>
-    <div style={{ padding: '16px 24px', backgroundColor: '#fef08a', borderRadius: '8px', textAlign: 'center', minWidth: '140px' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '16px' }}>2. 计划阶段</div>
-      <div style={{ fontSize: '12px', color: '#854d0e', marginTop: '4px' }}>PLAN</div>
+    <div style={{ fontSize: '24px', color: '#059669' }}>→</div>
+    <div style={{ padding: '16px 24px', backgroundColor: '#fef3c7', borderRadius: '8px', textAlign: 'center', minWidth: '140px', border: '1px solid #fcd34d' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '16px', color: '#78350f' }}>2. 计划阶段</div>
+      <div style={{ fontSize: '12px', color: '#92400e', marginTop: '4px' }}>PLAN</div>
       <div style={{ fontSize: '24px', marginTop: '8px' }}>📋</div>
     </div>
-    <div style={{ fontSize: '24px' }}>→</div>
-    <div style={{ padding: '16px 24px', backgroundColor: '#bfdbfe', borderRadius: '8px', textAlign: 'center', minWidth: '140px' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '16px' }}>3. 实现阶段</div>
+    <div style={{ fontSize: '24px', color: '#059669' }}>→</div>
+    <div style={{ padding: '16px 24px', backgroundColor: '#dbeafe', borderRadius: '8px', textAlign: 'center', minWidth: '140px', border: '1px solid #93c5fd' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '16px', color: '#1e3a8a' }}>3. 实现阶段</div>
       <div style={{ fontSize: '12px', color: '#1e40af', marginTop: '4px' }}>IMPLEMENT</div>
       <div style={{ fontSize: '24px', marginTop: '8px' }}>⚡</div>
     </div>
@@ -92,24 +92,24 @@ import { Callout, Steps } from 'nextra/components'
 
 **目的**：理解现状，避免重复造轮子，确保方案基于充分的信息。
 
-<div style={{ padding: '16px', backgroundColor: '#f0fdf4', borderRadius: '8px', border: '1px solid #bbf7d0', margin: '16px 0' }}>
-  <div style={{ fontWeight: 'bold', marginBottom: '12px', color: '#166534' }}>研究阶段的具体任务</div>
+<div style={{ padding: '16px', backgroundColor: '#f0fdf4', borderRadius: '8px', border: '2px solid #86efac', margin: '16px 0' }}>
+  <div style={{ fontWeight: 'bold', marginBottom: '12px', color: '#15803d' }}>研究阶段的具体任务</div>
   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
-    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>检查现有代码</div>
-      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>搜索代码库中的类似实现，避免重复开发</div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px', border: '1px solid #d1fae5' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>检查现有代码</div>
+      <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>搜索代码库中的类似实现，避免重复开发</div>
     </div>
-    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>Glob/Grep 搜索</div>
-      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>使用工具快速定位相关文件和代码</div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px', border: '1px solid #d1fae5' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>Glob/Grep 搜索</div>
+      <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>使用工具快速定位相关文件和代码</div>
     </div>
-    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>理解项目架构</div>
-      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>了解目录结构、依赖关系、设计模式</div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px', border: '1px solid #d1fae5' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>理解项目架构</div>
+      <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>了解目录结构、依赖关系、设计模式</div>
     </div>
-    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>联网搜索文档</div>
-      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>不确定时查找最新的官方文档和最佳实践</div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px', border: '1px solid #d1fae5' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>联网搜索文档</div>
+      <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>不确定时查找最新的官方文档和最佳实践</div>
     </div>
   </div>
 </div>
@@ -145,24 +145,24 @@ import { Callout, Steps } from 'nextra/components'
 
 **目的**：明确实现方案，获得用户确认后再动手，避免方向性错误。
 
-<div style={{ padding: '16px', backgroundColor: '#fefce8', borderRadius: '8px', border: '1px solid #fef08a', margin: '16px 0' }}>
-  <div style={{ fontWeight: 'bold', marginBottom: '12px', color: '#854d0e' }}>计划阶段的具体任务</div>
+<div style={{ padding: '16px', backgroundColor: '#fffbeb', borderRadius: '8px', border: '2px solid #fbbf24', margin: '16px 0' }}>
+  <div style={{ fontWeight: 'bold', marginBottom: '12px', color: '#92400e' }}>计划阶段的具体任务</div>
   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
-    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>列出文件清单</div>
-      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>明确要修改/创建的所有文件</div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px', border: '1px solid #fef3c7' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>列出文件清单</div>
+      <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>明确要修改/创建的所有文件</div>
     </div>
-    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>说明实现方案</div>
-      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>描述关键步骤和技术选型</div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px', border: '1px solid #fef3c7' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>说明实现方案</div>
+      <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>描述关键步骤和技术选型</div>
     </div>
-    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>识别潜在风险</div>
-      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>列出边缘情况和可能的坑</div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px', border: '1px solid #fef3c7' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>识别潜在风险</div>
+      <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>列出边缘情况和可能的坑</div>
     </div>
-    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#dc2626' }}>等待用户确认</div>
-      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>获得明确确认后才开始编码</div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px', border: '1px solid #fef3c7' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#c53030' }}>等待用户确认</div>
+      <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>获得明确确认后才开始编码</div>
     </div>
   </div>
 </div>
@@ -196,24 +196,24 @@ import { Callout, Steps } from 'nextra/components'
 
 **目的**：高质量交付，确保代码符合规范并经过验证。
 
-<div style={{ padding: '16px', backgroundColor: '#eff6ff', borderRadius: '8px', border: '1px solid #bfdbfe', margin: '16px 0' }}>
+<div style={{ padding: '16px', backgroundColor: '#eff6ff', borderRadius: '8px', border: '2px solid #60a5fa', margin: '16px 0' }}>
   <div style={{ fontWeight: 'bold', marginBottom: '12px', color: '#1e40af' }}>实现阶段的具体任务</div>
   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
-    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>遵循代码风格</div>
-      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>与项目现有代码保持一致</div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px', border: '1px solid #dbeafe' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>遵循代码风格</div>
+      <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>与项目现有代码保持一致</div>
     </div>
-    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>完整错误处理</div>
-      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>绝不跳过异常处理和边界检查</div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px', border: '1px solid #dbeafe' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>完整错误处理</div>
+      <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>绝不跳过异常处理和边界检查</div>
     </div>
-    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>同步写测试</div>
-      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>编码时同步添加单元测试</div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px', border: '1px solid #dbeafe' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>同步写测试</div>
+      <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>编码时同步添加单元测试</div>
     </div>
-    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>运行质量检查</div>
-      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>Linter、Formatter、Type Check</div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px', border: '1px solid #dbeafe' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>运行质量检查</div>
+      <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>Linter、Formatter、Type Check</div>
     </div>
   </div>
 </div>
@@ -334,9 +334,9 @@ import { Callout, Steps } from 'nextra/components'
 
 <div style={{ margin: '16px 0' }}>
   <div style={{ marginBottom: '12px' }}>
-    <div style={{ padding: '12px', backgroundColor: '#fef2f2', borderRadius: '8px', marginBottom: '8px', border: '1px solid #fecaca' }}>
-      <div style={{ fontWeight: 'bold', color: '#dc2626' }}>Bug 修复场景</div>
-      <div style={{ fontSize: '14px', marginTop: '8px' }}>
+    <div style={{ padding: '12px', backgroundColor: '#fff5f5', borderRadius: '8px', marginBottom: '8px', border: '2px solid #fc8181' }}>
+      <div style={{ fontWeight: 'bold', color: '#c53030' }}>Bug 修复场景</div>
+      <div style={{ fontSize: '14px', marginTop: '8px', color: '#2d3748' }}>
         <strong>研究重点</strong>：复现问题、定位根因、检查相关代码<br/>
         <strong>计划重点</strong>：修复方案、影响范围、回归测试点<br/>
         <strong>实现重点</strong>：最小化改动、添加回归测试
@@ -344,9 +344,9 @@ import { Callout, Steps } from 'nextra/components'
     </div>
   </div>
   <div style={{ marginBottom: '12px' }}>
-    <div style={{ padding: '12px', backgroundColor: '#f0fdf4', borderRadius: '8px', marginBottom: '8px', border: '1px solid #bbf7d0' }}>
-      <div style={{ fontWeight: 'bold', color: '#166534' }}>新功能开发场景</div>
-      <div style={{ fontSize: '14px', marginTop: '8px' }}>
+    <div style={{ padding: '12px', backgroundColor: '#f0fdf4', borderRadius: '8px', marginBottom: '8px', border: '2px solid #86efac' }}>
+      <div style={{ fontWeight: 'bold', color: '#15803d' }}>新功能开发场景</div>
+      <div style={{ fontSize: '14px', marginTop: '8px', color: '#2d3748' }}>
         <strong>研究重点</strong>：需求理解、现有代码复用点、技术选型<br/>
         <strong>计划重点</strong>：模块划分、接口设计、测试策略<br/>
         <strong>实现重点</strong>：渐进式开发、持续测试、文档同步
@@ -354,9 +354,9 @@ import { Callout, Steps } from 'nextra/components'
     </div>
   </div>
   <div>
-    <div style={{ padding: '12px', backgroundColor: '#eff6ff', borderRadius: '8px', border: '1px solid #bfdbfe' }}>
+    <div style={{ padding: '12px', backgroundColor: '#eff6ff', borderRadius: '8px', border: '2px solid #60a5fa' }}>
       <div style={{ fontWeight: 'bold', color: '#1e40af' }}>重构任务场景</div>
-      <div style={{ fontSize: '14px', marginTop: '8px' }}>
+      <div style={{ fontSize: '14px', marginTop: '8px', color: '#2d3748' }}>
         <strong>研究重点</strong>：现有代码分析、依赖关系、影响范围<br/>
         <strong>计划重点</strong>：重构步骤、向后兼容、回滚方案<br/>
         <strong>实现重点</strong>：小步迭代、保持测试通过、及时提交
