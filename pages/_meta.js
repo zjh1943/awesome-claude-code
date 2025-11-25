@@ -27,6 +27,9 @@ export default {
     title: '社区',
     type: 'page'
   },
+  public: {
+    display: 'hidden'
+  },
   // 'back-to-website': {
   //   title: 'CC Club 官网',
   //   type: 'page',

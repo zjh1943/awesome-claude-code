@@ -105,6 +105,10 @@ claude-code.club AI API 系统现在支持通过兼容 Gemini Assist API 的方�
     echo 'export GEMINI_MODEL="gemini-2.5-flash"' >> ~/.bashrc
     source ~/.bashrc
     ```
+
+    <Callout type="info">
+      **注意：** 设置后，你可能需要重新打开终端窗口，或者手动执行 `source ~/.zshrc` (zsh) / `source ~/.bashrc` (bash) 使配置生效。
+    </Callout>
   </Tabs.Tab>
   <Tabs.Tab>
     **当前会话生效：**
@@ -141,12 +145,12 @@ claude-code.club AI API 系统现在支持通过兼容 Gemini Assist API 的方�
   在 Gemini CLI 控制台中，您可能会看到 `Failed to fetch user info: 401 Unauthorized` 的提示。这属于正常现象，且不影响工具的正常使用。
 </Callout>
 
-### 错误方式：通过 Gemini API 方式访问 (不能用)
+### 错误配置：直接使用 Gemini API Key (请避免)
 
 <Callout type="error">
   **强烈警告：请勿使用此方式！**
   <br />
-  此方式通过直接使用 Gemini API不能利用额度，会触发 `429 Too Many Requests` 错误，导致服务中断。
+  此方式通过直接使用 Gemini API 无法利用额度，会触发 `429 Too Many Requests` 错误，导致服务中断。
   <br />
   **无论您从何处了解此配置，都请勿在此处使用。**
 </Callout>
@@ -261,13 +265,14 @@ gemini --version
 ```bash
 gemini
 ```
-如果是首次运行，你可能会看到欢迎信息或被要求进行简单的初始化设置。
-
+如果是首次运行，你可能会看到欢迎信息或被要求进行简单的初始化设置。  
+如果提示认证，请选择 `1. Login with Google`。工具检测到已配置 `CODE_ASSIST_ENDPOINT` 环境变量后，将自动连接至我们的服务。
 <Callout type="success">
   **🎉 恭喜！**  
   你已经成功安装并配置了 Google Gemini CLI。现在可以开始体验 AI 辅助编码的强大功能了。
 </Callout>
-
+要启用 `Gemini 3 Pro`，请在 Gemini CLI 中使用 /settings 命令并将预览功能设置为 true。  
+更多信息，请参阅 [Gemini CLI 设置](https://geminicli.com/docs/cli/settings)
 ## 常见问题
 
 **Q: 运行 `gemini` 提示 "command not found"？**  
@@ -275,3 +280,6 @@ A: 请检查 Node.js 的全局 bin 目录是否在系统的 PATH 环境变量中
 
 **Q: 提示 API Key 无效？**  
 A: 请检查环境变量是否配置正确。在终端输入 `echo $GEMINI_API_KEY` (macOS/Linux) 或 `$env:GEMINI_API_KEY` (Windows) 查看当前值。
+
+**Q: 如何在 Gemini CLI 中粘贴截图？**
+A: 在 Gemini CLI 聊天界面中，macOS 用户可以使用 `Control + V` 直接粘贴截图，Windows 用户可以使用 `Alt + V` 粘贴截图。
