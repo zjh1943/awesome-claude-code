@@ -69,7 +69,7 @@ export default {
     prev: true,
     next: true
   },
-  darkMode: true,
+  darkMode: false,
   search: {
     placeholder: '搜索文档...'
   },
