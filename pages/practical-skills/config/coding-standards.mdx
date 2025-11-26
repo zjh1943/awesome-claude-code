@@ -16,42 +16,42 @@ import { Callout, Steps, Tabs } from 'nextra/components'
 没有明确的编码标准时，Claude 的输出往往会出现以下问题：
 
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px', margin: '16px 0' }}>
-  <div style={{ padding: '12px', backgroundColor: '#fef2f2', borderRadius: '8px', border: '1px solid #fecaca' }}>
-    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#dc2626' }}>命名风格混乱</div>
-    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>camelCase 和 snake_case 混用，同一项目风格不统一</div>
+  <div style={{ padding: '12px', backgroundColor: '#fff5f5', borderRadius: '8px', border: '2px solid #fc8181' }}>
+    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#c53030' }}>命名风格混乱</div>
+    <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>camelCase 和 snake_case 混用，同一项目风格不统一</div>
   </div>
-  <div style={{ padding: '12px', backgroundColor: '#fef2f2', borderRadius: '8px', border: '1px solid #fecaca' }}>
-    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#dc2626' }}>函数长度失控</div>
-    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>一个函数动辄上百行，难以理解和测试</div>
+  <div style={{ padding: '12px', backgroundColor: '#fff5f5', borderRadius: '8px', border: '2px solid #fc8181' }}>
+    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#c53030' }}>函数长度失控</div>
+    <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>一个函数动辄上百行，难以理解和测试</div>
   </div>
-  <div style={{ padding: '12px', backgroundColor: '#fef2f2', borderRadius: '8px', border: '1px solid #fecaca' }}>
-    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#dc2626' }}>代码重复</div>
-    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>相似逻辑散落各处，修改时容易遗漏</div>
+  <div style={{ padding: '12px', backgroundColor: '#fff5f5', borderRadius: '8px', border: '2px solid #fc8181' }}>
+    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#c53030' }}>代码重复</div>
+    <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>相似逻辑散落各处，修改时容易遗漏</div>
   </div>
-  <div style={{ padding: '12px', backgroundColor: '#fef2f2', borderRadius: '8px', border: '1px solid #fecaca' }}>
-    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#dc2626' }}>难以维护</div>
-    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>接手代码时看不懂，维护成本极高</div>
+  <div style={{ padding: '12px', backgroundColor: '#fff5f5', borderRadius: '8px', border: '2px solid #fc8181' }}>
+    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#c53030' }}>难以维护</div>
+    <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>接手代码时看不懂，维护成本极高</div>
   </div>
 </div>
 
 ### 1.2 编码标准的价值
 
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px', margin: '16px 0' }}>
-  <div style={{ padding: '12px', backgroundColor: '#f0fdf4', borderRadius: '8px', border: '1px solid #bbf7d0' }}>
-    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#166534' }}>可读性提升</div>
-    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>统一的风格让代码一目了然</div>
+  <div style={{ padding: '12px', backgroundColor: '#f0fff4', borderRadius: '8px', border: '2px solid #86efac' }}>
+    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#15803d' }}>可读性提升</div>
+    <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>统一的风格让代码一目了然</div>
   </div>
-  <div style={{ padding: '12px', backgroundColor: '#f0fdf4', borderRadius: '8px', border: '1px solid #bbf7d0' }}>
-    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#166534' }}>协作效率提高</div>
-    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>团队成员能快速理解彼此的代码</div>
+  <div style={{ padding: '12px', backgroundColor: '#f0fff4', borderRadius: '8px', border: '2px solid #86efac' }}>
+    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#15803d' }}>协作效率提高</div>
+    <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>团队成员能快速理解彼此的代码</div>
   </div>
-  <div style={{ padding: '12px', backgroundColor: '#f0fdf4', borderRadius: '8px', border: '1px solid #bbf7d0' }}>
-    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#166534' }}>Review 时间减少</div>
-    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>不再纠结风格问题，专注业务逻辑</div>
+  <div style={{ padding: '12px', backgroundColor: '#f0fff4', borderRadius: '8px', border: '2px solid #86efac' }}>
+    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#15803d' }}>Review 时间减少</div>
+    <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>不再纠结风格问题，专注业务逻辑</div>
   </div>
-  <div style={{ padding: '12px', backgroundColor: '#f0fdf4', borderRadius: '8px', border: '1px solid #bbf7d0' }}>
-    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#166534' }}>维护成本降低</div>
-    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>规范的代码更容易修改和扩展</div>
+  <div style={{ padding: '12px', backgroundColor: '#f0fff4', borderRadius: '8px', border: '2px solid #86efac' }}>
+    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#15803d' }}>维护成本降低</div>
+    <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>规范的代码更容易修改和扩展</div>
   </div>
 </div>
 
@@ -285,17 +285,17 @@ isValid             valid
 ### 3.1 函数长度限制
 
 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', margin: '16px 0' }}>
-  <div style={{ padding: '16px', backgroundColor: '#f0fdf4', borderRadius: '8px', border: '1px solid #bbf7d0' }}>
-    <h4 style={{ margin: '0 0 12px 0', color: '#166534' }}>推荐标准</h4>
-    <div style={{ fontSize: '14px', lineHeight: '1.8' }}>
+  <div style={{ padding: '16px', backgroundColor: '#f0fff4', borderRadius: '8px', border: '2px solid #86efac' }}>
+    <h4 style={{ margin: '0 0 12px 0', color: '#15803d' }}>推荐标准</h4>
+    <div style={{ fontSize: '14px', lineHeight: '1.8', color: '#2d3748' }}>
       <p><strong>30 行以内</strong>：理想长度</p>
       <p><strong>50 行以内</strong>：可接受上限</p>
       <p><strong>超过 50 行</strong>：必须拆分</p>
     </div>
   </div>
-  <div style={{ padding: '16px', backgroundColor: '#fef2f2', borderRadius: '8px', border: '1px solid #fecaca' }}>
-    <h4 style={{ margin: '0 0 12px 0', color: '#dc2626' }}>为什么限制长度</h4>
-    <div style={{ fontSize: '14px', lineHeight: '1.8' }}>
+  <div style={{ padding: '16px', backgroundColor: '#fff5f5', borderRadius: '8px', border: '2px solid #fc8181' }}>
+    <h4 style={{ margin: '0 0 12px 0', color: '#c53030' }}>为什么限制长度</h4>
+    <div style={{ fontSize: '14px', lineHeight: '1.8', color: '#2d3748' }}>
       <p>• 长函数难以理解</p>
       <p>• 长函数难以测试</p>
       <p>• 长函数往往职责不单一</p>
@@ -414,17 +414,17 @@ public function createUser(User $user): void {
 
 ### 3.3 参数数量限制
 
-<div style={{ padding: '16px', backgroundColor: '#f8fafc', borderRadius: '8px', margin: '16px 0' }}>
-  <div style={{ fontWeight: 'bold', marginBottom: '12px' }}>参数数量建议</div>
+<div style={{ padding: '16px', backgroundColor: '#f9fafb', borderRadius: '8px', margin: '16px 0', border: '1px solid #e5e7eb' }}>
+  <div style={{ fontWeight: 'bold', marginBottom: '12px', color: '#2d3748' }}>参数数量建议</div>
   <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-    <div style={{ padding: '8px 16px', backgroundColor: '#dcfce7', borderRadius: '4px' }}>
-      <span style={{ fontWeight: 'bold' }}>0-2 个</span>：理想
+    <div style={{ padding: '8px 16px', backgroundColor: '#d1fae5', borderRadius: '4px', border: '1px solid #86efac' }}>
+      <span style={{ fontWeight: 'bold', color: '#15803d' }}>0-2 个</span><span style={{ color: '#2d3748' }}>：理想</span>
     </div>
-    <div style={{ padding: '8px 16px', backgroundColor: '#fef9c3', borderRadius: '4px' }}>
-      <span style={{ fontWeight: 'bold' }}>3-4 个</span>：可接受
+    <div style={{ padding: '8px 16px', backgroundColor: '#fef3c7', borderRadius: '4px', border: '1px solid #fbbf24' }}>
+      <span style={{ fontWeight: 'bold', color: '#92400e' }}>3-4 个</span><span style={{ color: '#2d3748' }}>：可接受</span>
     </div>
-    <div style={{ padding: '8px 16px', backgroundColor: '#fee2e2', borderRadius: '4px' }}>
-      <span style={{ fontWeight: 'bold' }}>5+ 个</span>：必须重构
+    <div style={{ padding: '8px 16px', backgroundColor: '#fee2e2', borderRadius: '4px', border: '1px solid #fc8181' }}>
+      <span style={{ fontWeight: 'bold', color: '#c53030' }}>5+ 个</span><span style={{ color: '#2d3748' }}>：必须重构</span>
     </div>
   </div>
 </div>
@@ -957,18 +957,18 @@ class UserService
 ### 5.3 注释规范
 
 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', margin: '16px 0' }}>
-  <div style={{ padding: '16px', backgroundColor: '#f0fdf4', borderRadius: '8px', border: '1px solid #bbf7d0' }}>
-    <h4 style={{ margin: '0 0 12px 0', color: '#166534' }}>何时写注释</h4>
-    <div style={{ fontSize: '14px', lineHeight: '1.8' }}>
+  <div style={{ padding: '16px', backgroundColor: '#f0fff4', borderRadius: '8px', border: '2px solid #86efac' }}>
+    <h4 style={{ margin: '0 0 12px 0', color: '#15803d' }}>何时写注释</h4>
+    <div style={{ fontSize: '14px', lineHeight: '1.8', color: '#2d3748' }}>
       <p>• 复杂的业务逻辑</p>
       <p>• 非显而易见的设计决策</p>
       <p>• 公开 API 的用法说明</p>
       <p>• 临时的 workaround（附带 issue 链接）</p>
     </div>
   </div>
-  <div style={{ padding: '16px', backgroundColor: '#fef2f2', borderRadius: '8px', border: '1px solid #fecaca' }}>
-    <h4 style={{ margin: '0 0 12px 0', color: '#dc2626' }}>何时不写注释</h4>
-    <div style={{ fontSize: '14px', lineHeight: '1.8' }}>
+  <div style={{ padding: '16px', backgroundColor: '#fff5f5', borderRadius: '8px', border: '2px solid #fc8181' }}>
+    <h4 style={{ margin: '0 0 12px 0', color: '#c53030' }}>何时不写注释</h4>
+    <div style={{ fontSize: '14px', lineHeight: '1.8', color: '#2d3748' }}>
       <p>• 代码本身已经清晰</p>
       <p>• 注释只是重复代码内容</p>
       <p>• 用注释来弥补糟糕的命名</p>

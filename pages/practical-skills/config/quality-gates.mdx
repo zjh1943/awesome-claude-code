@@ -16,24 +16,24 @@ import { Callout, Steps } from 'nextra/components'
 质量红线不是"建议"或"最佳实践"，而是**必须遵守的底线规则**。
 
 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', margin: '24px 0' }}>
-  <div style={{ padding: '16px', backgroundColor: '#fee2e2', borderRadius: '8px', border: '1px solid #fca5a5' }}>
-    <h4 style={{ margin: '0 0 12px 0', color: '#dc2626' }}>❌ 建议/最佳实践</h4>
-    <div style={{ fontSize: '14px', lineHeight: '1.8' }}>
+  <div style={{ padding: '16px', backgroundColor: '#fff5f5', borderRadius: '8px', border: '2px solid #fc8181' }}>
+    <h4 style={{ margin: '0 0 12px 0', color: '#c53030' }}>❌ 建议/最佳实践</h4>
+    <div style={{ fontSize: '14px', lineHeight: '1.8', color: '#2d3748' }}>
       <p>"尽量避免使用 any 类型"</p>
       <p>"建议添加错误处理"</p>
       <p>"推荐写单元测试"</p>
       <p>↓</p>
-      <p style={{ fontWeight: 'bold', color: '#dc2626' }}>Claude 可能会"灵活处理"</p>
+      <p style={{ fontWeight: 'bold', color: '#c53030' }}>Claude 可能会"灵活处理"</p>
     </div>
   </div>
-  <div style={{ padding: '16px', backgroundColor: '#dcfce7', borderRadius: '8px', border: '1px solid #86efac' }}>
-    <h4 style={{ margin: '0 0 12px 0', color: '#16a34a' }}>✅ 质量红线</h4>
-    <div style={{ fontSize: '14px', lineHeight: '1.8' }}>
+  <div style={{ padding: '16px', backgroundColor: '#f0fff4', borderRadius: '8px', border: '2px solid #48bb78' }}>
+    <h4 style={{ margin: '0 0 12px 0', color: '#22543d' }}>✅ 质量红线</h4>
+    <div style={{ fontSize: '14px', lineHeight: '1.8', color: '#2d3748' }}>
       <p>"绝不使用 any 类型"</p>
       <p>"必须添加错误处理"</p>
       <p>"测试必须全部通过"</p>
       <p>↓</p>
-      <p style={{ fontWeight: 'bold', color: '#16a34a' }}>Claude 会严格遵守</p>
+      <p style={{ fontWeight: 'bold', color: '#22543d' }}>Claude 会严格遵守</p>
     </div>
   </div>
 </div>
@@ -44,21 +44,21 @@ import { Callout, Steps } from 'nextra/components'
 
 <div style={{ margin: '16px 0' }}>
   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
-    <div style={{ padding: '12px', backgroundColor: '#fef2f2', borderRadius: '8px', border: '1px solid #fecaca' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#dc2626' }}>"偷懒"</div>
-      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>"为了简洁，这里省略错误处理"</div>
+    <div style={{ padding: '12px', backgroundColor: '#fff5f5', borderRadius: '8px', border: '2px solid #fc8181' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#c53030' }}>"偷懒"</div>
+      <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>"为了简洁，这里省略错误处理"</div>
     </div>
-    <div style={{ padding: '12px', backgroundColor: '#fef2f2', borderRadius: '8px', border: '1px solid #fecaca' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#dc2626' }}>"简化"</div>
-      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>"先用 any，后续再优化类型"</div>
+    <div style={{ padding: '12px', backgroundColor: '#fff5f5', borderRadius: '8px', border: '2px solid #fc8181' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#c53030' }}>"简化"</div>
+      <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>"先用 any，后续再优化类型"</div>
     </div>
-    <div style={{ padding: '12px', backgroundColor: '#fef2f2', borderRadius: '8px', border: '1px solid #fecaca' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#dc2626' }}>"先凑合"</div>
-      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>"先实现功能，TODO: 添加测试"</div>
+    <div style={{ padding: '12px', backgroundColor: '#fff5f5', borderRadius: '8px', border: '2px solid #fc8181' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#c53030' }}>"先凑合"</div>
+      <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>"先实现功能，TODO: 添加测试"</div>
     </div>
-    <div style={{ padding: '12px', backgroundColor: '#fef2f2', borderRadius: '8px', border: '1px solid #fecaca' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#dc2626' }}>"忘记检查"</div>
-      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>直接提交代码，没运行 linter</div>
+    <div style={{ padding: '12px', backgroundColor: '#fff5f5', borderRadius: '8px', border: '2px solid #fc8181' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#c53030' }}>"忘记检查"</div>
+      <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>直接提交代码，没运行 linter</div>
     </div>
   </div>
 </div>
@@ -84,19 +84,19 @@ import { Callout, Steps } from 'nextra/components'
 
 质量红线分为两类：**提交前强制检查**（必须通过才能提交）和**绝对禁止清单**（绝不允许出现）。
 
-<div style={{ margin: '24px 0', padding: '20px', backgroundColor: '#f8fafc', borderRadius: '8px' }}>
+<div style={{ margin: '24px 0', padding: '20px', backgroundColor: '#f9fafb', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
   <div style={{ display: 'flex', alignItems: 'stretch', justifyContent: 'center', gap: '24px', flexWrap: 'wrap' }}>
-    <div style={{ padding: '20px', backgroundColor: '#dcfce7', borderRadius: '8px', textAlign: 'center', flex: '1', minWidth: '200px', maxWidth: '280px' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '18px', color: '#166534' }}>提交前强制检查</div>
-      <div style={{ fontSize: '14px', color: '#166534', marginTop: '8px' }}>CHECK BEFORE COMMIT</div>
+    <div style={{ padding: '20px', backgroundColor: '#f0fff4', borderRadius: '8px', textAlign: 'center', flex: '1', minWidth: '200px', maxWidth: '280px', border: '2px solid #86efac' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '18px', color: '#15803d' }}>提交前强制检查</div>
+      <div style={{ fontSize: '14px', color: '#047857', marginTop: '8px' }}>CHECK BEFORE COMMIT</div>
       <div style={{ fontSize: '48px', marginTop: '12px' }}>✓</div>
-      <div style={{ fontSize: '13px', marginTop: '8px', color: '#666' }}>必须通过的质量门禁</div>
+      <div style={{ fontSize: '13px', marginTop: '8px', color: '#4b5563' }}>必须通过的质量门禁</div>
     </div>
-    <div style={{ padding: '20px', backgroundColor: '#fee2e2', borderRadius: '8px', textAlign: 'center', flex: '1', minWidth: '200px', maxWidth: '280px' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '18px', color: '#dc2626' }}>绝对禁止清单</div>
-      <div style={{ fontSize: '14px', color: '#dc2626', marginTop: '8px' }}>NEVER ALLOWED</div>
+    <div style={{ padding: '20px', backgroundColor: '#fff5f5', borderRadius: '8px', textAlign: 'center', flex: '1', minWidth: '200px', maxWidth: '280px', border: '2px solid #fc8181' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '18px', color: '#c53030' }}>绝对禁止清单</div>
+      <div style={{ fontSize: '14px', color: '#c53030', marginTop: '8px' }}>NEVER ALLOWED</div>
       <div style={{ fontSize: '48px', marginTop: '12px' }}>✗</div>
-      <div style={{ fontSize: '13px', marginTop: '8px', color: '#666' }}>绝不允许出现的行为</div>
+      <div style={{ fontSize: '13px', marginTop: '8px', color: '#4b5563' }}>绝不允许出现的行为</div>
     </div>
   </div>
 </div>
@@ -105,28 +105,28 @@ import { Callout, Steps } from 'nextra/components'
 
 这些是代码提交前必须通过的自动化检查，任何一项失败都不能提交。
 
-<div style={{ padding: '16px', backgroundColor: '#f0fdf4', borderRadius: '8px', border: '1px solid #bbf7d0', margin: '16px 0' }}>
-  <div style={{ fontWeight: 'bold', marginBottom: '12px', color: '#166534' }}>四项强制检查</div>
+<div style={{ padding: '16px', backgroundColor: '#f0fdf4', borderRadius: '8px', border: '2px solid #86efac', margin: '16px 0' }}>
+  <div style={{ fontWeight: 'bold', marginBottom: '12px', color: '#15803d' }}>四项强制检查</div>
   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
-    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>1. Linter 检查</div>
-      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>零警告、零错误</div>
-      <div style={{ fontSize: '12px', color: '#166534', marginTop: '4px', fontFamily: 'monospace' }}>eslint . --max-warnings 0</div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px', border: '1px solid #d1fae5' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>1. Linter 检查</div>
+      <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>零警告、零错误</div>
+      <div style={{ fontSize: '12px', color: '#15803d', marginTop: '4px', fontFamily: 'monospace' }}>eslint . --max-warnings 0</div>
     </div>
-    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>2. 测试检查</div>
-      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>所有测试必须通过</div>
-      <div style={{ fontSize: '12px', color: '#166534', marginTop: '4px', fontFamily: 'monospace' }}>npm test / pytest</div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px', border: '1px solid #d1fae5' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>2. 测试检查</div>
+      <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>所有测试必须通过</div>
+      <div style={{ fontSize: '12px', color: '#15803d', marginTop: '4px', fontFamily: 'monospace' }}>npm test / pytest</div>
     </div>
-    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>3. 格式化检查</div>
-      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>代码已正确格式化</div>
-      <div style={{ fontSize: '12px', color: '#166534', marginTop: '4px', fontFamily: 'monospace' }}>prettier --check .</div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px', border: '1px solid #d1fae5' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>3. 格式化检查</div>
+      <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>代码已正确格式化</div>
+      <div style={{ fontSize: '12px', color: '#15803d', marginTop: '4px', fontFamily: 'monospace' }}>prettier --check .</div>
     </div>
-    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px' }}>
-      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>4. 类型检查</div>
-      <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>TypeScript 严格模式通过</div>
-      <div style={{ fontSize: '12px', color: '#166534', marginTop: '4px', fontFamily: 'monospace' }}>tsc --noEmit</div>
+    <div style={{ padding: '12px', backgroundColor: 'white', borderRadius: '6px', border: '1px solid #d1fae5' }}>
+      <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>4. 类型检查</div>
+      <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>TypeScript 严格模式通过</div>
+      <div style={{ fontSize: '12px', color: '#15803d', marginTop: '4px', fontFamily: 'monospace' }}>tsc --noEmit</div>
     </div>
   </div>
 </div>
@@ -156,49 +156,49 @@ import { Callout, Steps } from 'nextra/components'
 
 这些是任何情况下都不允许出现的行为，没有例外。
 
-<div style={{ padding: '16px', backgroundColor: '#fef2f2', borderRadius: '8px', border: '1px solid #fecaca', margin: '16px 0' }}>
-  <div style={{ fontWeight: 'bold', marginBottom: '12px', color: '#dc2626' }}>绝对禁止清单</div>
+<div style={{ padding: '16px', backgroundColor: '#fff5f5', borderRadius: '8px', border: '2px solid #fc8181', margin: '16px 0' }}>
+  <div style={{ fontWeight: 'bold', marginBottom: '12px', color: '#c53030' }}>绝对禁止清单</div>
   <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '8px' }}>
-    <div style={{ padding: '10px 12px', backgroundColor: 'white', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-      <span style={{ color: '#dc2626', fontWeight: 'bold' }}>✗</span>
+    <div style={{ padding: '10px 12px', backgroundColor: 'white', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '12px', border: '1px solid #fee2e2' }}>
+      <span style={{ color: '#c53030', fontWeight: 'bold' }}>✗</span>
       <div>
-        <div style={{ fontWeight: 'bold', fontSize: '14px' }}>绝不提交未通过测试的代码</div>
-        <div style={{ fontSize: '12px', color: '#666' }}>即使"只是小改动"也必须跑测试</div>
+        <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>绝不提交未通过测试的代码</div>
+        <div style={{ fontSize: '12px', color: '#4b5563' }}>即使"只是小改动"也必须跑测试</div>
       </div>
     </div>
-    <div style={{ padding: '10px 12px', backgroundColor: 'white', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-      <span style={{ color: '#dc2626', fontWeight: 'bold' }}>✗</span>
+    <div style={{ padding: '10px 12px', backgroundColor: 'white', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '12px', border: '1px solid #fee2e2' }}>
+      <span style={{ color: '#c53030', fontWeight: 'bold' }}>✗</span>
       <div>
-        <div style={{ fontWeight: 'bold', fontSize: '14px' }}>绝不使用 TODO/FIXME 作为最终代码</div>
-        <div style={{ fontSize: '12px', color: '#666' }}>不能留下"待完成"的占位符</div>
+        <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>绝不使用 TODO/FIXME 作为最终代码</div>
+        <div style={{ fontSize: '12px', color: '#4b5563' }}>不能留下"待完成"的占位符</div>
       </div>
     </div>
-    <div style={{ padding: '10px 12px', backgroundColor: 'white', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-      <span style={{ color: '#dc2626', fontWeight: 'bold' }}>✗</span>
+    <div style={{ padding: '10px 12px', backgroundColor: 'white', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '12px', border: '1px solid #fee2e2' }}>
+      <span style={{ color: '#c53030', fontWeight: 'bold' }}>✗</span>
       <div>
-        <div style={{ fontWeight: 'bold', fontSize: '14px' }}>绝不跳过错误处理</div>
-        <div style={{ fontSize: '12px', color: '#666' }}>每个可能失败的操作都必须有错误处理</div>
+        <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>绝不跳过错误处理</div>
+        <div style={{ fontSize: '12px', color: '#4b5563' }}>每个可能失败的操作都必须有错误处理</div>
       </div>
     </div>
-    <div style={{ padding: '10px 12px', backgroundColor: 'white', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-      <span style={{ color: '#dc2626', fontWeight: 'bold' }}>✗</span>
+    <div style={{ padding: '10px 12px', backgroundColor: 'white', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '12px', border: '1px solid #fee2e2' }}>
+      <span style={{ color: '#c53030', fontWeight: 'bold' }}>✗</span>
       <div>
-        <div style={{ fontWeight: 'bold', fontSize: '14px' }}>绝不硬编码密钥/凭证</div>
-        <div style={{ fontSize: '12px', color: '#666' }}>必须使用环境变量，即使是开发环境</div>
+        <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>绝不硬编码密钥/凭证</div>
+        <div style={{ fontSize: '12px', color: '#4b5563' }}>必须使用环境变量，即使是开发环境</div>
       </div>
     </div>
-    <div style={{ padding: '10px 12px', backgroundColor: 'white', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-      <span style={{ color: '#dc2626', fontWeight: 'bold' }}>✗</span>
+    <div style={{ padding: '10px 12px', backgroundColor: 'white', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '12px', border: '1px solid #fee2e2' }}>
+      <span style={{ color: '#c53030', fontWeight: 'bold' }}>✗</span>
       <div>
-        <div style={{ fontWeight: 'bold', fontSize: '14px' }}>绝不使用 any 类型</div>
-        <div style={{ fontSize: '12px', color: '#666' }}>用 unknown 替代，然后进行类型守卫</div>
+        <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>绝不使用 any 类型</div>
+        <div style={{ fontSize: '12px', color: '#4b5563' }}>用 unknown 替代，然后进行类型守卫</div>
       </div>
     </div>
-    <div style={{ padding: '10px 12px', backgroundColor: 'white', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-      <span style={{ color: '#dc2626', fontWeight: 'bold' }}>✗</span>
+    <div style={{ padding: '10px 12px', backgroundColor: 'white', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '12px', border: '1px solid #fee2e2' }}>
+      <span style={{ color: '#c53030', fontWeight: 'bold' }}>✗</span>
       <div>
-        <div style={{ fontWeight: 'bold', fontSize: '14px' }}>绝不吞掉异常</div>
-        <div style={{ fontSize: '12px', color: '#666' }}>捕获的异常必须记录或重新抛出</div>
+        <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>绝不吞掉异常</div>
+        <div style={{ fontSize: '12px', color: '#4b5563' }}>捕获的异常必须记录或重新抛出</div>
       </div>
     </div>
   </div>
@@ -304,18 +304,18 @@ import { Callout, Steps } from 'nextra/components'
 ### 4.1 语言要强硬
 
 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', margin: '16px 0' }}>
-  <div style={{ padding: '16px', backgroundColor: '#fee2e2', borderRadius: '8px', border: '1px solid #fca5a5' }}>
-    <h4 style={{ margin: '0 0 12px 0', color: '#dc2626' }}>❌ 弱约束词</h4>
-    <div style={{ fontSize: '14px', lineHeight: '2' }}>
+  <div style={{ padding: '16px', backgroundColor: '#fff5f5', borderRadius: '8px', border: '2px solid #fc8181' }}>
+    <h4 style={{ margin: '0 0 12px 0', color: '#c53030' }}>❌ 弱约束词</h4>
+    <div style={{ fontSize: '14px', lineHeight: '2', color: '#2d3748' }}>
       <p>• "尽量避免使用 any"</p>
       <p>• "建议添加错误处理"</p>
       <p>• "不要跳过测试"</p>
       <p>• "应该运行 linter"</p>
     </div>
   </div>
-  <div style={{ padding: '16px', backgroundColor: '#dcfce7', borderRadius: '8px', border: '1px solid #86efac' }}>
-    <h4 style={{ margin: '0 0 12px 0', color: '#16a34a' }}>✅ 强约束词</h4>
-    <div style={{ fontSize: '14px', lineHeight: '2' }}>
+  <div style={{ padding: '16px', backgroundColor: '#f0fff4', borderRadius: '8px', border: '2px solid #48bb78' }}>
+    <h4 style={{ margin: '0 0 12px 0', color: '#22543d' }}>✅ 强约束词</h4>
+    <div style={{ fontSize: '14px', lineHeight: '2', color: '#2d3748' }}>
       <p>• "**绝不**使用 any 类型"</p>
       <p>• "**必须**添加错误处理"</p>
       <p>• "**禁止**跳过测试"</p>
@@ -360,9 +360,9 @@ import { Callout, Steps } from 'nextra/components'
 
 以下红线适用于绝大多数项目：
 
-<div style={{ padding: '16px', backgroundColor: '#f0fdf4', borderRadius: '8px', border: '1px solid #bbf7d0', margin: '16px 0' }}>
-  <div style={{ fontWeight: 'bold', marginBottom: '12px', color: '#166534' }}>通用红线清单</div>
-  <div style={{ fontSize: '14px', lineHeight: '2' }}>
+<div style={{ padding: '16px', backgroundColor: '#f0fdf4', borderRadius: '8px', border: '2px solid #86efac', margin: '16px 0' }}>
+  <div style={{ fontWeight: 'bold', marginBottom: '12px', color: '#15803d' }}>通用红线清单</div>
+  <div style={{ fontSize: '14px', lineHeight: '2', color: '#2d3748' }}>
     <p>✓ 测试必须全部通过</p>
     <p>✓ 绝不跳过错误处理</p>
     <p>✓ 绝不硬编码敏感信息</p>
@@ -376,21 +376,21 @@ import { Callout, Steps } from 'nextra/components'
 以下红线可根据团队需要添加：
 
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px', margin: '16px 0' }}>
-  <div style={{ padding: '12px', backgroundColor: '#f8fafc', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
-    <div style={{ fontWeight: 'bold', fontSize: '14px' }}>Emoji 禁用</div>
-    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>"绝不在代码/注释中使用 emoji"</div>
+  <div style={{ padding: '12px', backgroundColor: '#f9fafb', borderRadius: '6px', border: '1px solid #d1d5db' }}>
+    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>Emoji 禁用</div>
+    <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>"绝不在代码/注释中使用 emoji"</div>
   </div>
-  <div style={{ padding: '12px', backgroundColor: '#f8fafc', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
-    <div style={{ fontWeight: 'bold', fontSize: '14px' }}>特定代码风格</div>
-    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>"绝不使用 var，必须用 const/let"</div>
+  <div style={{ padding: '12px', backgroundColor: '#f9fafb', borderRadius: '6px', border: '1px solid #d1d5db' }}>
+    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>特定代码风格</div>
+    <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>"绝不使用 var，必须用 const/let"</div>
   </div>
-  <div style={{ padding: '12px', backgroundColor: '#f8fafc', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
-    <div style={{ fontWeight: 'bold', fontSize: '14px' }}>覆盖率要求</div>
-    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>"测试覆盖率必须 ≥ 80%"</div>
+  <div style={{ padding: '12px', backgroundColor: '#f9fafb', borderRadius: '6px', border: '1px solid #d1d5db' }}>
+    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>覆盖率要求</div>
+    <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>"测试覆盖率必须 ≥ 80%"</div>
   </div>
-  <div style={{ padding: '12px', backgroundColor: '#f8fafc', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
-    <div style={{ fontWeight: 'bold', fontSize: '14px' }}>注释要求</div>
-    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>"公开 API 必须有 JSDoc"</div>
+  <div style={{ padding: '12px', backgroundColor: '#f9fafb', borderRadius: '6px', border: '1px solid #d1d5db' }}>
+    <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2d3748' }}>注释要求</div>
+    <div style={{ fontSize: '13px', color: '#4b5563', marginTop: '4px' }}>"公开 API 必须有 JSDoc"</div>
   </div>
 </div>
 
@@ -398,9 +398,9 @@ import { Callout, Steps } from 'nextra/components'
 
 <div style={{ margin: '16px 0' }}>
   <div style={{ marginBottom: '12px' }}>
-    <div style={{ padding: '12px', backgroundColor: '#eff6ff', borderRadius: '8px', marginBottom: '8px', border: '1px solid #bfdbfe' }}>
+    <div style={{ padding: '12px', backgroundColor: '#eff6ff', borderRadius: '8px', marginBottom: '8px', border: '2px solid #60a5fa' }}>
       <div style={{ fontWeight: 'bold', color: '#1e40af' }}>TypeScript 项目</div>
-      <div style={{ fontSize: '14px', marginTop: '8px' }}>
+      <div style={{ fontSize: '14px', marginTop: '8px', color: '#2d3748' }}>
         • 绝不使用 any，用 unknown 替代<br/>
         • 绝不使用 @ts-ignore<br/>
         • 必须开启 strict 模式<br/>
@@ -409,9 +409,9 @@ import { Callout, Steps } from 'nextra/components'
     </div>
   </div>
   <div style={{ marginBottom: '12px' }}>
-    <div style={{ padding: '12px', backgroundColor: '#fef9c3', borderRadius: '8px', marginBottom: '8px', border: '1px solid #fde047' }}>
-      <div style={{ fontWeight: 'bold', color: '#854d0e' }}>Python 项目</div>
-      <div style={{ fontSize: '14px', marginTop: '8px' }}>
+    <div style={{ padding: '12px', backgroundColor: '#fffbeb', borderRadius: '8px', marginBottom: '8px', border: '2px solid #fbbf24' }}>
+      <div style={{ fontWeight: 'bold', color: '#92400e' }}>Python 项目</div>
+      <div style={{ fontSize: '14px', marginTop: '8px', color: '#2d3748' }}>
         • 绝不使用 bare except<br/>
         • 必须使用类型注解<br/>
         • 绝不使用 eval/exec<br/>
@@ -420,9 +420,9 @@ import { Callout, Steps } from 'nextra/components'
     </div>
   </div>
   <div>
-    <div style={{ padding: '12px', backgroundColor: '#f0fdf4', borderRadius: '8px', border: '1px solid #bbf7d0' }}>
-      <div style={{ fontWeight: 'bold', color: '#166534' }}>前端项目</div>
-      <div style={{ fontSize: '14px', marginTop: '8px' }}>
+    <div style={{ padding: '12px', backgroundColor: '#f0fdf4', borderRadius: '8px', border: '2px solid #86efac' }}>
+      <div style={{ fontWeight: 'bold', color: '#15803d' }}>前端项目</div>
+      <div style={{ fontSize: '14px', marginTop: '8px', color: '#2d3748' }}>
         • 绝不直接操作 DOM（使用框架方法）<br/>
         • 绝不在组件中使用 inline style（使用 CSS 类）<br/>
         • 必须处理加载和错误状态<br/>
