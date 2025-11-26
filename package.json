@@ -7,7 +7,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "convert": "node scripts/convert-mdx.js",
+    "convert:all": "node scripts/convert-mdx.js pages/practical-skills/config/why-claude-md-matters.mdx && node scripts/convert-mdx.js pages/practical-skills/config/workflow.mdx && node scripts/convert-mdx.js pages/practical-skills/config/quality-gates.mdx && node scripts/convert-mdx.js pages/practical-skills/config/coding-standards.mdx"
   },
   "dependencies": {
     "@radix-ui/react-tooltip": "^1.2.8",
