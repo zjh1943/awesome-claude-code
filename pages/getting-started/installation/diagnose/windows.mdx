@@ -1,0 +1,133 @@
+# Windows 手动排查指南
+
+如果你无法运行诊断脚本，或者希望手动一步步排查 Claude Code 的连接与认证问题，请按照以下步骤操作。
+
+## 准备工作
+
+打开 **PowerShell** (建议以管理员身份运行，以便执行某些网络检查命令)。
+
+## 第一步：检查基础环境
+
+Claude Code 需要 `curl` 工具来测试网络连接。
+
+1.  **检查 curl 版本**
+    ```powershell
+    curl --version
+    ```
+    *预期结果*：显示 curl 的版本信息 (e.g., `curl 8.x.x ...`)。
+    *如果失败*：Windows 10/11 通常自带 curl。如果没有，请通过 `winget install curl` 安装。
+
+2.  **检查 PowerShell 版本**
+    ```powershell
+    $PSVersionTable.PSVersion
+    ```
+    *预期结果*：显示 Major 版本号 (建议 5.1 或更高)。
+
+## 第二步：检查认证信息 (Authentication)
+
+Claude Code 使用 `ANTHROPIC_AUTH_TOKEN` 环境变量进行认证。
+
+1.  **检查 Token 是否已设置**
+    ```powershell
+    $env:ANTHROPIC_AUTH_TOKEN.Substring(0, 10) + "..."
+    ```
+    *预期结果*：应该显示 Token 的前 10 位字符。
+    *如果报错或为空*：说明未设置 Token。
+    *设置方法 (当前会话)*：`$env:ANTHROPIC_AUTH_TOKEN='你的token'`
+    *设置方法 (永久)*：搜索 "编辑系统环境变量"，在用户变量中添加 `ANTHROPIC_AUTH_TOKEN`。
+
+2.  **检查是否错误设置了 API Key**
+    ```powershell
+    $env:ANTHROPIC_API_KEY
+    ```
+    *预期结果*：**应该为空**。
+    *注意*：`claude-code.club` 不使用 `ANTHROPIC_API_KEY`。如果设置了此变量，可能会导致冲突。
+    *移除方法*：`Remove-Item Env:\ANTHROPIC_API_KEY`。
+
+3.  **检查 Base URL (可选)**
+    ```powershell
+    $env:ANTHROPIC_BASE_URL
+    ```
+    *预期结果*：为空（默认）或 `https://claude-code.club/api`。
+
+## 第三步：网络连接检查 (Network)
+
+我们需要确认能否连接到 `claude-code.club`。
+
+1.  **DNS 解析测试**
+    ```powershell
+    Resolve-DnsName claude-code.club
+    ```
+    *预期结果*：显示 IPAddress。
+    *如果失败*：显示错误信息。尝试 `ipconfig /flushdns` 刷新 DNS。
+
+2.  **TCP 连接测试 (替代 Telnet/NC)**
+    ```powershell
+    Test-NetConnection -ComputerName claude-code.club -Port 443
+    ```
+    *预期结果*：`TcpTestSucceeded : True`。
+    *如果为 False*：说明 443 端口被防火墙或网络策略阻断。
+
+3.  **API 连通性测试**
+    尝试直接请求 API（需要先完成第二步的 Token 设置）。
+    ```powershell
+    curl -v "https://claude-code.club/api/v1/models" `
+      -H "x-api-key: $env:ANTHROPIC_AUTH_TOKEN" `
+      -H "anthropic-version: 2023-06-01"
+    ```
+    *预期结果*：HTTP 状态码 **200**。
+    *常见错误*：
+   - **401 Unauthorized**: Token 无效或过期。
+   - **403 Forbidden**: Token 权限不足。
+   - **Connection refused**: 网络不通。
+
+## 第四步：检查代理与 VPN (Proxy & VPN)
+
+1.  **检查环境变量代理**
+    ```powershell
+    Get-ChildItem Env: | Where-Object { $_.Name -match "proxy" }
+    ```
+    *预期结果*：如果没有使用代理，应为空。
+    *注意*：如果设置了 `HTTP_PROXY` 或 `HTTPS_PROXY`，请确保它们指向正确的代理服务器。
+    *重要*：确保 `claude-code.club` 在 `NO_PROXY` 列表中。
+
+2.  **检查 Windows 系统代理**
+    ```powershell
+    Get-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings' | Select-Object ProxyEnable, ProxyServer, ProxyOverride
+    ```
+    * `ProxyEnable`: 1 表示启用。
+    * `ProxyServer`: 代理地址。
+    * `ProxyOverride`: 绕过代理的列表 (即 NO_PROXY)。
+
+3.  **检查 WinHTTP 代理**
+    ```powershell
+    netsh winhttp show proxy
+    ```
+    *预期结果*：通常应为 "Direct access (no proxy server)"。
+
+4.  **检查 VPN**
+    ```powershell
+    Get-NetAdapter | Where-Object { $_.InterfaceDescription -match "VPN|TAP|TUN|Cisco|AnyConnect" -and $_.Status -eq "Up" }
+    ```
+    如果有输出，说明 VPN 正在运行。尝试断开 VPN 或检查路由表。
+
+## 第五步：检查安装 (Installation)
+
+确认 `claude` 命令是否在 PATH 路径中。
+
+1.  **查找 claude 位置**
+    ```powershell
+    Get-Command claude
+    ```
+    *预期结果*：显示 Source 路径，如 `C:\Users\...\npm\claude.cmd`。
+    *如果报错*：说明未安装或未添加到 PATH。
+
+2.  **检查 PATH 变量**
+    ```powershell
+    $env:Path -split ';'
+    ```
+    确认包含 npm 或 claude 的安装目录。
+
+---
+
+**如果以上步骤仍无法解决问题**，请记录上述命令的输出结果，并联系技术支持。

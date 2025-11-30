@@ -1,0 +1,121 @@
+# macOS 手动排查指南
+
+如果你无法运行诊断脚本，或者希望手动一步步排查 Claude Code 的连接与认证问题，请按照以下步骤操作。
+
+## 准备工作
+
+打开 **终端 (Terminal)** 应用。
+
+## 第一步：检查基础环境
+
+Claude Code 需要 `curl` 工具来测试网络连接。
+
+1.  **检查 curl 版本**
+    ```zsh
+    curl --version
+    ```
+    *预期结果*：显示 curl 的版本信息 (e.g., `curl 8.x.x ...`)。
+    *如果失败*：请安装 curl (通常 macOS 自带)。
+
+2.  **检查 Shell 类型**
+    ```zsh
+    echo $SHELL
+    ```
+    *预期结果*：通常是 `/bin/zsh` 或 `/bin/bash`。
+
+## 第二步：检查认证信息 (Authentication)
+
+Claude Code 使用 `ANTHROPIC_AUTH_TOKEN` 进行认证。
+
+1.  **检查 Token 是否已设置**
+    ```zsh
+    echo "${ANTHROPIC_AUTH_TOKEN:0:10}..."
+    ```
+    *预期结果*：应该显示 Token 的前 10 位字符。
+    *如果为空*：说明未设置 Token。请执行 `export ANTHROPIC_AUTH_TOKEN='你的token'`，并将其添加到 `~/.zshrc` 中。
+
+2.  **检查是否错误设置了 API Key**
+    ```zsh
+    echo $ANTHROPIC_API_KEY
+    ```
+    *预期结果*：**应该为空**。
+    *注意*：`claude-code.club` 不使用 `ANTHROPIC_API_KEY`。如果设置了此变量，可能会导致冲突，请取消设置 (`unset ANTHROPIC_API_KEY`)。
+
+3.  **检查 Base URL (可选)**
+    ```zsh
+    echo $ANTHROPIC_BASE_URL
+    ```
+    *预期结果*：为空（默认）或 `https://claude-code.club/api`。
+
+## 第三步：网络连接检查 (Network)
+
+我们需要确认能否连接到 `claude-code.club`。
+
+1.  **DNS 解析测试**
+    ```zsh
+    host claude-code.club
+    ```
+    *预期结果*：显示 `has address ...`，列出 IP 地址。
+    *如果失败*：显示 `not found` 或超时。请检查网络或 DNS 设置。
+
+2.  **TLS/SSL 握手测试**
+    ```zsh
+    echo | openssl s_client -connect claude-code.club:443 -servername claude-code.club 2>/dev/null | grep "Verify return code"
+    ```
+    *预期结果*：`Verify return code: 0 (ok)`。
+    *如果失败*：显示非 0 代码，可能是证书问题或网络被拦截。
+
+3.  **API 连通性测试**
+    尝试直接请求 API（需要先完成第二步的 Token 设置）。
+    ```zsh
+    curl -v "https://claude-code.club/api/v1/models" \
+      -H "x-api-key: $ANTHROPIC_AUTH_TOKEN" \
+      -H "anthropic-version: 2023-06-01"
+    ```
+    *预期结果*：HTTP 状态码 **200**。
+    *常见错误*：
+   - **401 Unauthorized**: Token 无效或过期。
+   - **403 Forbidden**: Token 权限不足。
+   - **Connection refused/timeout**: 网络不通。
+
+## 第四步：检查代理与 VPN (Proxy & VPN)
+
+代理和 VPN 是最常见的连接阻碍。
+
+1.  **检查环境变量代理**
+    ```zsh
+    env | grep -i proxy
+    ```
+    *预期结果*：如果没有使用代理，应为空。
+    *注意*：如果设置了 `http_proxy` 或 `https_proxy`，请确保它们指向正确的代理服务器。
+    *重要*：确保 `claude-code.club` 在 `no_proxy` 列表中，或者你的代理允许访问该域名。
+
+2.  **检查 macOS 系统代理**
+    ```zsh
+    scutil --proxy
+    ```
+    查看 `HTTPEnable` 和 `HTTPSEnable` 是否为 `1`。
+
+3.  **检查 VPN**
+    如果你正在使用 VPN（如 Cisco AnyConnect, GlobalProtect 等），尝试断开 VPN 后重试，或者联系网络管理员确认是否允许访问 `claude-code.club`。
+
+## 第五步：检查安装 (Installation)
+
+确认 `claude` 命令是否在路径中。
+
+1.  **查找 claude 位置**
+    ```zsh
+    which claude
+    ```
+    *预期结果*：显示路径，如 `/usr/local/bin/claude` 或 `/opt/homebrew/bin/claude`。
+    *如果显示 `claude not found`*：说明未安装或未添加到 PATH。
+
+2.  **检查 PATH 变量**
+    ```zsh
+    echo $PATH
+    ```
+    确认包含 npm 或 brew 的 bin 目录。
+
+---
+
+**如果以上步骤仍无法解决问题**，请记录上述命令的输出结果，并联系技术支持。
