@@ -4,9 +4,15 @@
 #   Uninstall: .\claude-code-installation-by-cc-club.ps1 -Uninstall <claude|nodejs|git|all>
 
 param(
-    [ValidateSet("claude", "nodejs", "git", "all")]
     [string]$Uninstall
 )
+
+# Validate Uninstall parameter (ValidateSet is incompatible with 'irm | iex' pipeline)
+if ($Uninstall -and $Uninstall -notin @("claude", "nodejs", "git", "all")) {
+    Write-Host "[ERROR] Invalid -Uninstall value: '$Uninstall'" -ForegroundColor Red
+    Write-Host "[INFO] Valid options: claude, nodejs, git, all" -ForegroundColor Yellow
+    exit 1
+}
 
 # ============================================
 # Uninstall Functions
