@@ -236,8 +236,10 @@ function Test-Network {
                 )
 
                 $curlOutput = & curl.exe $curlArgs 2>&1 | Out-String
+                # Mask sensitive token in curl output for security
+                $maskedOutput = $curlOutput -replace "(x-api-key:\s*)([^\s]{10})[^\s]*([^\s]{4})", '$1$2***$3'
                 Write-Host "  --- Curl Output ---"
-                Write-Host $curlOutput
+                Write-Host $maskedOutput
                 Write-Host "  --- End Curl Output ---"
 
                 # Extract HTTP code from verbose output
@@ -677,7 +679,12 @@ function Test-Configuration {
                 if ($script:VerboseMode) {
                     Write-Host "  Relevant variables:"
                     foreach ($var in $anthropicVars) {
-                        Write-Host "    $($var.Name) = $($var.Value)"
+                        # Mask sensitive token values for security
+                        $displayValue = $var.Value
+                        if ($var.Name -match "AUTH_TOKEN|API_KEY" -and $var.Value.Length -gt 14) {
+                            $displayValue = $var.Value.Substring(0, 10) + "***" + $var.Value.Substring($var.Value.Length - 4)
+                        }
+                        Write-Host "    $($var.Name) = $displayValue"
                     }
                 }
             }

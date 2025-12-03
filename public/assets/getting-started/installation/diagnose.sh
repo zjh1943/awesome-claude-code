@@ -607,7 +607,8 @@ check_configuration() {
                 print_check "ok" "Found ANTHROPIC variables in: $env_file"
                 if [[ "$VERBOSE" == true ]]; then
                     echo "  Relevant lines:"
-                    grep "ANTHROPIC" "$env_file" | sed 's/^/    /'
+                    # Mask sensitive token values for security
+                    grep "ANTHROPIC" "$env_file" | sed -E 's/(ANTHROPIC_AUTH_TOKEN|ANTHROPIC_API_KEY)([[:space:]]*=|")[[:space:]]*"?([^"]{0,10})[^"]*([^"]{4})"?/\1\2"\3***\4"/g' | sed 's/^/    /'
                 fi
             fi
         fi
