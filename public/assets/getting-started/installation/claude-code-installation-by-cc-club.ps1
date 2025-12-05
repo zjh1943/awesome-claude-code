@@ -1,5 +1,209 @@
 # Claude Code Installation Script
-# Usage: irm https://222.g99.ai/setup.ps1 | iex
+# Usage:
+#   Install: irm https://academy.claude-code.club/assets/getting-started/installation/claude-code-installation-by-cc-club.ps1 | iex
+#   Uninstall: .\claude-code-installation-by-cc-club.ps1 -Uninstall <claude|nodejs|git|all>
+
+param(
+    [string]$Uninstall
+)
+
+# Validate Uninstall parameter (ValidateSet is incompatible with 'irm | iex' pipeline)
+if ($Uninstall -and $Uninstall -notin @("claude", "nodejs", "git", "all")) {
+    Write-Host "[ERROR] Invalid -Uninstall value: '$Uninstall'" -ForegroundColor Red
+    Write-Host "[INFO] Valid options: claude, nodejs, git, all" -ForegroundColor Yellow
+    exit 1
+}
+
+# ============================================
+# Uninstall Functions
+# ============================================
+
+function Uninstall-ClaudeCode {
+    Write-Host "[UNINSTALL] Removing Claude Code..." -ForegroundColor Yellow
+
+    try {
+        # Uninstall npm package
+        $claudeInstalled = npm list -g @anthropic-ai/claude-code 2>$null
+        if ($LASTEXITCODE -eq 0) {
+            & cmd /c "npm uninstall -g @anthropic-ai/claude-code 2>&1"
+            Write-Host "[SUCCESS] Claude Code npm package removed" -ForegroundColor Green
+        } else {
+            Write-Host "[INFO] Claude Code npm package not found" -ForegroundColor Gray
+        }
+    } catch {
+        Write-Host "[WARNING] Could not remove npm package: $_" -ForegroundColor Yellow
+    }
+
+    # Remove environment variables
+    Write-Host "[INFO] Removing environment variables..." -ForegroundColor Gray
+    [System.Environment]::SetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", $null, "User")
+    [System.Environment]::SetEnvironmentVariable("ANTHROPIC_BASE_URL", $null, "User")
+    [System.Environment]::SetEnvironmentVariable("ANTHROPIC_API_KEY", $null, "User")
+    $env:ANTHROPIC_AUTH_TOKEN = $null
+    $env:ANTHROPIC_BASE_URL = $null
+    $env:ANTHROPIC_API_KEY = $null
+    Write-Host "[SUCCESS] Environment variables removed" -ForegroundColor Green
+
+    # Remove .claude directory
+    $claudeDir = "$env:USERPROFILE\.claude"
+    if (Test-Path $claudeDir) {
+        Remove-Item -Path $claudeDir -Recurse -Force -ErrorAction SilentlyContinue
+        Write-Host "[SUCCESS] Removed $claudeDir" -ForegroundColor Green
+    }
+
+    # Remove .claude.json if exists
+    $claudeJson = "$env:USERPROFILE\.claude.json"
+    if (Test-Path $claudeJson) {
+        Remove-Item -Path $claudeJson -Force -ErrorAction SilentlyContinue
+        Write-Host "[SUCCESS] Removed $claudeJson" -ForegroundColor Green
+    }
+
+    Write-Host "[DONE] Claude Code uninstalled" -ForegroundColor Green
+}
+
+function Uninstall-NodeJS {
+    Write-Host "[UNINSTALL] Removing Node.js..." -ForegroundColor Yellow
+
+    # Try winget first
+    $wingetInstalled = Get-Command winget -ErrorAction SilentlyContinue
+    if ($wingetInstalled) {
+        Write-Host "[INFO] Attempting to uninstall via winget..." -ForegroundColor Gray
+        winget uninstall --id OpenJS.NodeJS --silent 2>$null
+        winget uninstall --id OpenJS.NodeJS.LTS --silent 2>$null
+    }
+
+    # Try msiexec for MSI installations
+    $nodeUninstallKeys = @(
+        "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*",
+        "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*",
+        "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*"
+    )
+
+    foreach ($keyPath in $nodeUninstallKeys) {
+        try {
+            $items = Get-ItemProperty $keyPath -ErrorAction SilentlyContinue | Where-Object { $_.DisplayName -like "*Node.js*" }
+            foreach ($item in $items) {
+                if ($item.UninstallString) {
+                    Write-Host "[INFO] Found Node.js installation: $($item.DisplayName)" -ForegroundColor Gray
+                    if ($item.UninstallString -match "msiexec") {
+                        $productCode = $item.UninstallString -replace ".*({.*}).*", '$1'
+                        if ($productCode -match "^{.*}$") {
+                            Write-Host "[INFO] Uninstalling via MSI..." -ForegroundColor Gray
+                            Start-Process msiexec.exe -ArgumentList "/x", $productCode, "/quiet", "/norestart" -Wait
+                        }
+                    }
+                }
+            }
+        } catch {
+            # Ignore registry errors
+        }
+    }
+
+    # Remove from PATH and common locations
+    $nodePaths = @(
+        "$env:ProgramFiles\nodejs",
+        "${env:ProgramFiles(x86)}\nodejs",
+        "$env:LOCALAPPDATA\Programs\nodejs",
+        "$env:APPDATA\npm",
+        "$env:APPDATA\npm-cache"
+    )
+
+    foreach ($path in $nodePaths) {
+        if (Test-Path $path) {
+            Remove-Item -Path $path -Recurse -Force -ErrorAction SilentlyContinue
+            Write-Host "[SUCCESS] Removed $path" -ForegroundColor Green
+        }
+    }
+
+    Write-Host "[DONE] Node.js uninstalled (restart terminal for PATH changes)" -ForegroundColor Green
+}
+
+function Uninstall-Git {
+    Write-Host "[UNINSTALL] Removing Git..." -ForegroundColor Yellow
+
+    # Remove Git Bash path env var
+    [System.Environment]::SetEnvironmentVariable("CLAUDE_CODE_GIT_BASH_PATH", $null, "User")
+    $env:CLAUDE_CODE_GIT_BASH_PATH = $null
+
+    # Try winget first
+    $wingetInstalled = Get-Command winget -ErrorAction SilentlyContinue
+    if ($wingetInstalled) {
+        Write-Host "[INFO] Attempting to uninstall via winget..." -ForegroundColor Gray
+        winget uninstall --id Git.Git --silent 2>$null
+    }
+
+    # Try uninstaller directly
+    $gitUninstallers = @(
+        "$env:ProgramFiles\Git\unins000.exe",
+        "${env:ProgramFiles(x86)}\Git\unins000.exe",
+        "$env:LOCALAPPDATA\Programs\Git\unins000.exe"
+    )
+
+    foreach ($uninstaller in $gitUninstallers) {
+        if (Test-Path $uninstaller) {
+            Write-Host "[INFO] Running Git uninstaller..." -ForegroundColor Gray
+            Start-Process $uninstaller -ArgumentList "/VERYSILENT", "/NORESTART" -Wait
+            Write-Host "[SUCCESS] Git uninstalled via uninstaller" -ForegroundColor Green
+            break
+        }
+    }
+
+    # Clean up directories if still exist
+    $gitPaths = @(
+        "$env:ProgramFiles\Git",
+        "${env:ProgramFiles(x86)}\Git",
+        "$env:LOCALAPPDATA\Programs\Git"
+    )
+
+    foreach ($path in $gitPaths) {
+        if (Test-Path $path) {
+            Remove-Item -Path $path -Recurse -Force -ErrorAction SilentlyContinue
+            Write-Host "[SUCCESS] Removed $path" -ForegroundColor Green
+        }
+    }
+
+    Write-Host "[DONE] Git uninstalled (restart terminal for PATH changes)" -ForegroundColor Green
+}
+
+# ============================================
+# Handle Uninstall Mode
+# ============================================
+
+if ($Uninstall) {
+    Write-Host "====================================" -ForegroundColor Red
+    Write-Host "   Claude Code Uninstaller         " -ForegroundColor White
+    Write-Host "====================================" -ForegroundColor Red
+    Write-Host ""
+
+    switch ($Uninstall) {
+        "claude" {
+            Uninstall-ClaudeCode
+        }
+        "nodejs" {
+            Uninstall-NodeJS
+        }
+        "git" {
+            Uninstall-Git
+        }
+        "all" {
+            Uninstall-ClaudeCode
+            Write-Host ""
+            Uninstall-NodeJS
+            Write-Host ""
+            Uninstall-Git
+        }
+    }
+
+    Write-Host ""
+    Write-Host "====================================" -ForegroundColor Cyan
+    Write-Host "Uninstall completed. Please restart your terminal." -ForegroundColor Yellow
+    Write-Host "====================================" -ForegroundColor Cyan
+    exit 0
+}
+
+# ============================================
+# Installation Mode (default)
+# ============================================
 
 Write-Host "====================================" -ForegroundColor Cyan
 Write-Host "   Claude Code Quick Setup         " -ForegroundColor White
@@ -45,19 +249,66 @@ try {
         $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
         
         # Set Git Bash path after installation
+        $bashPath = $null
         $gitDefaultPath = "C:\Program Files\Git\bin\bash.exe"
-        if (Test-Path $gitDefaultPath) {
-            [System.Environment]::SetEnvironmentVariable("CLAUDE_CODE_GIT_BASH_PATH", $gitDefaultPath, "User")
-            Write-Host "[SUCCESS] Git installed and configured!" -ForegroundColor Green
+        $gitUserPath = "$env:LOCALAPPDATA\Programs\Git\bin\bash.exe"
+        
+        # Try to find via Get-Command first
+        $gitCmd = Get-Command git -ErrorAction SilentlyContinue
+        if ($gitCmd) {
+            $detectedBash = Join-Path (Split-Path (Split-Path $gitCmd.Source)) "bin\bash.exe"
+            if (Test-Path $detectedBash) {
+                $bashPath = $detectedBash
+            }
+        }
+
+        # Fallback to standard paths if not found via command
+        if (-not $bashPath) {
+            if (Test-Path $gitDefaultPath) {
+                $bashPath = $gitDefaultPath
+            } elseif (Test-Path $gitUserPath) {
+                $bashPath = $gitUserPath
+            }
+        }
+
+        if ($bashPath) {
+            [System.Environment]::SetEnvironmentVariable("CLAUDE_CODE_GIT_BASH_PATH", $bashPath, "User")
+            Write-Host "[SUCCESS] Git installed and configured! (Found at: $bashPath)" -ForegroundColor Green
+        } else {
+            Write-Host "[WARNING] Git installed but bash.exe not found automatically" -ForegroundColor Yellow
         }
     } else {
         # Download and install Git manually
         Write-Host "[INFO] Downloading Git installer..." -ForegroundColor Yellow
-        $gitUrl = "https://github.com/git-for-windows/git/releases/download/v2.47.1.windows.1/Git-2.47.1-64-bit.exe"
+
+        # Git download URLs - primary is GitHub proxy mirror for China mainland
+        $gitUrls = @(
+            "https://mirror.ghproxy.com/https://github.com/git-for-windows/git/releases/download/v2.51.2.windows.1/Git-2.51.2-64-bit.exe",
+            "https://ghproxy.net/https://github.com/git-for-windows/git/releases/download/v2.51.2.windows.1/Git-2.51.2-64-bit.exe",
+            "https://github.com/git-for-windows/git/releases/download/v2.51.2.windows.1/Git-2.51.2-64-bit.exe"
+        )
         $installerPath = "$env:TEMP\git-installer.exe"
-        
+
         try {
-            Invoke-WebRequest -Uri $gitUrl -OutFile $installerPath
+            $downloaded = $false
+            foreach ($gitUrl in $gitUrls) {
+                Write-Host "[INFO] Trying: $gitUrl" -ForegroundColor Gray
+                try {
+                    $ProgressPreference = 'SilentlyContinue'
+                    Invoke-WebRequest -Uri $gitUrl -OutFile $installerPath -TimeoutSec 60
+                    $ProgressPreference = 'Continue'
+                    if (Test-Path $installerPath) {
+                        Write-Host "[SUCCESS] Downloaded from mirror" -ForegroundColor Green
+                        $downloaded = $true
+                        break
+                    }
+                } catch {
+                    Write-Host "[WARNING] Mirror failed, trying next..." -ForegroundColor Yellow
+                }
+            }
+            if (-not $downloaded) {
+                throw "All download mirrors failed"
+            }
             Write-Host "[INFO] Installing Git..." -ForegroundColor Yellow
             Start-Process $installerPath -ArgumentList "/VERYSILENT", "/NORESTART", "/NOCANCEL", "/SP-", "/CLOSEAPPLICATIONS", "/RESTARTAPPLICATIONS" -Wait
             Remove-Item $installerPath -Force
@@ -138,15 +389,39 @@ try {
     # If winget installation failed or not available, use manual installation
     if (-not $nodeInstalled) {
         Write-Host "[INFO] Downloading Node.js 22 installer..." -ForegroundColor Yellow
-        $nodeUrl = "https://nodejs.org/dist/v22.13.1/node-v22.13.1-x64.msi"
+
+        # Node.js download URLs - primary is npmmirror (Taobao) for China mainland
+        $nodeUrls = @(
+            "https://npmmirror.com/mirrors/node/v22.13.1/node-v22.13.1-x64.msi",
+            "https://cdn.npmmirror.com/binaries/node/v22.13.1/node-v22.13.1-x64.msi",
+            "https://nodejs.org/dist/v22.13.1/node-v22.13.1-x64.msi"
+        )
         $installerPath = "$env:TEMP\nodejs-installer.msi"
 
         try {
-            # Download with progress
-            Write-Host "[INFO] Downloading from: $nodeUrl" -ForegroundColor Gray
-            $ProgressPreference = 'SilentlyContinue'
-            Invoke-WebRequest -Uri $nodeUrl -OutFile $installerPath -TimeoutSec 300
-            $ProgressPreference = 'Continue'
+            # Download with mirror fallback
+            $downloaded = $false
+            foreach ($nodeUrl in $nodeUrls) {
+                Write-Host "[INFO] Trying: $nodeUrl" -ForegroundColor Gray
+                try {
+                    $ProgressPreference = 'SilentlyContinue'
+                    Invoke-WebRequest -Uri $nodeUrl -OutFile $installerPath -TimeoutSec 120
+                    $ProgressPreference = 'Continue'
+                    if (Test-Path $installerPath) {
+                        $fileSize = (Get-Item $installerPath).Length
+                        if ($fileSize -gt 1000000) {  # At least 1MB
+                            Write-Host "[SUCCESS] Downloaded from mirror ($([math]::Round($fileSize/1MB, 1)) MB)" -ForegroundColor Green
+                            $downloaded = $true
+                            break
+                        }
+                    }
+                } catch {
+                    Write-Host "[WARNING] Mirror failed, trying next..." -ForegroundColor Yellow
+                }
+            }
+            if (-not $downloaded) {
+                throw "All download mirrors failed"
+            }
 
             if (-not (Test-Path $installerPath)) {
                 throw "Download failed - installer file not found"
@@ -473,16 +748,18 @@ try {
     # Set default API URL
     $apiUrl = "https://claude-code.club/api"
     
-    # Set environment variables
+    # Set environment variables (persistent for future sessions)
     Write-Host ""
     Write-Host "[CONFIG] Saving configuration..." -ForegroundColor Yellow
     [System.Environment]::SetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", $apiToken, "User")
     [System.Environment]::SetEnvironmentVariable("ANTHROPIC_BASE_URL", $apiUrl, "User")
-    # [System.Environment]::SetEnvironmentVariable("ANTHROPIC_API_KEY", $apiToken, "User")
-    
-    # Only set environment variables, don't create config files
+
+    # Also set for current session (immediate use)
+    $env:ANTHROPIC_AUTH_TOKEN = $apiToken
+    $env:ANTHROPIC_BASE_URL = $apiUrl
+
     Write-Host "[SUCCESS] Environment variables configured!" -ForegroundColor Green
-    
+
     # Set execution policy for Claude CLI
     Write-Host ""
     Write-Host "[CONFIG] Setting PowerShell execution policy..." -ForegroundColor Yellow
@@ -494,14 +771,27 @@ try {
         Write-Host "[INFO] You may need to run manually:" -ForegroundColor Cyan
         Write-Host "Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned" -ForegroundColor White
     }
-    
+
     Write-Host ""
-    Write-Host "Usage:" -ForegroundColor Cyan
-    Write-Host "1. Close and reopen PowerShell" -ForegroundColor White
-    Write-Host "2. Type 'claude -i' to start interactive mode" -ForegroundColor White
-    Write-Host "   Or 'claude \"your question\"' for direct questions" -ForegroundColor White
+    Write-Host "====================================" -ForegroundColor Cyan
+    Write-Host "   Installation Complete!          " -ForegroundColor Green
+    Write-Host "====================================" -ForegroundColor Cyan
     Write-Host ""
-    Read-Host "Press Enter to exit"
+    Write-Host "You can now use Claude Code:" -ForegroundColor White
+    Write-Host "  claude             Start interactive mode" -ForegroundColor Gray
+    Write-Host "  claude ""question""  Ask a direct question" -ForegroundColor Gray
+    Write-Host ""
+    Write-Host -NoNewline "Start Claude Code now? [Y/n]: " -ForegroundColor Yellow
+    $startNow = Read-Host
+
+    if ([string]::IsNullOrWhiteSpace($startNow) -or $startNow -eq 'Y' -or $startNow -eq 'y') {
+        Write-Host ""
+        Write-Host "[INFO] Starting Claude Code..." -ForegroundColor Cyan
+        & claude
+    } else {
+        Write-Host ""
+        Write-Host "[INFO] You can start Claude Code anytime by typing 'claude'" -ForegroundColor Cyan
+    }
 } catch {
     Write-Host "[ERROR] Installation failed: $_" -ForegroundColor Red
     Write-Host ""

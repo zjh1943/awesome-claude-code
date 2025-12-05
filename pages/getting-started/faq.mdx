@@ -36,6 +36,70 @@ A: **不需要**。大家只需要能连接我们的服务器就可以。我们�
 
 A: **是的**。我们只是提供了一个转发服务器，帮大家解决网络和支付问题。大家的请求最终还是发送到 Claude 官方的大模型的。
 
+### Q: Claude Code 内置的 `fetch` 和 `web_search` 工具受限，有什么替代方案？
+
+A: 当 Claude Code 内置的 `fetch` 或 `web_search` 工具受到限制时，您可以考虑以下替代方案，它们能提供更强大的功能和更灵活的配置：
+
+#### `fetch` 工具替代方案: Fetch MCP、Playwright MCP 或 Chrome DevTools MCP
+
+这些工具允许 AI 助手获取网页内容、控制浏览器执行网页交互、API 测试等复杂操作。
+
+<Callout type="info">
+**Playwright MCP 和 Chrome DevTools MCP 的额外优势：** 这两个工具打开浏览器后，具备完整的网站浏览功能，不仅能实现搜索和 fetch 操作，还能截图或获取网页内容来提取信息。相比纯 fetch 方案，它们能处理需要 JavaScript 渲染的动态网页、登录后的页面内容等复杂场景。
+</Callout>
+
+**Fetch MCP Server（推荐）**
+
+*   **功能:** 从互联网获取 URL 内容，自动将 HTML 转换为 Markdown 格式，便于 AI 分析网页内容。支持获取网页、API 响应等。
+*   **安装 (通过 Claude Code CLI):**
+    ```bash
+    claude mcp add --scope user fetch -- uvx mcp-server-fetch
+    ```
+    或使用 pip 安装后配置：
+    ```bash
+    pip install mcp-server-fetch
+    claude mcp add --scope user fetch -- python -m mcp_server_fetch
+    ```
+*   **使用示例:** 安装完成后，可以在 Claude Code 中直接使用 fetch 工具获取网页内容：
+    ```
+    /fetch:fetch https://juejin.cn/user/4151367379457848
+    ```
+    或者通过自然语言让 AI 调用：
+    ```
+    请使用 fetch 工具获取 https://example.com 的内容
+    ```
+*   **特点:**
+    - **不受 Anthropic 内置 fetch 工具的政策限制**，可访问更多网站
+    - 可通过 `--ignore-robots-txt` 参数忽略网站的 robots.txt 限制
+    - 自动将 HTML 转为 Markdown，便于 AI 理解
+    - 支持设置最大返回字符数 (`max_length`)
+    - 支持分页获取大型内容 (`start_index`)
+    - 支持自定义 User-Agent (`--user-agent`) 和代理 (`--proxy-url`)
+    - HTTP 自动升级为 HTTPS
+    - 内置 15 分钟缓存，重复访问更快
+
+**Playwright MCP**
+
+*   **功能:** 自动化浏览器交互、API 测试，支持 Chromium, Firefox, WebKit。
+*   **安装 (通过 Claude Code CLI):**
+    ```bash
+    claude mcp add --scope user playwright npx @playwright/mcp@latest
+    ```
+*   **配置 (示例，具体请参考您的 MCP 客户端配置):**
+    此命令会自动在您的 MCP 客户端配置文件中 (如 `claude-desktop-config.json` 或 Gemini CLI 配置) 添加 `playwright` MCP 服务器配置。
+*   **使用:** 启动 MCP 服务器 (`npx playwright launch --server`)，然后 AI 助手即可通过自然语言发送指令，例如："Use playwright to navigate to google.com and take a screenshot"。
+
+**Chrome DevTools MCP**
+
+*   **功能:** 通过自然语言控制 Chrome 浏览器，执行自动化、调试和检查任务，基于 Puppeteer。
+*   **安装 (通过 Claude Code CLI):**
+    ```bash
+    claude mcp add --scope user chrome-devtools npx chrome-devtools-mcp@latest
+    ```
+*   **配置 (示例):**
+    此命令会自动在您的 MCP 客户端配置文件中添加 `chrome-devtools` MCP 服务器配置。
+*   **使用:** 配置完成后，AI 助手即可通过自然语言指令控制 Chrome，例如："Navigate to this page and check for console errors"。
+
 ## 安全隐私
 
 ### Q: 我的数据安全吗？

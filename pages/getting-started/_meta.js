@@ -15,6 +15,11 @@ export default {
     title: '常见错误', // Changed from '常见错误处理'
   },
   faq: '常见问题',
+  'codex-core': {
+    type: 'separator',
+    title: 'OpenAI Codex'
+  },
+  'codex-installation': '安装和配置',
   'gemini-core': {
     type: 'separator',
     title: 'Google Gemini CLI'
@@ -22,7 +27,7 @@ export default {
   'gemini-introduction': '核心介绍',
   'gemini-get-api-key': {
     title: '获取 API Key',
-    href: '/getting-started/get-api-key' // Redirect to Claude's API Key page
+    href: '/getting-started/get-api-key'
   },
   'gemini-installation': '安装和配置',
   'gemini-quick-start': '快速体验',
