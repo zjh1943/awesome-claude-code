@@ -1,0 +1,85 @@
+---
+title: 请求响应很慢或卡死怎么办
+description: 请求超过1分钟甚至卡死的解决方案
+---
+
+import { Callout, Tabs } from 'nextra/components'
+
+# 请求响应很慢或卡死怎么办？
+
+如果你遇到请求响应超过1分钟，甚至卡死的情况，可以参考以下原因分析和解决方案。
+
+## 原因一：偶尔网络抽风（90% 概率）
+
+这是最常见的情况，网络偶尔出现波动导致请求超时。
+
+**解决方法：** 按 `ESC` 键退出当前请求，然后重试即可。
+
+## 原因二：运营商国际带宽拥堵（5% 概率）
+
+部分国内宽带运营商提供的国外带宽太小，导致拥堵、丢包率高。
+
+### 如何验证是否丢包率高？
+
+可以通过 `ping` 命令测试到代理服务器的网络质量：
+
+<Tabs items={['macOS / Linux', 'Windows']}>
+  <Tabs.Tab>
+```bash
+# 测试默认节点（发送 20 个包）
+ping -c 20 claude-code.club
+
+# 测试日本节点
+ping -c 20 jp.claude-code.club
+
+# 测试香港节点
+ping -c 20 hk.claude-code.club
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```powershell
+# 测试默认节点（发送 20 个包）
+ping -n 20 claude-code.club
+
+# 测试日本节点
+ping -n 20 jp.claude-code.club
+
+# 测试香港节点
+ping -n 20 hk.claude-code.club
+```
+  </Tabs.Tab>
+</Tabs>
+
+观察输出结果：
+- **丢包率 (packet loss)**：超过 5% 说明网络不稳定
+- **延迟 (time/RTT)**：超过 300ms 说明延迟较高
+- 选择丢包率最低、延迟最小的节点
+
+### 解决方法
+
+#### 方案 A：更换代理地址
+
+将 `ANTHROPIC_BASE_URL` 环境变量改为其他代理地址，根据你的网络情况选择：
+
+| 代理地址 | 服务器位置 |
+|---------|-----------|
+| `https://jp.claude-code.club/api` | 日本 |
+| `https://hk.claude-code.club/api` | 香港 |
+
+<Callout type="info">
+不同地区的网络环境差异较大，建议都试试，选择响应最快的那个。
+</Callout>
+
+**修改方法：**
+
+通过修改环境变量 `ANTHROPIC_BASE_URL` 来更换代理地址。请参考对应操作系统的环境变量设置方法：
+
+- [macOS 设置环境变量](/getting-started/installation/macos#3-设置环境变量)
+- [Windows 设置环境变量](/getting-started/installation/windows#3-设置环境变量)
+- [Linux 设置环境变量](/getting-started/installation/linux#3-设置环境变量)
+
+例如，将 `ANTHROPIC_BASE_URL` 的值从 `https://claude-code.club/api` 改为 `https://jp.claude-code.club/api` 或 `https://hk.claude-code.club/api`。
+
+#### 方案 B：使用魔法工具
+
+为你的网络环境安装魔法工具，然后选择离代理地址较近的节点（如日本、香港、新加坡等）。
