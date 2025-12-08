@@ -6,5 +6,6 @@ export default {
   ui: 'UI 设计',
   commands: '命令和技巧',
   subagents: 'Subagent',
-  'mcp-tools': 'MCP Tools'
+  'mcp-tools': 'MCP Tools',
+  'claude-skills': 'Claude Skills'
 }

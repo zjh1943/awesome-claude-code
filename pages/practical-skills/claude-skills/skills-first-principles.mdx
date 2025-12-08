@@ -1,0 +1,201 @@
+# Claude Agent Skills 第一性原理深度解析
+
+> 原文：[Claude Agent Skills: A First Principles Deep Dive](https://leehanchung.github.io/blogs/2025/10/26/claude-skills-deep-dive/)
+>
+> 翻译整理自：ChallengeHub 公众号
+
+![文章头图](/images/skills-first-principles/01-article-header.png)
+
+## Skills 是什么？
+
+**Claude Agent Skills 的第一性原理** 可以概括为：**基于提示词的动态上下文注入与元工具架构（Prompt-based Dynamic Context Injection & Meta-Tool Architecture）**。
+
+简单来说，Claude 的 Skills **不是**一段在模型之外运行的可执行代码（如 Python 函数），而是**一段在需要时被"植入"到模型大脑中的高阶指令（Prompt）**。
+
+### 1. 本质：是"提示词扩展"，而非"代码执行"
+
+- **传统观念：** Tool/Function Calling 是"模型调用一个外部函数，函数运行代码并返回结果"。
+- **Skill 的原理：** Skill 是一份 Markdown 文件（`SKILL.md`）。当 Skill 被调用时，系统读取这个文件，将其中的大量指令、工作流和知识**"展开"**并**"注入"**到当前的对话历史中。
+- **一句话总结：** Skill 不直接解决问题，而是通过注入提示词，瞬间把 Claude 变成解决该问题的专家。
+
+### 2. 架构：元工具（Meta-Tool）与纯 LLM 推理
+
+- **Meta-Tool 设计：** Claude 的 Prompt 里并没有塞入所有 Skill 的具体指令。它只有一个名为 `Skill` 的**元工具（Meta-Tool）**。
+- **渐进式披露（Progressive Disclosure）：**
+  1. Claude 只看到所有 Skill 的**名称和简介**。
+  2. Claude **完全依靠自身的语言理解能力**来判断用户意图是否匹配某个 Skill。
+  3. 这里**没有**硬编码的路由、正则表达式或分类器。决策完全发生在 Transformer 的前向传播中。
+
+### 3. 核心机制：双重上下文注入
+
+当一个 Skill 被选中时，它会执行两个层面的"修改"操作：
+
+**A. 对话上下文注入**
+- **显性消息（Metadata）：** 给用户看，例如 `<command-message>The "pdf" skill is loading</command-message>`。
+- **隐性消息（Meta-Prompt）：** 带有 `isMeta: true` 标记，包含 `SKILL.md` 完整内容，对用户界面**隐藏**。
+
+**B. 执行上下文修改**
+- **工具权限：** 临时授予特定的工具权限（如 `allowed-tools: "Bash(git:*)"`）。
+- **模型切换：** 某些 Skill 可以强制切换模型（例如从 Sonnet 切换到 Opus）。
+
+### 4. 运作流程
+
+1. **用户请求：** "帮我分析这个 PDF。"
+2. **LLM 决策：** 看到 `Skill` 工具里有 `pdf` 技能的描述，决定调用 `command: "pdf"`。
+3. **系统介入：** 读取 `pdf/SKILL.md`，生成用户可见消息和隐藏的详细指令，修改 Session 权限。
+4. **LLM 执行：** 带着新注入的记忆和新获得的权限，Claude 开始执行具体操作。
+
+---
+
+## Skills 和 Prompts 有什么区别?
+
+| 特性 | 传统提示语 | Claude Agent Skills |
+|-----|-----|-----|
+| **核心机制** | 静态设置，一次性加载 | **动态注入**，按需加载 |
+| **位置** | System Prompt 或初始消息 | 隐藏在 `Skill` 元工具的描述中 |
+| **上下文占用** | 初始占用大，随能力增加而膨胀 | 初始占用小，仅在激活时临时膨胀 |
+| **能力范围** | 仅改变对话内容和指导方针 | 改变对话内容 + **修改执行权限/切换模型** |
+| **可见性** | 通常单一渠道 | **双通道**：用户看简报，AI 看详案 |
+
+**形象比喻：**
+- **传统提示语：** 像一个**全科医生**，上岗前背熟了一本厚厚的医学手册。
+- **Agent Skills：** 像一个**懂得随时呼叫专家的全科医生**，平时只带一本薄薄的通讯录，需要时呼叫专家介入。
+
+---
+
+## Claude 智能体 Skills 概述
+
+![Claude Skill Flowchart](/images/skills-first-principles/02-skill-flowchart.png)
+
+**Skills** 是专门的提示词模板，用于将领域特定指令注入到对话上下文中。
+
+**术语说明：**
+- **Skills 工具**（大写）= 管理所有 Skills 的元工具
+- **skill**（小写）= 单个技能，如 `pdf`、`skill-creator`
+
+### 工具 vs Skills
+
+| 方面 | 传统工具 | Skills |
+|-----|-----|-----|
+| **执行模型** | 同步、直接 | 提示词扩展 |
+| **目的** | 执行特定操作 | 指导复杂工作流 |
+| **返回值** | 即时结果 | 上下文 + 执行环境改变 |
+| **示例** | `Read`、`Write`、`Bash` | `pdf`、`skill-creator` |
+
+---
+
+## 构建智能体 Skills
+
+**关键洞察**：Skills = 提示词模板 + 对话上下文注入 + 执行上下文修改 + 可选脚本/资源
+
+![skill-creator package](/images/skills-first-principles/03-skill-creator-package.png)
+
+每个 Skills 定义在 `SKILL.md` 文件中，可包含：
+- `/scripts` - 可执行脚本
+- `/references` - 参考文档
+- `/assets` - 模板和二进制文件
+
+![Claude Desktop Skill](/images/skills-first-principles/04-desktop-skill.png)
+
+### SKILL.md 结构
+
+```
+┌─────────────────────────────────────┐
+│ 1. YAML Frontmatter (元数据)        │
+│    ---                              │
+│    name: skill-name                 │
+│    description: 简要概述            │
+│    allowed-tools: "Bash, Read"      │
+│    ---                              │
+├─────────────────────────────────────┤
+│ 2. Markdown 内容 (指令)             │
+│    目的、详细指令、示例、步骤       │
+└─────────────────────────────────────┘
+```
+
+### Frontmatter 字段
+
+![Claude Skills Frontmatter](/images/skills-first-principles/05-frontmatter.png)
+
+- **name** (必填)：Skills 名称，用作 `command`
+- **description** (必填)：功能概述，Claude 判断何时调用的主要依据
+- **allowed-tools** (可选)：无需用户批准即可使用的工具
+- **model** (可选)：指定使用的模型
+
+```yaml
+# ✅ 好的实践
+allowed-tools: "Read,Write,Bash(git:*)"
+
+# ❌ 不必要的攻击面
+allowed-tools: "Bash,Read,Write,Edit,Glob,Grep,WebSearch,Task,Agent"
+```
+
+---
+
+## 常见的 Skills 模式
+
+### 模式 1：脚本自动化
+
+![Script Automation](/images/skills-first-principles/06-script-automation.png)
+
+将计算任务卸载到 `scripts/` 目录中的 Python 或 Bash 脚本。
+
+### 模式 2：读取 - 处理 - 写入
+
+![Read Process Write](/images/skills-first-principles/07-read-process-write.png)
+
+最简单的模式——读取输入，按照指令转换，写入输出。
+
+### 模式 3：搜索 - 分析 - 报告
+
+![Search Analyze Report](/images/skills-first-principles/08-search-analyze-report.png)
+
+使用 Grep 搜索模式，读取匹配文件，分析发现，生成报告。
+
+### 模式 4：命令链执行
+
+![Command Chain](/images/skills-first-principles/09-command-chain.png)
+
+执行一系列命令，每个步骤依赖于上一步的成功。
+
+---
+
+## Skills 内部架构
+
+![Execution Flow](/images/skills-first-principles/10-execution-flow.png)
+
+| 特性 | 普通工具 | Skills 工具 |
+|-----|-----|-----|
+| **本质** | 直接动作执行器 | 提示词注入 + 上下文修改器 |
+| **复杂度** | 简单 (3-4 条消息) | 复杂 (5-10+ 条消息) |
+| **上下文** | 静态 | 动态 (每轮修改) |
+| **Token 开销** | ~100 tokens | ~1,500+ tokens |
+
+### 为什么是两条消息？
+
+- **消息 1** (`isMeta: false`)：面向用户的透明度
+- **消息 2** (`isMeta: true`)：为 Claude 提供详细指令
+
+---
+
+## 执行生命周期
+
+![Turn1 Completion](/images/skills-first-principles/11-turn1-completion.png)
+
+1. **发现与加载**：扫描 `~/.claude/commands/`、`.claude/skills/`、插件和内置 Skills
+2. **用户请求与选择**：Claude 根据描述匹配用户意图
+3. **Skills 执行**：验证 → 权限检查 → 加载文件 → 注入上下文
+
+---
+
+## 总结
+
+Claude Agent Skills 的第一性原理是**通过"元工具"动态地将"静态的知识文件（Markdown）"转化为"动态的对话上下文（Prompt）"**。
+
+核心要点：
+1. **Skills 是提示词模板**，不是可执行代码
+2. **渐进式披露**确保上下文效率
+3. **双重上下文注入**同时修改对话和执行环境
+4. **元工具架构**实现灵活的 Skills 管理
+
+这种设计极其聪明地利用了 LLM **In-Context Learning** 的能力，实现了功能的无限扩展和按需加载。
