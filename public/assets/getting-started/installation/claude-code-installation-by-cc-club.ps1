@@ -332,10 +332,31 @@ try {
 
 # Check Node.js
 Write-Host "[CHECK] Checking Node.js..." -ForegroundColor Yellow
+$minNodeVersion = 18
+
 try {
     $nodeVersion = node --version 2>$null
     if ($nodeVersion) {
-        Write-Host "[OK] Node.js installed: $nodeVersion" -ForegroundColor Green
+        # 提取主版本号 (v22.13.1 -> 22)
+        if ($nodeVersion -match 'v(\d+)') {
+            $majorVersion = [int]$Matches[1]
+            if ($majorVersion -lt $minNodeVersion) {
+                Write-Host "[WARNING] Node.js $nodeVersion detected, but Claude Code requires v$minNodeVersion+" -ForegroundColor Yellow
+                Write-Host "[INFO] Your Node.js version is too old and will cause runtime errors" -ForegroundColor Cyan
+                Write-Host ""
+                Write-Host -NoNewline "Upgrade Node.js to the latest version? [Y/n]: " -ForegroundColor Yellow
+                $upgradeResponse = Read-Host
+                if ([string]::IsNullOrWhiteSpace($upgradeResponse) -or $upgradeResponse -eq 'Y' -or $upgradeResponse -eq 'y') {
+                    throw "Node.js upgrade requested"
+                } else {
+                    Write-Host "[WARNING] Continuing with old Node.js version - Claude Code may not work!" -ForegroundColor Red
+                }
+            } else {
+                Write-Host "[OK] Node.js installed: $nodeVersion (meets requirement: v$minNodeVersion+)" -ForegroundColor Green
+            }
+        } else {
+            Write-Host "[OK] Node.js installed: $nodeVersion" -ForegroundColor Green
+        }
     } else {
         throw "Node.js not found"
     }
