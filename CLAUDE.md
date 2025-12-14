@@ -2,6 +2,16 @@
 # Claude Code Academy
 Claude Code Academy 是一个开源协作的学习平台，致力于帮助中文开发者快速掌握 Claude Code 的核心功能，提升开发效率。
 
+## CC Club API 地址
+
+CC Club 提供的 `ANTHROPIC_BASE_URL` 配置：
+
+| 地址 | 说明 |
+|-----|-----|
+| `https://claude-code.club/api` | 默认地址 |
+| `https://jp.claude-code.club/api` | 日本节点（备选） |
+| `https://hk.claude-code.club/api` | 香港节点（备选） |
+
 ## 技术栈
 
 1. 使用 Next.js (v14.2.0) 和 Nextra(v3.0.0) 构建静态文档站

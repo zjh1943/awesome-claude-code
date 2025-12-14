@@ -14,7 +14,9 @@ export default {
   'common-errors': {
     title: '常见错误', // Changed from '常见错误处理'
   },
-  faq: '常见问题',
+  faq: {
+    title: '常见问题',
+  },
   'codex-core': {
     type: 'separator',
     title: 'OpenAI Codex'

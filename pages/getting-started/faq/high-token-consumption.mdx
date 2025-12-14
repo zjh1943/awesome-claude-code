@@ -1,0 +1,27 @@
+---
+title: Token 消耗非常快怎么办
+description: 单窗口每小时消耗超过 $5 的解决方案
+---
+
+import { Callout } from 'nextra/components'
+
+# Token 消耗非常快怎么办？
+
+如果你发现单窗口每小时 token 消耗超过 $5，这通常是由于对话上下文过长、频繁的大文件读取、或使用方式不当导致的。
+
+<Callout type="info">
+**推荐阅读：** 详细的省 token 技巧请参考 [如何节省 Token](/practical-skills/commands/save-tokens)
+</Callout>
+
+## 常见原因
+
+1. **对话轮次过多** - 长时间不重置对话，上下文越来越长
+2. **频繁读取大文件** - 每次请求都包含大量文件内容
+3. **使用高消耗模型** - 如 Opus 模型消耗是 Sonnet 的数倍
+
+## 快速解决方案
+
+1. 使用 `/clear` 命令定期清理对话历史
+2. 使用 `/compact` 命令压缩当前上下文
+3. 合理选择模型，日常任务使用 Sonnet 即可
+4. 避免一次性读取过多文件

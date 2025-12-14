@@ -1,0 +1,88 @@
+---
+title: 如何配置 Base URL 和 Auth Token
+description: Claude Code 的 base url 和 auth token 配置方法汇总
+---
+
+import { Callout } from 'nextra/components'
+
+# 如何配置 Base URL 和 Auth Token？
+
+Claude Code 的 `ANTHROPIC_BASE_URL` 和 `ANTHROPIC_AUTH_TOKEN` 可以通过以下三种方式进行配置：
+
+## 方式一：用户级配置文件（推荐）
+
+**文件路径：** `~/.claude/settings.json`
+
+**配置示例：**
+
+```json
+{
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "你的API密钥",
+    "ANTHROPIC_BASE_URL": "https://claude-code.club/api"
+  }
+}
+```
+
+<Callout type="info">
+该文件为 Claude Code 官方推荐的配置方式，适用于所有项目，配置后无需每次手动设置环境变量。
+</Callout>
+
+## 方式二：项目级配置文件
+
+**文件路径：** `项目根目录/.claude/settings.json`
+
+**配置示例：**
+
+```json
+{
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "项目专用API密钥",
+    "ANTHROPIC_BASE_URL": "https://claude-code.club/api"
+  }
+}
+```
+
+<Callout type="info">
+如果你希望为某个项目单独配置不同的 API 地址或密钥，可以在项目目录下创建 `.claude/settings.json` 文件。项目级配置会覆盖用户级配置。
+</Callout>
+
+## 方式三：环境变量
+
+通过操作系统的环境变量来配置，请参考对应操作系统的设置方法：
+
+- [macOS 设置环境变量](/getting-started/installation/macos#3-设置环境变量)
+- [Windows 设置环境变量](/getting-started/installation/windows#3-设置环境变量)
+- [Linux 设置环境变量](/getting-started/installation/linux#3-设置环境变量)
+
+## 配置优先级
+
+当多种配置方式同时存在时，优先级从高到低为：
+
+1. **环境变量** - 系统或 Shell 中设置的环境变量
+2. **项目级配置文件** - `项目根目录/.claude/settings.json`
+3. **用户级配置文件** - `~/.claude/settings.json`
+
+### 优先级说明
+
+- **环境变量**：在官方设置层级中，环境变量（以及命令行参数）被视为覆盖本地配置的高优先级输入，用于临时或按会话覆盖配置，因此在同名项上一般会"压过"文件里的设置。
+- **项目级配置** `./. claude/settings.json`：属于"项目级"设置，比用户级更具体，用于当前项目，覆盖 `~/.claude/settings.json` 中同名项。
+- **用户级配置** `~/.claude/settings.json`：是最通用的"用户级"全局配置，作为所有项目的默认值，仅在更具体的层级（项目文件 / 环境变量）没有同名配置时生效。
+
+### 推荐配置策略
+
+- **环境变量**：用于临时覆盖，如测试不同的 API 地址
+- **项目级配置**：用于项目专用配置，如特定项目使用不同的密钥
+- **用户级配置**：用于全局默认值，作为所有项目的基础配置
+
+## 总结
+
+| 配置方式 | 文件路径 | 适用场景 | 优先级 |
+|---------|---------|---------|-------|
+| 环境变量 | 系统环境变量 | 临时覆盖、脚本使用 | 高 |
+| 项目级配置 | `项目根目录/.claude/settings.json` | 项目专用配置 | 中 |
+| 用户级配置 | `~/.claude/settings.json` | 全局默认值 | 低 |
+
+<Callout type="info">
+如需配置其他参数（如 `ANTHROPIC_MODEL`），也可以在 `settings.json` 的 `env` 字段中一并添加。
+</Callout>

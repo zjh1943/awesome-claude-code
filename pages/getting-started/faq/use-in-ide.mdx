@@ -1,0 +1,168 @@
+---
+title: 如何在 VS Code 中使用 Claude Code
+description: 在 VS Code、Cursor、Trae 等 IDE 中使用 Claude Code 的完整指南
+---
+
+import { Callout, Steps, Tabs } from 'nextra/components'
+
+# 如何在 VS Code（或其他 IDE）中使用 Claude Code？
+
+在 VS Code（或其他 IDE）里使用 Claude Code，有两条路线：
+
+1. **终端方案** — 任何 IDE 都能用，零 UI 依赖
+2. **插件方案** — VS Code 及其衍生版（Cursor、Trae、Codium 等）专属
+
+## 方案一：命令行终端（通用方案）
+
+这是最灵活的方式，适用于所有 IDE，包括 VS Code、IntelliJ、Eclipse、Vim 等。
+
+<Steps>
+
+### 安装 Claude Code CLI
+
+根据你的操作系统，参考对应的安装指南：
+
+- [macOS 安装指南](/getting-started/installation/macos)
+- [Windows 安装指南](/getting-started/installation/windows)
+- [Linux 安装指南](/getting-started/installation/linux)
+
+### 在 IDE 中打开终端
+
+- **VS Code**：`` Ctrl+` `` 或菜单 `View → Terminal`
+- **IntelliJ/WebStorm**：`Alt+F12` 或底部 `Terminal` 标签
+- **其他 IDE**：找到内置终端功能
+
+### 启动 Claude Code
+
+在终端中输入：
+
+```bash
+claude
+```
+
+### 开始对话
+
+直接输入你的需求，Claude Code 会：
+- 自动分析项目文件
+- 实时显示 diff 和文件变更
+- 支持 `ESC ESC` 创建 checkpoint，误操作可回滚
+
+### 用 `/ide` 连接 IDE（可选但强烈推荐）
+
+在终端里敲 `/ide`，可以把当前会话挂到 **VS Code / Cursor / JetBrains 系列** 的插件上，实现：
+
+- 实时读取 IDE 当前打开的文件、光标选区
+- 代码改动直接在 IDE 的 Diff 视图里高亮显示，而不是终端里一堆纯文本
+- 共享 IDE 的 linter 报错，让 Claude 帮你一键修复
+
+| 场景 | 操作 |
+|---|---|
+| **首次连接** | 在终端 `claude` 会话里输入 `/ide` |
+| **查看状态** | `/ide status` |
+| **重新绑定** | 如果换了一个 IDE 窗口，再敲一次 `/ide` 即可重连 |
+| **快捷键** | 连上后，在 IDE 里 `Cmd+Esc` / `Ctrl+Esc` 可快速呼起侧边 Claude 面板 |
+
+<Callout type="info">
+**一句话记忆**：`/ide` = 让「黑框」瞬间拥有「图形外挂」——差异可视、选区即上下文、报错秒修。
+</Callout>
+
+</Steps>
+
+**优点：**
+- 零 UI 依赖，monorepo、CI、远程服务器都能用
+- 所有 IDE 通用，学一次到处用
+
+**缺点：**
+- 纯命令行界面，需要手敲命令
+
+---
+
+## 方案二：VS Code 插件（GUI 方案）
+
+适用于 VS Code 及其衍生版本（Cursor、Trae、Windsurf、Codium 等）。
+
+<Steps>
+
+### 安装 Claude Code 插件
+
+1. 打开 VS Code 扩展面板（`Ctrl+Shift+X`）
+2. 搜索 **"Claude Code"**
+3. 选择发布者为 **Anthropic** 的官方插件
+4. 点击 **Install**
+
+### 配置 API（CC Club 用户必看）
+
+<Callout type="warning">
+如果你使用 CC Club 的服务，必须完成此配置步骤！
+</Callout>
+
+需要在配置文件中设置 `primaryApiKey`：
+
+<Tabs items={['macOS / Linux', 'Windows']}>
+  <Tabs.Tab>
+**配置文件位置：** `~/.claude/config.json`
+
+```json
+{
+  "primaryApiKey": "crs"
+}
+```
+
+验证配置：
+```bash
+cat ~/.claude/config.json
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+**配置文件位置：** `C:\Users\<你的用户名>\.claude\config.json`
+
+```json
+{
+  "primaryApiKey": "crs"
+}
+```
+
+验证配置：
+```powershell
+cat ~\.claude\config.json
+```
+  </Tabs.Tab>
+</Tabs>
+
+<Callout type="info">
+如果该文件不存在，请手动创建。
+</Callout>
+
+### 使用 Claude Code 插件
+
+有多种交互方式：
+
+| 方式 | 操作 |
+|-----|------|
+| 命令面板 | `Ctrl+Shift+P` → 输入 **"Claude Code: Start Chat"** |
+| 侧边栏 | 点击侧边栏的 Claude 图标，直接开始对话 |
+| 拖拽文件 | 把文件拖进聊天窗口，作为上下文 |
+
+</Steps>
+
+**优点：**
+- 图形化界面，操作直观
+- 侧边栏聊天，无需切换窗口
+- 支持拖拽文件作为上下文
+
+**缺点：**
+- 仅限 VS Code 系列 IDE
+
+---
+
+## 快速选择建议
+
+| 你是… | 推荐方案 |
+|------|---------|
+| 终端党 / 远程开发 / CI 集成 | **CLI 方案**（方案一） |
+| GUI 党 / 喜欢侧边栏聊天 | **VS Code 插件**（方案二） |
+| 两者都想要 | 装插件，CLI 当备胎 |
+
+<Callout type="info">
+两种方案共享同一套登录态与配置文件，可以随时无缝切换。
+</Callout>
