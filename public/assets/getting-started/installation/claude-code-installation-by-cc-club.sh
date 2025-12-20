@@ -1033,24 +1033,58 @@ EOF
         can_use_sudo=true
     fi
     
+    # 先找到原始 claude 的位置（在创建 wrapper 之前）
+    local original_claude_bin=""
+    for bin in /usr/bin/claude.original /usr/bin/claude /usr/local/bin/claude /opt/claude/claude; do
+        if [ -f "$bin" ]; then
+            original_claude_bin="$bin"
+            break
+        fi
+    done
+
+    # 如果还没找到，尝试 which（排除 ~/.local/bin 目录）
+    if [ -z "$original_claude_bin" ]; then
+        local which_result=$(which claude 2>/dev/null)
+        if [ -n "$which_result" ] && [[ "$which_result" != *"/.local/bin/"* ]]; then
+            original_claude_bin="$which_result"
+        fi
+    fi
+
+    # 尝试从 npm 全局安装位置查找
+    if [ -z "$original_claude_bin" ]; then
+        local npm_prefix=$(npm config get prefix 2>/dev/null)
+        if [ -n "$npm_prefix" ] && [ -f "$npm_prefix/bin/claude" ]; then
+            original_claude_bin="$npm_prefix/bin/claude"
+        fi
+    fi
+
+    if [ -z "$original_claude_bin" ]; then
+        print_error "未找到原始 claude 命令，请确保已安装 Claude CLI"
+        print_info "安装命令: npm install -g @anthropic-ai/claude-code"
+        return 1
+    fi
+
+    print_info "找到原始 claude: $original_claude_bin"
+
     if [ "$can_use_sudo" = true ]; then
         # 有权限，使用系统级安装
         # 备份原始 claude 命令
         if [ -f /usr/bin/claude ] && [ ! -f /usr/bin/claude.original ]; then
             sudo mv /usr/bin/claude /usr/bin/claude.original
+            original_claude_bin="/usr/bin/claude.original"
             print_info "已备份原始 claude 命令"
         fi
     else
         # 没有权限，使用用户级安装
         print_warning "无 sudo 权限，将使用用户级安装"
         local user_bin_dir="$HOME/.local/bin"
-        
+
         # 创建用户 bin 目录
         if [ ! -d "$user_bin_dir" ]; then
             mkdir -p "$user_bin_dir"
             print_info "创建用户 bin 目录: $user_bin_dir"
         fi
-        
+
         # 检查 PATH 是否包含用户 bin 目录
         if [[ ":$PATH:" != *":$user_bin_dir:"* ]]; then
             print_info "添加 $user_bin_dir 到 PATH"
@@ -1061,49 +1095,65 @@ EOF
     fi
     
     # 创建新的 claude 命令作为包装器
-    cat > /tmp/claude-wrapper << 'EOF'
+    cat > /tmp/claude-wrapper << EOF
 #!/bin/bash
 # Claude CLI 智能包装器 - 自动加载配置
 
-# 查找原始 claude 命令
-CLAUDE_BIN="/usr/bin/claude.original"
-if [ ! -f "$CLAUDE_BIN" ]; then
+# 原始 claude 命令路径（安装时检测）
+CLAUDE_BIN="$original_claude_bin"
+
+# 如果预设路径不存在，尝试查找
+if [ ! -f "\$CLAUDE_BIN" ]; then
     # 尝试其他位置
-    for bin in /usr/local/bin/claude /opt/claude/claude $(which claude 2>/dev/null); do
-        if [ -f "$bin" ] && [ "$bin" != "$0" ]; then
-            CLAUDE_BIN="$bin"
+    for bin in /usr/bin/claude.original /usr/bin/claude /usr/local/bin/claude /opt/claude/claude; do
+        if [ -f "\$bin" ] && [ "\$bin" != "\$0" ]; then
+            CLAUDE_BIN="\$bin"
             break
         fi
     done
 fi
 
+# 如果还是没找到，尝试 npm 全局位置
+if [ ! -f "\$CLAUDE_BIN" ]; then
+    npm_prefix=\$(npm config get prefix 2>/dev/null)
+    if [ -n "\$npm_prefix" ] && [ -f "\$npm_prefix/bin/claude" ] && [ "\$npm_prefix/bin/claude" != "\$0" ]; then
+        CLAUDE_BIN="\$npm_prefix/bin/claude"
+    fi
+fi
+
+if [ ! -f "\$CLAUDE_BIN" ]; then
+    echo "错误：未找到原始 claude 命令"
+    echo "请确保已安装 Claude CLI: npm install -g @anthropic-ai/claude-code"
+    exit 1
+fi
+
 # 读取配置文件
-CONFIG_FILE="$HOME/.claude.json"
-if [ -f "$CONFIG_FILE" ]; then
+CONFIG_FILE="\$HOME/.claude.json"
+if [ -f "\$CONFIG_FILE" ]; then
     # 使用 grep 和 sed 提取值（兼容性更好）
     # 不再从配置文件读取 API_KEY
-    API_BASE_URL=$(grep -o '"apiBaseUrl"[[:space:]]*:[[:space:]]*"[^"]*"' "$CONFIG_FILE" | sed 's/.*:.*"\(.*\)"/\1/')
+    API_BASE_URL=\$(grep -o '"apiBaseUrl"[[:space:]]*:[[:space:]]*"[^"]*"' "\$CONFIG_FILE" | sed 's/.*:.*"\(.*\)"/\1/')
 fi
 
 # API KEY 现在只从环境变量读取
-API_KEY="${ANTHROPIC_AUTH_TOKEN:-${ANTHROPIC_API_KEY:-}}"
+API_KEY="\${ANTHROPIC_AUTH_TOKEN:-\${ANTHROPIC_API_KEY:-}}"
 
 # 使用环境变量作为后备
-API_BASE_URL="${API_BASE_URL:-${ANTHROPIC_BASE_URL:-https://claude-code.club/api}}"
+API_BASE_URL="\${API_BASE_URL:-\${ANTHROPIC_BASE_URL:-https://claude-code.club/api}}"
 
 # 如果没有配置，提示用户
-if [ -z "$API_KEY" ]; then
+if [ -z "\$API_KEY" ]; then
     echo "错误：未找到 API 配置"
     echo "请运行安装脚本：curl -sSL https://academy.claude-code.club/assets/getting-started/installation/claude-code-installation-by-cc-club.sh | bash"
     exit 1
 fi
 
 # 导出环境变量
-export ANTHROPIC_BASE_URL="$API_BASE_URL"
-export ANTHROPIC_AUTH_TOKEN="$API_KEY"
+export ANTHROPIC_BASE_URL="\$API_BASE_URL"
+export ANTHROPIC_AUTH_TOKEN="\$API_KEY"
 
 # 执行原始命令
-exec "$CLAUDE_BIN" "$@"
+exec "\$CLAUDE_BIN" "\$@"
 EOF
     
     # 安装新的包装器
