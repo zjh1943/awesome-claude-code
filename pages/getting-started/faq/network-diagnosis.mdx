@@ -1,0 +1,711 @@
+---
+title: 网络诊断与 API 入口选择指南
+description: 全面了解网络状况，排查问题原因，选择最适合自己的 API 入口地址
+---
+
+import { Callout, Tabs, Steps } from 'nextra/components'
+
+# 网络诊断与 API 入口选择指南
+
+你是不是遇到过 Claude Code 请求慢、超时甚至失败，但这往往并非服务器问题，而是由复杂的网络链路中的某个环节导致的。本文将帮助大家全面了解网络工作原理，掌握诊断技能，找出问题根源，并选择最适合自己的 API 入口地址。
+
+## 理解 API 请求的完整链路
+
+当我们在 Claude Code 中发送一个请求时，数据需要经过以下环节：
+
+```
+我们的电脑 → 本地网络 → 运营商网络 → 国际出口 → 海外网络 → CC Club 服务器 → Anthropic API
+                                ↑
+                           最容易出问题的地方
+```
+
+### 每个环节可能出现的问题
+
+| 环节 | 可能的问题 | 表现特征 |
+|------|-----------|----------|
+| 本地网络 | WiFi 信号弱、路由器问题 | 所有网站都慢 |
+| 运营商网络 | 线路拥堵、DNS 污染 | 特定时段慢 |
+| 国际出口 | 带宽限制、策略干扰 | 只有访问海外服务慢 |
+| VPN/代理 | 节点拥挤、路由绕远 | VPN 开关后表现不同 |
+| CC Club 服务器 | 服务器负载（极少发生） | 所有用户同时反馈 |
+
+<Callout type="info">
+根据我们的统计，**超过 90% 的"请求慢"问题都源于客户端网络环境**，而非服务器端。
+</Callout>
+
+## 我们国出境网络的复杂性
+
+### 为什么访问海外服务这么难？
+
+我国的国际互联网出口是有限的，所有出境流量都需要通过几个主要节点：
+
+1. **三大运营商的国际出口带宽有限**：高峰期（晚 8-11 点）尤其拥堵
+2. **不同运营商线路差异大**：电信、联通、移动到不同地区的线路质量差异明显
+3. **地理位置影响**：沿海城市通常比内陆城市访问海外更快
+4. **政策性干扰**：某些时期出境网络会变得特别不稳定
+
+### 不同运营商的出境特点
+
+| 运营商 | 到日本 | 到香港 | 备注 |
+|--------|--------|--------|------|
+| 中国电信 | 较好 | 一般 | CN2 线路质量最好 |
+| 中国联通 | 一般 | 较好 | 晚高峰波动大 |
+| 中国移动 | 一般 | 较好 | CMI 线路较稳定 |
+
+<Callout type="warning">
+这只是一般规律，实际情况因地区、时段而异。最可靠的方法是亲自测试。
+</Callout>
+
+## 全面网络诊断指南
+
+### 第一步：排除本地网络问题
+
+首先确认我们的本地网络是正常的：
+
+<Tabs items={['macOS / Linux', 'Windows']}>
+  <Tabs.Tab>
+```bash
+# 测试本地网络连通性
+ping -c 5 baidu.com
+
+# 如果这都不通，说明本地网络有问题
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```powershell
+# 测试本地网络连通性
+ping -n 5 baidu.com
+
+# 如果这都不通，说明本地网络有问题
+```
+  </Tabs.Tab>
+</Tabs>
+
+**正常结果**：0% 丢包，延迟 < 50ms
+
+### 第二步：测试到各 API 入口的网络质量
+
+CC Club 提供三个 API 入口，我们需要测试哪个最适合自己：
+
+| 入口地址 | 服务器位置 | 云服务商 | 特点 |
+|---------|-----------|---------|------|
+| `https://claude-code.club/api` | 日本（东京） | AWS | 默认地址，稳定性好 |
+| `https://jp.claude-code.club/api` | 日本 | 阿里云 | 回国线路优化 |
+| `https://hk.claude-code.club/api` | 香港 | 阿里云 | 回国线路优化 |
+
+<Callout type="info">
+阿里云的日本和香港节点对部分地区的回国线路有优化，如果默认节点较慢，建议尝试 `jp` 或 `hk` 节点。
+</Callout>
+
+#### Ping 测试（基础连通性）
+
+<Tabs items={['macOS / Linux', 'Windows']}>
+  <Tabs.Tab>
+```bash
+# 测试三个节点（每个发 30 个包，更准确）
+echo "=== 默认节点（AWS 东京）===" && ping -c 30 claude-code.club
+echo "=== 日本节点（阿里云）===" && ping -c 30 jp.claude-code.club
+echo "=== 香港节点（阿里云）===" && ping -c 30 hk.claude-code.club
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```powershell
+# 测试三个节点（每个发 30 个包，更准确）
+Write-Host "=== 默认节点（AWS 东京）==="
+ping -n 30 claude-code.club
+Write-Host "=== 日本节点（阿里云）==="
+ping -n 30 jp.claude-code.club
+Write-Host "=== 香港节点（阿里云）==="
+ping -n 30 hk.claude-code.club
+```
+  </Tabs.Tab>
+</Tabs>
+
+**如何解读结果：**
+
+```
+--- claude-code.club ping statistics ---
+7 packets transmitted, 6 packets received, 14.3% packet loss
+round-trip min/avg/max/stddev = 85.010/85.833/87.800/0.931 ms
+```
+
+- **丢包率 (packet loss)**：< 2% 优秀，2-5% 可接受，> 5% 较差
+- **平均延迟 (avg)**：< 100ms 优秀，100-200ms 可接受，> 200ms 较慢
+- **延迟波动 (mdev/jitter)**：越小越稳定
+
+#### MTR 测试（追踪完整路径）
+
+MTR 比 ping 更强大，可以看到数据包经过的每一跳：
+
+<Tabs items={['macOS', 'Linux', 'Windows']}>
+  <Tabs.Tab>
+```bash
+# 安装 mtr（如果没有）
+brew install mtr
+
+# 测试到各节点的路径
+sudo mtr -r -c 30 claude-code.club
+sudo mtr -r -c 30 jp.claude-code.club
+sudo mtr -r -c 30 hk.claude-code.club
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```bash
+# 安装 mtr（如果没有）
+# Debian/Ubuntu
+sudo apt install mtr
+# CentOS/RHEL
+sudo yum install mtr
+
+# 测试到各节点的路径
+mtr -r -c 30 claude-code.club
+mtr -r -c 30 jp.claude-code.club
+mtr -r -c 30 hk.claude-code.club
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```powershell
+# Windows 可以使用 WinMTR（图形界面工具）
+# 下载地址：https://winmtr.net/
+
+# 或使用 tracert 命令（不如 mtr 好用）
+tracert claude-code.club
+```
+  </Tabs.Tab>
+</Tabs>
+
+**MTR 输出解读：**
+
+```
+Host                          Loss%   Snt   Last   Avg  Best  Wrst StDev
+1. 192.168.1.1                 0.0%    30    1.2   1.5   0.8   3.2   0.5   ← 我们的路由器
+2. 10.0.0.1                    0.0%    30    5.3   6.1   4.2   8.7   1.2   ← 运营商网关
+3. 202.97.xxx.xxx              3.3%    30   30.5  35.2  28.1  52.3   6.8   ← 运营商骨干网
+4. 202.97.xxx.xxx             10.0%    30   45.2  48.6  42.1  68.9   8.2   ← 国际出口 ⚠️
+5. ...
+```
+
+**关键点**：
+- 看哪一跳开始出现高丢包或高延迟
+- `202.97.x.x` 通常是中国电信的骨干网
+- `219.158.x.x` 通常是中国联通的骨干网
+- 如果在国际出口处丢包严重，说明是出境带宽问题
+
+#### Curl 测试（实际 HTTP 请求）
+
+这个测试最接近真实使用场景：
+
+<Tabs items={['macOS / Linux', 'Windows']}>
+  <Tabs.Tab>
+```bash
+# 测试各节点的 HTTP 响应时间
+echo "=== 默认节点 ===" && curl -w "DNS: %{time_namelookup}s, 连接: %{time_connect}s, 首字节: %{time_starttransfer}s, 总时间: %{time_total}s\n" -o /dev/null -s https://claude-code.club/api/health
+
+echo "=== 日本节点 ===" && curl -w "DNS: %{time_namelookup}s, 连接: %{time_connect}s, 首字节: %{time_starttransfer}s, 总时间: %{time_total}s\n" -o /dev/null -s https://jp.claude-code.club/api/health
+
+echo "=== 香港节点 ===" && curl -w "DNS: %{time_namelookup}s, 连接: %{time_connect}s, 首字节: %{time_starttransfer}s, 总时间: %{time_total}s\n" -o /dev/null -s https://hk.claude-code.club/api/health
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```powershell
+# Windows PowerShell 测试
+@("claude-code.club", "jp.claude-code.club", "hk.claude-code.club") | ForEach-Object {
+    Write-Host "=== $_ ===" -ForegroundColor Green
+    $stats = curl.exe -w "%{time_total}" -o NUL -s "https://$_/api/health"
+    $ms = [math]::Round([double]$stats * 1000)
+    Write-Host "响应时间: ${ms}ms"
+}
+```
+  </Tabs.Tab>
+</Tabs>
+
+**解读各项时间：**
+- **DNS**：域名解析时间，应 < 0.1s
+- **连接**：TCP 握手时间，反映网络延迟
+- **首字节**：收到第一个响应字节的时间
+- **总时间**：完整请求耗时，应 < 1s
+
+#### TLS 握手检测（排查连接拦截）
+
+有些地区的运营商会在 TLS 握手阶段拦截或干扰出境 HTTPS 请求。使用 `curl -v` 可以查看完整的连接过程，判断是否存在拦截：
+
+<Tabs items={['macOS / Linux', 'Windows']}>
+  <Tabs.Tab>
+```bash
+# 详细模式测试（-v 显示完整握手过程）
+curl -v https://claude-code.club/api/health
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```powershell
+# Windows 需要安装 curl（Windows 10+ 自带）
+curl.exe -v https://claude-code.club/api/health
+```
+  </Tabs.Tab>
+</Tabs>
+
+**正常的 TLS 握手输出示例：**
+
+```
+* Host claude-code.club:443 was resolved.
+* IPv4: 54.250.224.68
+*   Trying 54.250.224.68:443...
+* Connected to claude-code.club (54.250.224.68) port 443
+* ALPN: curl offers h2,http/1.1
+* (304) (OUT), TLS handshake, Client hello (1):
+*  CAfile: /etc/ssl/cert.pem
+* (304) (IN), TLS handshake, Server hello (2):
+* (304) (IN), TLS handshake, Unknown (8):
+* (304) (IN), TLS handshake, Certificate (11):
+* (304) (IN), TLS handshake, CERT verify (15):
+* (304) (IN), TLS handshake, Finished (20):
+* (304) (OUT), TLS handshake, Finished (20):
+* SSL connection using TLSv1.3 / AEAD-CHACHA20-POLY1305-SHA256
+* ALPN: server accepted h2
+* Server certificate:
+*  subject: CN=claude-code.club
+*  start date: Dec 22 14:32:56 2025 GMT
+*  expire date: Mar 22 14:32:55 2026 GMT
+*  issuer: C=US; O=Let's Encrypt; CN=E7
+*  SSL certificate verify ok.
+* using HTTP/2
+< HTTP/2 200
+```
+
+**关键信息解读：**
+
+| 输出内容 | 含义 | 正常值 |
+|---------|------|--------|
+| `Connected to ... port 443` | TCP 连接成功 | 应该显示目标 IP |
+| `TLS handshake, Client hello` | 客户端发起 TLS 握手 | 必须出现 |
+| `TLS handshake, Server hello` | 服务器响应握手 | 必须出现 |
+| `TLS handshake, Certificate` | 服务器发送证书 | 必须出现 |
+| `SSL certificate verify ok` | 证书验证通过 | 必须出现 |
+| `TLSv1.3` | TLS 版本 | 1.2 或 1.3 |
+| `issuer: ... Let's Encrypt` | 证书颁发机构 | 应为 Let's Encrypt |
+| `HTTP/2 200` | 请求成功 | 状态码 200 |
+
+**异常情况及判断：**
+
+<Callout type="warning">
+如果出现以下情况，说明连接可能被拦截或干扰：
+</Callout>
+
+**1. 连接超时或被重置**
+```
+* connect to 54.250.224.68 port 443 failed: Connection timed out
+* Failed to connect to claude-code.club port 443: Connection refused
+* Connection reset by peer
+```
+**原因**：运营商可能在 TCP 层面阻断连接
+
+**2. TLS 握手失败**
+```
+* TLS handshake, Client hello (1):
+* OpenSSL SSL_connect: Connection reset by peer
+* Closing connection 0
+curl: (35) OpenSSL SSL_connect: Connection reset by peer
+```
+**原因**：运营商在 TLS 握手阶段发送 RST 包中断连接，这是典型的 SNI 阻断
+
+**3. 证书颁发者异常**
+```
+* Server certificate:
+*  subject: CN=claude-code.club
+*  issuer: C=CN; O=China Internet Network Information Center; CN=...
+```
+**原因**：如果证书颁发者不是 `Let's Encrypt` 而是其他机构（尤其是国内机构），说明存在中间人攻击或 SSL 劫持
+
+**4. 证书验证失败**
+```
+* SSL certificate problem: unable to get local issuer certificate
+* SSL certificate problem: self signed certificate in certificate chain
+```
+**原因**：可能是本地证书库问题，也可能是流量被劫持
+
+**5. 长时间无响应后失败**
+```
+* TLS handshake, Client hello (1):
+[长时间等待...]
+curl: (28) Operation timed out after 30000 milliseconds
+```
+**原因**：请求被"黑洞"处理，数据包被丢弃无响应
+
+**遇到拦截怎么办？**
+
+1. **切换节点**：尝试其他 API 入口（jp.claude-code.club 或 hk.claude-code.club）
+2. **使用代理**：通过 VPN 或代理绕过拦截
+3. **更换网络**：尝试手机热点或其他运营商网络
+4. **更换 DNS**：使用 `1.1.1.1`（Cloudflare）或 `223.5.5.5`（阿里云）避免 DNS 污染
+
+### 第三步：持续监控测试
+
+网络状况会随时间变化，建议在不同时段测试：
+
+<Tabs items={['macOS / Linux', 'Windows']}>
+  <Tabs.Tab>
+```bash
+# 每隔 5 秒测试一次，持续 1 分钟（12 次）
+for i in {1..12}; do
+    echo "$(date '+%H:%M:%S') - 测试 #$i"
+    curl -w "总时间: %{time_total}s\n" -o /dev/null -s https://claude-code.club/api/health
+    sleep 5
+done
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```powershell
+# 每隔 5 秒测试一次，持续 1 分钟
+for ($i=1; $i -le 12; $i++) {
+    $now = Get-Date -Format "HH:mm:ss"
+    Write-Host "$now - 测试 #$i" -NoNewline
+    $stats = curl.exe -w "%{time_total}" -o NUL -s "https://claude-code.club/api/health"
+    $ms = [math]::Round([double]$stats * 1000)
+    Write-Host " - 耗时: ${ms}ms"
+    Start-Sleep -Seconds 5
+}
+```
+  </Tabs.Tab>
+</Tabs>
+
+## 常见问题场景与解决方案
+
+### 场景一：所有节点都很慢
+
+**可能原因**：
+- 本地网络问题
+- 运营商整体出境带宽拥堵
+- 使用的 VPN 节点质量差
+
+**解决方案**：
+1. 检查本地 WiFi/网络连接
+2. 尝试切换到手机热点测试
+3. 如果用 VPN，尝试切换节点或关闭 VPN 直连
+
+### 场景二：某个节点特别慢，其他正常
+
+**可能原因**：运营商到该地区的线路质量差
+
+**解决方案**：选择测试结果最好的节点
+
+### 场景三：白天正常，晚上很慢
+
+**可能原因**：晚高峰（20:00-23:00）出境带宽拥堵
+
+**解决方案**：
+1. 尝试切换不同节点
+2. 错峰使用
+3. 使用 VPN 绕过拥堵线路
+
+### 场景四：时好时坏，不稳定
+
+**可能原因**：
+- 网络质量波动
+- VPN 节点负载变化
+- 路由变化
+
+**解决方案**：
+1. 选择延迟波动（mdev/jitter）最小的节点
+2. 如果用 VPN，选择更稳定的节点
+
+### 场景五：用 VPN 后更慢
+
+**可能原因**：
+- VPN 节点拥挤
+- 路由绕远（比如你在上海，VPN 绕道美国再到新加坡）
+- VPN 节点带宽不足
+
+**解决方案**：
+1. 选择离 API 服务器近的 VPN 节点（日本、香港、新加坡）
+2. 尝试直连（关闭 VPN）测试对比
+3. 更换 VPN 服务商或节点
+
+## 理解代理工具的配置模式
+
+很多用户使用 Clash Verge、ClashX、Surge 等代理工具，但不了解其工作原理，导致配置混乱、网络异常。**有时候开启代理反而会让情况更糟**，理解代理的配置模式非常关键。
+
+### 代理工具的三种模式
+
+以 Clash Verge 为例，代理工具通常提供三种代理模式：
+
+| 模式 | 工作原理 | 影响范围 | 终端工具是否生效 |
+|------|---------|---------|----------------|
+| **系统代理 (System Proxy)** | 修改系统代理设置，让支持系统代理的应用走代理 | 浏览器、部分 GUI 应用 | ❌ 不生效 |
+| **TUN 模式 (隧道模式)** | 创建虚拟网卡，在网络层接管所有流量 | 所有网络流量 | ✅ 强制生效 |
+| **环境变量代理** | 设置 `http_proxy` 等环境变量，终端工具读取后使用 | 仅当前终端会话 | ✅ 生效 |
+
+<Callout type="warning">
+**注意**：这三种模式可以同时开启！如果 TUN 模式 + 环境变量代理同时生效，可能导致流量被代理两次，造成连接异常或速度变慢。
+</Callout>
+
+### 终端工具（Claude Code、Gemini CLI 等）如何使用代理
+
+Claude Code、Codex、Gemini CLI 等终端工具**不会**自动使用系统代理，它们依赖以下方式：
+
+1. **环境变量**：读取 `http_proxy`、`https_proxy`、`HTTP_PROXY`、`HTTPS_PROXY` 等环境变量
+2. **TUN 模式**：如果代理工具开启了 TUN 模式，所有流量（包括终端）会被强制接管
+
+### 配置环境变量代理
+
+如果你需要让终端工具走代理，可以设置环境变量：
+
+<Tabs items={['macOS / Linux', 'Windows']}>
+  <Tabs.Tab>
+**方法一：创建配置文件，按需加载**
+
+```bash
+# 创建代理配置文件
+cat > ~/.proxy << 'EOF'
+export http_proxy=http://127.0.0.1:7897
+export https_proxy=http://127.0.0.1:7897
+export HTTP_PROXY=http://127.0.0.1:7897
+export HTTPS_PROXY=http://127.0.0.1:7897
+export all_proxy=socks5://127.0.0.1:7897
+export NO_PROXY=localhost,127.0.0.1,::1
+EOF
+
+# 创建取消代理的配置文件
+cat > ~/.unset_proxy << 'EOF'
+unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY all_proxy NO_PROXY
+EOF
+```
+
+**使用方式：**
+
+```bash
+# 开启代理（在当前终端生效）
+source ~/.proxy
+
+# 验证代理已生效
+echo $http_proxy
+# 输出：http://127.0.0.1:7897
+
+# 关闭代理
+source ~/.unset_proxy
+
+# 验证代理已关闭
+echo $http_proxy
+# 输出：（空）
+```
+
+**方法二：定义快捷命令**
+
+在 `~/.zshrc` 或 `~/.bashrc` 中添加：
+
+```bash
+# 代理开关快捷命令
+alias proxy_on='export http_proxy=http://127.0.0.1:7897 https_proxy=http://127.0.0.1:7897 all_proxy=socks5://127.0.0.1:7897'
+alias proxy_off='unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY all_proxy NO_PROXY'
+alias proxy_status='echo "http_proxy=$http_proxy"'
+```
+
+然后执行 `source ~/.zshrc` 使其生效，之后可以用 `proxy_on`、`proxy_off`、`proxy_status` 快速切换。
+  </Tabs.Tab>
+  <Tabs.Tab>
+**方法一：临时设置（仅当前终端生效）**
+
+```powershell
+# 开启代理
+$env:HTTP_PROXY = "http://127.0.0.1:7897"
+$env:HTTPS_PROXY = "http://127.0.0.1:7897"
+
+# 关闭代理
+Remove-Item Env:HTTP_PROXY -ErrorAction SilentlyContinue
+Remove-Item Env:HTTPS_PROXY -ErrorAction SilentlyContinue
+```
+
+**方法二：在 PowerShell 配置文件中定义函数**
+
+编辑 `$PROFILE` 文件，添加：
+
+```powershell
+function proxy_on {
+    $env:HTTP_PROXY = "http://127.0.0.1:7897"
+    $env:HTTPS_PROXY = "http://127.0.0.1:7897"
+    Write-Host "Proxy enabled: $env:HTTP_PROXY"
+}
+
+function proxy_off {
+    Remove-Item Env:HTTP_PROXY -ErrorAction SilentlyContinue
+    Remove-Item Env:HTTPS_PROXY -ErrorAction SilentlyContinue
+    Write-Host "Proxy disabled"
+}
+```
+  </Tabs.Tab>
+</Tabs>
+
+<Callout type="info">
+端口号 `7897` 是 Clash Verge 的默认端口，如果你用其他代理工具，请查看其设置中的本地端口号。常见端口：Clash 7890、ClashX 7890、V2rayN 10809、Surge 6152。
+</Callout>
+
+### 检查当前代理状态
+
+在诊断网络问题时，首先要搞清楚当前的代理配置状态：
+
+<Tabs items={['macOS / Linux', 'Windows']}>
+  <Tabs.Tab>
+```bash
+# 检查环境变量代理
+echo "http_proxy: $http_proxy"
+echo "https_proxy: $https_proxy"
+echo "HTTP_PROXY: $HTTP_PROXY"
+echo "HTTPS_PROXY: $HTTPS_PROXY"
+
+# 检查请求实际走的路径
+curl -v https://claude-code.club/api/health 2>&1 | grep -E "(Trying|Connected|proxy)"
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```powershell
+# 检查环境变量代理
+Write-Host "HTTP_PROXY: $env:HTTP_PROXY"
+Write-Host "HTTPS_PROXY: $env:HTTPS_PROXY"
+
+# 检查系统代理设置
+Get-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings' | Select-Object ProxyEnable, ProxyServer
+```
+  </Tabs.Tab>
+</Tabs>
+
+### 推荐的代理配置策略
+
+根据不同场景，推荐以下配置组合：
+
+| 场景 | 系统代理 | TUN 模式 | 环境变量 | 说明 |
+|------|---------|---------|---------|------|
+| **直连测试** | ❌ 关 | ❌ 关 | ❌ 无 | 测试裸连效果 |
+| **仅浏览器走代理** | ✅ 开 | ❌ 关 | ❌ 无 | 终端直连 |
+| **终端走代理** | ❌ 关 | ❌ 关 | ✅ 设置 | 按需开启 |
+| **全局代理** | ❌ 关 | ✅ 开 | ❌ 无 | 所有流量走代理 |
+| **❌ 避免** | ✅ 开 | ✅ 开 | ✅ 设置 | 可能冲突！ |
+
+<Callout type="warning">
+**常见错误**：同时开启 TUN 模式和设置环境变量代理，导致流量被代理两次，造成请求失败或速度异常慢。如果你开启了 TUN 模式，请确保清除环境变量代理。
+</Callout>
+
+### 测试代理是否生效
+
+```bash
+# 不走代理，直接请求（用于对比）
+curl --noproxy '*' -w "总时间: %{time_total}s\n" -o /dev/null -s https://claude-code.club/api/health
+
+# 走代理请求（如果设置了环境变量）
+curl -w "总时间: %{time_total}s\n" -o /dev/null -s https://claude-code.club/api/health
+
+# 强制走指定代理
+curl -x http://127.0.0.1:7897 -w "总时间: %{time_total}s\n" -o /dev/null -s https://claude-code.club/api/health
+```
+
+对比三种方式的响应时间，选择最快的配置方案。
+
+### 使用 Claude Code 端到端测试
+
+前面的 ping、curl 测试只能验证网络连通性，要测试 API 的**实际工作情况**，可以用 Claude Code 直接发送一个简单请求：
+
+```bash
+# 使用 time 命令测量完整请求耗时
+time claude --model claude-haiku-4-5-20251001 -p "hi"
+```
+
+**输出示例：**
+
+```
+Hi! How can I help you today?
+
+real    0m2.847s    ← 总耗时（重点关注）
+user    0m0.312s
+sys     0m0.089s
+```
+
+**如何解读：**
+
+| real 时间 | 状态 | 说明 |
+|----------|------|------|
+| < 10s | ✅ 优秀 | 网络和 API 都正常 |
+| 10-18s | ⚠️ 一般 | 可能有轻微延迟 |
+| 18-25s | ⚠️ 较慢 | 网络拥堵或节点问题 |
+| > 25s 或超时 | ❌ 异常 | 需要排查网络或更换节点 |
+
+<Callout type="info">
+使用 `claude-haiku-4-5-20251001` 模型是因为 Haiku 响应最快、token 消耗最少，非常适合做网络测试。这个测试会消耗少量 token，但能真实反映 API 的端到端延迟。
+</Callout>
+
+**对比不同配置的效果：**
+
+```bash
+# 1. 直连测试（先关闭代理）
+source ~/.unset_proxy
+time claude --model claude-haiku-4-5-20251001 -p "hi"
+
+# 2. 走代理测试（开启代理）
+source ~/.proxy
+time claude --model claude-haiku-4-5-20251001 -p "hi"
+```
+
+对比两次的 `real` 时间，选择更快的配置方案。
+
+## 选择最佳 API 入口
+
+根据我们的测试结果，选择最适合的入口：
+
+<Steps>
+
+### 运行完整测试
+
+按照上面的步骤，测试所有三个节点的 ping、curl 响应时间
+
+### 对比结果
+
+选择丢包率最低、平均延迟最小、延迟波动最小的节点
+
+### 修改配置
+
+将 `ANTHROPIC_BASE_URL` 设置为最优节点：
+
+```bash
+# 如果日本节点最快
+export ANTHROPIC_BASE_URL="https://jp.claude-code.club/api"
+
+# 如果香港节点最快
+export ANTHROPIC_BASE_URL="https://hk.claude-code.club/api"
+
+# 如果默认节点最快
+export ANTHROPIC_BASE_URL="https://claude-code.club/api"
+```
+
+详细设置方法请参考：
+- [macOS 设置环境变量](/getting-started/installation/macos#3-设置环境变量)
+- [Windows 设置环境变量](/getting-started/installation/windows#3-设置环境变量)
+- [Linux 设置环境变量](/getting-started/installation/linux#3-设置环境变量)
+
+### 定期复查
+
+网络状况会变化，如果感觉变慢了，重新测试并调整
+
+</Steps>
+
+## 一般性建议
+
+1. **首选直连**：如果我们的网络直连海外速度可以接受，尽量不用 VPN，减少中间环节
+2. **选择就近节点**：一般来说，地理距离越近延迟越低（但不绝对）
+3. **避开高峰期**：如果可能，避开晚 8-11 点的网络高峰期
+4. **保留多个选择**：记住多个可用节点，一个不行时可以快速切换
+5. **更新 DNS**：使用可靠的公共 DNS（如 `1.1.1.1` Cloudflare 或 `223.5.5.5` 阿里云）
+
+<Callout type="info">
+网络问题诊断是一个复杂的技术领域。如果大家按照本文方法测试后仍有疑问，欢迎将测试结果（ping、mtr、curl 输出）发到社区群，我们会帮大家分析。
+</Callout>
+
+## 总结
+
+遇到 API 请求慢时，请按以下顺序排查：
+
+1. ✅ 确认本地网络正常
+2. ✅ 检查代理配置状态（环境变量、TUN 模式是否冲突）
+3. ✅ 测试到各 API 入口的网络质量
+4. ✅ 使用 `curl -v` 检查 TLS 握手是否正常
+5. ✅ 使用 MTR 追踪问题发生在哪一跳
+6. ✅ 根据测试结果选择最优节点
+7. ✅ 灵活切换代理配置，对比直连和代理的效果
+
+记住：**网络问题 90% 出在客户端到服务器的链路上**，掌握诊断技能可以帮我们快速定位并解决问题。
