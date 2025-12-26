@@ -92,31 +92,42 @@ CC Club 提供三个 API 入口，我们需要测试哪个最适合自己：
 | `https://claude-code.club/api` | 日本（东京） | AWS | 默认地址，稳定性好 |
 | `https://jp.claude-code.club/api` | 日本 | 阿里云 | 回国线路优化 |
 | `https://hk.claude-code.club/api` | 香港 | 阿里云 | 回国线路优化 |
+| `https://sz.ai-code.club/api` | 中国深圳 | 阿里云 | 国内节点，由服务器代为出境 |
 
 <Callout type="info">
-阿里云的日本和香港节点对部分地区的回国线路有优化，如果默认节点较慢，建议尝试 `jp` 或 `hk` 节点。
+**如何选择最优节点？**
+- **直连延迟 &lt; 100ms**：如果你 ping `claude-code.club` 延迟在 100ms 以下，说明你的网络出境通畅，直接使用默认地址 `claude-code.club` 是最快的，因为路径最短。
+- **出境受阻或延迟高**：如果直连延迟超过 200ms 或丢包严重，建议尝试阿里云的 `jp`、`hk` 节点。一般来说，华东、华北用户推荐 `jp` 节点，华南用户推荐 `hk` 节点，但也可能因运营商线路而异，建议都测试一下选择最快的。
+- **出境严重受阻**：如果你的网络出境非常困难，可以使用国内深圳节点 `sz.ai-code.club`，你的请求会先到达国内服务器，再由服务器代为出境访问claude-code.club。
 </Callout>
 
 #### Ping 测试（基础连通性）
 
+<Callout type="warning">
+**注意**：Ping 只能测试你到代理服务器的网络延迟，**不包含代理服务器到大模型 API 的路径**。Ping 延迟低不代表实际请求快，要测试真实的端到端延迟，请使用下面的 **Curl 测试**。
+</Callout>
+
 <Tabs items={['macOS / Linux', 'Windows']}>
   <Tabs.Tab>
 ```bash
-# 测试三个节点（每个发 30 个包，更准确）
+# 测试各节点（每个发 30 个包，更准确）
 echo "=== 默认节点（AWS 东京）===" && ping -c 30 claude-code.club
 echo "=== 日本节点（阿里云）===" && ping -c 30 jp.claude-code.club
 echo "=== 香港节点（阿里云）===" && ping -c 30 hk.claude-code.club
+echo "=== 深圳节点（阿里云）===" && ping -c 30 sz.ai-code.club
 ```
   </Tabs.Tab>
   <Tabs.Tab>
 ```powershell
-# 测试三个节点（每个发 30 个包，更准确）
+# 测试各节点（每个发 30 个包，更准确）
 Write-Host "=== 默认节点（AWS 东京）==="
 ping -n 30 claude-code.club
 Write-Host "=== 日本节点（阿里云）==="
 ping -n 30 jp.claude-code.club
 Write-Host "=== 香港节点（阿里云）==="
 ping -n 30 hk.claude-code.club
+Write-Host "=== 深圳节点（阿里云）==="
+ping -n 30 sz.ai-code.club
 ```
   </Tabs.Tab>
 </Tabs>
@@ -191,25 +202,62 @@ Host                          Loss%   Snt   Last   Avg  Best  Wrst StDev
 - `219.158.x.x` 通常是中国联通的骨干网
 - 如果在国际出口处丢包严重，说明是出境带宽问题
 
-#### Curl 测试（实际 HTTP 请求）
+#### Curl 测试（实际 HTTP 请求）⭐ 推荐
 
-这个测试最接近真实使用场景：
+<Callout type="info">
+**这是最准确的测试方法！** Curl 测试会实际访问 API 接口，测量的是完整的端到端延迟，包括：你的网络 → 代理服务器 → Anthropic API → 返回。这才能真实反映各节点的实际速度。
+</Callout>
+
+**快速测试（推荐）：**
 
 <Tabs items={['macOS / Linux', 'Windows']}>
   <Tabs.Tab>
 ```bash
-# 测试各节点的 HTTP 响应时间
+# 使用 time 命令测量完整请求耗时
+time curl -s https://claude-code.club/api/health
+time curl -s https://jp.claude-code.club/api/health
+time curl -s https://hk.claude-code.club/api/health
+time curl -s https://sz.ai-code.club/api/health
+```
+
+示例输出：
+```
+{"status":"healthy","service":"claude-relay-service",...}
+curl -s https://claude-code.club/api/health  0.01s user 0.01s system 6% cpu 0.243 total
+                                                                          ↑
+                                                            这个就是真实的端到端延迟（243ms）
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```powershell
+# 使用 Measure-Command 测量请求耗时
+Measure-Command { curl.exe -s https://claude-code.club/api/health } | Select-Object TotalMilliseconds
+Measure-Command { curl.exe -s https://jp.claude-code.club/api/health } | Select-Object TotalMilliseconds
+Measure-Command { curl.exe -s https://hk.claude-code.club/api/health } | Select-Object TotalMilliseconds
+Measure-Command { curl.exe -s https://sz.ai-code.club/api/health } | Select-Object TotalMilliseconds
+```
+  </Tabs.Tab>
+</Tabs>
+
+**详细测试（查看各阶段耗时）：**
+
+<Tabs items={['macOS / Linux', 'Windows']}>
+  <Tabs.Tab>
+```bash
+# 测试各节点的 HTTP 响应时间（分阶段）
 echo "=== 默认节点 ===" && curl -w "DNS: %{time_namelookup}s, 连接: %{time_connect}s, 首字节: %{time_starttransfer}s, 总时间: %{time_total}s\n" -o /dev/null -s https://claude-code.club/api/health
 
 echo "=== 日本节点 ===" && curl -w "DNS: %{time_namelookup}s, 连接: %{time_connect}s, 首字节: %{time_starttransfer}s, 总时间: %{time_total}s\n" -o /dev/null -s https://jp.claude-code.club/api/health
 
 echo "=== 香港节点 ===" && curl -w "DNS: %{time_namelookup}s, 连接: %{time_connect}s, 首字节: %{time_starttransfer}s, 总时间: %{time_total}s\n" -o /dev/null -s https://hk.claude-code.club/api/health
+
+echo "=== 深圳节点 ===" && curl -w "DNS: %{time_namelookup}s, 连接: %{time_connect}s, 首字节: %{time_starttransfer}s, 总时间: %{time_total}s\n" -o /dev/null -s https://sz.ai-code.club/api/health
 ```
   </Tabs.Tab>
   <Tabs.Tab>
 ```powershell
 # Windows PowerShell 测试
-@("claude-code.club", "jp.claude-code.club", "hk.claude-code.club") | ForEach-Object {
+@("claude-code.club", "jp.claude-code.club", "hk.claude-code.club", "sz.ai-code.club") | ForEach-Object {
     Write-Host "=== $_ ===" -ForegroundColor Green
     $stats = curl.exe -w "%{time_total}" -o NUL -s "https://$_/api/health"
     $ms = [math]::Round([double]$stats * 1000)
@@ -220,10 +268,10 @@ echo "=== 香港节点 ===" && curl -w "DNS: %{time_namelookup}s, 连接: %{time
 </Tabs>
 
 **解读各项时间：**
-- **DNS**：域名解析时间，应 < 0.1s
-- **连接**：TCP 握手时间，反映网络延迟
-- **首字节**：收到第一个响应字节的时间
-- **总时间**：完整请求耗时，应 < 1s
+- **DNS**：域名解析时间，应 &lt; 0.1s
+- **连接**：TCP 握手时间，反映你到代理服务器的网络延迟
+- **首字节**：收到第一个响应字节的时间，反映代理服务器处理 + 到大模型 API 的延迟
+- **总时间**：完整请求耗时，**这是最重要的指标**，应 &lt; 1s
 
 #### TLS 握手检测（排查连接拦截）
 
@@ -663,14 +711,17 @@ time claude --model claude-haiku-4-5-20251001 -p "hi"
 将 `ANTHROPIC_BASE_URL` 设置为最优节点：
 
 ```bash
+# 如果默认节点最快（直连延迟 < 100ms）
+export ANTHROPIC_BASE_URL="https://claude-code.club/api"
+
 # 如果日本节点最快
 export ANTHROPIC_BASE_URL="https://jp.claude-code.club/api"
 
 # 如果香港节点最快
 export ANTHROPIC_BASE_URL="https://hk.claude-code.club/api"
 
-# 如果默认节点最快
-export ANTHROPIC_BASE_URL="https://claude-code.club/api"
+# 如果出境受阻，使用国内深圳节点
+export ANTHROPIC_BASE_URL="https://sz.ai-code.club/api"
 ```
 
 详细设置方法请参考：
@@ -686,7 +737,7 @@ export ANTHROPIC_BASE_URL="https://claude-code.club/api"
 
 ## 一般性建议
 
-1. **首选直连**：如果我们的网络直连海外速度可以接受，尽量不用 VPN，减少中间环节
+1. **网络通畅时首选直连**：如果你 ping `claude-code.club` 延迟在 100ms 以下且丢包率低，直接使用默认地址是最快的，因为路径最短、中间环节最少
 2. **选择就近节点**：一般来说，地理距离越近延迟越低（但不绝对）
 3. **避开高峰期**：如果可能，避开晚 8-11 点的网络高峰期
 4. **保留多个选择**：记住多个可用节点，一个不行时可以快速切换

@@ -19,9 +19,11 @@ import { Callout, Tabs } from 'nextra/components'
 
 部分国内宽带运营商提供的国外带宽太小，导致拥堵、丢包率高。
 
-### 如何验证是否丢包率高？
+### 如何测试网络质量？
 
-可以通过 `ping` 命令测试到代理服务器的网络质量：
+#### 1. Ping 测试（检查丢包）
+
+通过 `ping` 命令测试到代理服务器的基础连通性和丢包率：
 
 <Tabs items={['macOS / Linux', 'Windows']}>
   <Tabs.Tab>
@@ -34,6 +36,9 @@ ping -c 20 jp.claude-code.club
 
 # 测试香港节点
 ping -c 20 hk.claude-code.club
+
+# 测试深圳节点（国内）
+ping -c 20 sz.ai-code.club
 ```
   </Tabs.Tab>
   <Tabs.Tab>
@@ -46,14 +51,51 @@ ping -n 20 jp.claude-code.club
 
 # 测试香港节点
 ping -n 20 hk.claude-code.club
+
+# 测试深圳节点（国内）
+ping -n 20 sz.ai-code.club
 ```
   </Tabs.Tab>
 </Tabs>
 
-观察输出结果：
-- **丢包率 (packet loss)**：超过 5% 说明网络不稳定
-- **延迟 (time/RTT)**：超过 300ms 说明延迟较高
-- 选择丢包率最低、延迟最小的节点
+观察丢包率：超过 5% 说明网络不稳定，建议换节点。
+
+#### 2. Curl 测试（测量真实延迟）⭐ 推荐
+
+<Callout type="warning">
+**注意**：Ping 只能测试你到代理服务器的延迟，**不包含代理服务器到 Anthropic API 的路径**。要测试真实的端到端延迟，请使用 `curl` 命令。
+</Callout>
+
+<Tabs items={['macOS / Linux', 'Windows']}>
+  <Tabs.Tab>
+```bash
+# 测试真实的端到端延迟
+time curl -s https://claude-code.club/api/health
+time curl -s https://jp.claude-code.club/api/health
+time curl -s https://hk.claude-code.club/api/health
+time curl -s https://sz.ai-code.club/api/health
+```
+
+示例输出：
+```
+{"status":"healthy","service":"claude-relay-service",...}
+curl -s https://claude-code.club/api/health  0.01s user 0.01s system 6% cpu 0.243 total
+                                                                          ↑
+                                                            真实端到端延迟（243ms）
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```powershell
+# 测试真实延迟
+Measure-Command { curl.exe -s https://claude-code.club/api/health } | Select-Object TotalMilliseconds
+Measure-Command { curl.exe -s https://jp.claude-code.club/api/health } | Select-Object TotalMilliseconds
+Measure-Command { curl.exe -s https://hk.claude-code.club/api/health } | Select-Object TotalMilliseconds
+Measure-Command { curl.exe -s https://sz.ai-code.club/api/health } | Select-Object TotalMilliseconds
+```
+  </Tabs.Tab>
+</Tabs>
+
+选择总时间最短的节点（通常 &lt; 500ms 为佳）
 
 ### 解决方法
 
@@ -61,13 +103,18 @@ ping -n 20 hk.claude-code.club
 
 将 `ANTHROPIC_BASE_URL` 环境变量改为其他代理地址，根据你的网络情况选择：
 
-| 代理地址 | 服务器位置 |
-|---------|-----------|
-| `https://jp.claude-code.club/api` | 日本 |
-| `https://hk.claude-code.club/api` | 香港 |
+| 代理地址 | 服务器位置 | 说明 |
+|---------|-----------|------|
+| `https://claude-code.club/api` | 日本（东京） | 默认地址，直连延迟 &lt; 100ms 时最快 |
+| `https://jp.claude-code.club/api` | 日本 | 阿里云，回国线路优化 |
+| `https://hk.claude-code.club/api` | 香港 | 阿里云，回国线路优化 |
+| `https://sz.ai-code.club/api` | 中国深圳 | 国内节点，出境受阻时推荐，由服务器代为出境 |
 
 <Callout type="info">
-不同地区的网络环境差异较大，建议都试试，选择响应最快的那个。
+**选择建议：**
+- 如果你 ping `claude-code.club` 延迟在 100ms 以下，说明出境网络通畅，使用默认地址即可
+- 如果出境延迟高或丢包严重，尝试 `jp` 或 `hk` 节点（华东华北推荐 `jp`，华南推荐 `hk`，但也可能因运营商而异，建议都测试一下）
+- 如果你的网络出境严重受阻，使用深圳节点 `sz.ai-code.club`，你的请求会先到国内服务器，再由服务器代为出境访问 API
 </Callout>
 
 **修改方法：**
