@@ -7,5 +7,6 @@ export default {
   commands: '命令和技巧',
   subagents: 'Subagent',
   'mcp-tools': 'MCP Tools',
-  'claude-skills': 'Claude Skills'
+  'claude-skills': 'Claude Skills',
+  'language-server': 'Language Server'
 }

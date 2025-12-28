@@ -1,0 +1,156 @@
+---
+title: Language Server Protocol (LSP)
+description: 了解 Claude Code 的 LSP 支持，让 Claude 获得实时代码智能能力
+---
+
+import { Callout, Cards } from 'nextra/components'
+
+# Language Server Protocol (LSP)
+
+Language Server Protocol（语言服务器协议）是一种开放的、基于 JSON-RPC 的协议，用于在代码编辑器和语言服务器之间进行通信。它最初由 Microsoft 为 VS Code 开发，现已成为业界标准。
+
+Claude Code 原生支持 LSP，让 Claude 在处理代码时获得与 IDE 相同的智能能力。
+
+## LSP 能为 Claude Code 带来什么？
+
+通过 LSP 集成，Claude 可以获得以下能力：
+
+| 功能 | 说明 |
+|-----|------|
+| **即时诊断** | Claude 在每次编辑后立即看到错误和警告 |
+| **跳转定义** | 快速定位函数、变量、类的定义位置 |
+| **查找引用** | 找到代码符号在项目中的所有使用位置 |
+| **悬停信息** | 获取类型信息和文档注释 |
+| **语言感知** | 理解代码符号的类型和上下文 |
+
+<Callout type="info">
+LSP 是 Claude Code 的原生插件功能，不依赖 VS Code 或其他 IDE。你可以在终端中独立使用 Claude Code 并享受完整的代码智能支持。
+</Callout>
+
+## 工作原理
+
+```
+┌─────────────────┐     LSP 协议      ┌──────────────────────┐
+│   Claude Code   │ ◄──────────────► │  Language Server     │
+│   (客户端)       │    JSON-RPC      │  (如 typescript-lsp) │
+└─────────────────┘                   └──────────────────────┘
+         │                                      │
+         │                                      │
+         ▼                                      ▼
+   发送代码操作请求                        分析代码并返回结果
+   (跳转定义、查找引用等)                  (位置、类型、错误等)
+```
+
+当你安装并启用 LSP 插件后：
+
+1. **启动时**：Claude Code 自动启动已安装插件中配置的语言服务器
+2. **编辑时**：每次文件变更，语言服务器实时分析代码
+3. **诊断**：错误和警告自动反馈给 Claude
+4. **导航**：Claude 可以使用跳转定义、查找引用等操作
+
+## 安装 LSP 插件
+
+### 从官方市场安装（推荐）
+
+最简单的方式是从官方插件市场安装：
+
+```bash
+# 在 Claude Code 中运行
+/plugin
+# 然后选择 Discover 标签，搜索 "lsp"
+```
+
+### 官方支持的 LSP 插件
+
+| 插件 | 语言服务器 | 安装命令 |
+|-----|-----------|---------|
+| `pyright-lsp` | Pyright (Python) | `pip install pyright` 或 `npm install -g pyright` |
+| `typescript-lsp` | TypeScript Language Server | `npm install -g typescript-language-server typescript` |
+| `rust-lsp` | rust-analyzer | [查看安装说明](https://rust-analyzer.github.io/manual.html#installation) |
+
+<Callout type="warning">
+LSP 插件只是配置文件，不包含语言服务器本身。你需要先安装对应的语言服务器二进制文件，然后再安装插件。
+</Callout>
+
+## LSP 插件配置格式
+
+如果官方市场没有你需要的语言，你可以自己创建 LSP 插件。
+
+### 配置文件位置
+
+- 独立文件：插件根目录下的 `.lsp.json`
+- 内联配置：在 `plugin.json` 的 `lspServers` 字段中
+
+### 配置示例
+
+```json
+{
+  "typescript": {
+    "command": "typescript-language-server",
+    "args": ["--stdio"],
+    "extensionToLanguage": {
+      ".ts": "typescript",
+      ".tsx": "typescriptreact",
+      ".js": "javascript",
+      ".jsx": "javascriptreact"
+    }
+  }
+}
+```
+
+### 必填字段
+
+| 字段 | 说明 |
+|-----|------|
+| `command` | LSP 二进制文件名（必须在 PATH 中） |
+| `extensionToLanguage` | 文件扩展名到语言标识符的映射 |
+
+### 可选字段
+
+| 字段 | 说明 |
+|-----|------|
+| `args` | 启动语言服务器的命令行参数 |
+| `transport` | 通信方式：`stdio`（默认）或 `socket` |
+| `env` | 启动服务器时设置的环境变量 |
+| `initializationOptions` | 初始化时传给服务器的选项 |
+| `settings` | 通过 `workspace/didChangeConfiguration` 传递的设置 |
+| `workspaceFolder` | 工作区文件夹路径 |
+| `startupTimeout` | 等待服务器启动的最大时间（毫秒） |
+| `shutdownTimeout` | 等待优雅关闭的最大时间（毫秒） |
+| `restartOnCrash` | 服务器崩溃时是否自动重启 |
+| `maxRestarts` | 放弃前的最大重启次数 |
+| `loggingConfig` | 调试日志配置 |
+
+## 调试 LSP 问题
+
+如果遇到 LSP 相关问题，可以启用详细日志：
+
+```bash
+claude --enable-lsp-logging
+```
+
+日志文件位于 `~/.claude/debug/` 目录。
+
+### 常见问题
+
+**"Executable not found in $PATH"**
+
+这表示语言服务器未安装或不在系统 PATH 中。请先安装对应的语言服务器。
+
+**"No LSP server available for file type"**
+
+这表示没有为该文件类型配置 LSP 插件。检查插件是否正确安装，以及 `extensionToLanguage` 配置是否包含该扩展名。
+
+## 可用的 LSP 插件
+
+<Cards>
+  <Cards.Card title="TypeScript LSP" href="/practical-skills/language-server/typescript-lsp">
+    为 TypeScript/JavaScript 项目提供完整的代码智能支持
+  </Cards.Card>
+</Cards>
+
+## 参考资源
+
+- [Claude Code 官方插件文档](https://code.claude.com/docs/en/plugins-reference#lsp-servers)
+- [boostvolt/claude-code-lsps](https://github.com/boostvolt/claude-code-lsps) - 社区维护的 LSP 插件集合
+- [Language Server Protocol 官方规范](https://microsoft.github.io/language-server-protocol/)

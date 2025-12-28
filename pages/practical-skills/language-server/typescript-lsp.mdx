@@ -1,0 +1,301 @@
+---
+title: TypeScript LSP
+description: 为 Claude Code 配置 TypeScript/JavaScript 语言服务器，获得代码智能支持
+---
+
+import { Callout, Tabs, Steps } from 'nextra/components'
+
+# TypeScript LSP
+
+TypeScript LSP 是 Claude Code 的原生插件，为 TypeScript 和 JavaScript 项目提供完整的代码智能支持。通过 Language Server Protocol，Claude 可以像专业 IDE 一样理解你的代码。
+
+## 功能特性
+
+| 功能 | 说明 |
+|-----|------|
+| **跳转定义** (Go to Definition) | 快速定位函数、变量、类型的定义位置 |
+| **查找引用** (Find References) | 找到符号在整个项目中的所有使用位置 |
+| **错误检查** (Diagnostics) | 实时显示类型错误和语法问题 |
+| **悬停信息** (Hover) | 获取类型签名和文档注释 |
+| **代码补全** | 智能代码补全建议 |
+
+## 支持的文件类型
+
+TypeScript LSP 支持以下文件扩展名：
+
+| 扩展名 | 语言 |
+|-------|------|
+| `.ts` | TypeScript |
+| `.tsx` | TypeScript React (JSX) |
+| `.js` | JavaScript |
+| `.jsx` | JavaScript React (JSX) |
+| `.mts` | TypeScript ES Module |
+| `.cts` | TypeScript CommonJS Module |
+| `.mjs` | JavaScript ES Module |
+| `.cjs` | JavaScript CommonJS Module |
+
+## 安装步骤
+
+<Steps>
+
+### 安装语言服务器
+
+首先需要全局安装 TypeScript 语言服务器和 TypeScript 编译器：
+
+<Tabs items={['npm', 'yarn', 'pnpm']}>
+  <Tabs.Tab>
+```bash
+npm install -g typescript-language-server typescript
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```bash
+yarn global add typescript-language-server typescript
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```bash
+pnpm add -g typescript-language-server typescript
+```
+  </Tabs.Tab>
+</Tabs>
+
+### 验证安装
+
+安装完成后，验证语言服务器是否可用：
+
+```bash
+typescript-language-server --version
+tsc --version
+```
+
+如果命令能正常输出版本号，说明安装成功。
+
+### 安装 Claude Code 插件
+
+在 Claude Code 中安装 TypeScript LSP 插件：
+
+```bash
+# 方式一：通过插件市场（推荐）
+/plugin
+# 选择 Discover 标签，搜索 "typescript-lsp" 并安装
+
+# 方式二：直接从 GitHub 安装
+/plugin install boostvolt/claude-code-lsps:typescript-lsp
+```
+
+### 重启 Claude Code
+
+安装完成后，重启 Claude Code 以加载插件：
+
+```bash
+# 退出当前会话
+/exit
+
+# 重新启动
+claude
+```
+
+</Steps>
+
+<Callout type="info">
+TypeScript LSP 是 Claude Code 的原生插件，不需要 VS Code 或其他 IDE。你可以在纯终端环境中使用完整的代码智能功能。
+</Callout>
+
+## 插件配置详解
+
+TypeScript LSP 插件的核心配置如下：
+
+```json
+{
+  "typescript": {
+    "command": "typescript-language-server",
+    "args": ["--stdio"],
+    "extensionToLanguage": {
+      ".ts": "typescript",
+      ".tsx": "typescriptreact",
+      ".js": "javascript",
+      ".jsx": "javascriptreact",
+      ".mts": "typescript",
+      ".cts": "typescript",
+      ".mjs": "javascript",
+      ".cjs": "javascript"
+    }
+  }
+}
+```
+
+### 配置说明
+
+| 字段 | 值 | 说明 |
+|-----|-----|------|
+| `command` | `typescript-language-server` | 语言服务器可执行文件 |
+| `args` | `["--stdio"]` | 使用标准输入/输出进行通信 |
+| `extensionToLanguage` | 扩展名映射 | 将文件扩展名映射到语言标识符 |
+
+## 使用示例
+
+安装完成后，Claude 在处理 TypeScript/JavaScript 代码时会自动使用 LSP 功能。
+
+### 跳转定义
+
+当你让 Claude 查找某个函数或变量的定义时，它可以精确定位：
+
+```
+用户：getUserById 函数在哪里定义的？
+
+Claude：（使用 LSP 跳转定义）
+getUserById 函数定义在 src/services/user.ts:42
+```
+
+### 查找引用
+
+找到某个符号在项目中的所有使用位置：
+
+```
+用户：找出所有使用 AuthContext 的地方
+
+Claude：（使用 LSP 查找引用）
+AuthContext 在以下位置被使用：
+- src/components/Login.tsx:15
+- src/components/Header.tsx:8
+- src/pages/Dashboard.tsx:23
+- src/hooks/useAuth.ts:5
+```
+
+### 实时错误检查
+
+Claude 在编辑代码后会立即看到类型错误：
+
+```
+用户：帮我修复这个 TypeScript 文件的错误
+
+Claude：（通过 LSP 获取诊断信息）
+发现以下类型错误：
+1. 第 15 行：类型 'string' 不能赋值给类型 'number'
+2. 第 23 行：属性 'name' 在类型 'User' 上不存在
+```
+
+## 高级配置
+
+### 自定义 tsconfig 设置
+
+如果需要传递特定的 TypeScript 配置，可以使用 `initializationOptions`：
+
+```json
+{
+  "typescript": {
+    "command": "typescript-language-server",
+    "args": ["--stdio"],
+    "initializationOptions": {
+      "preferences": {
+        "includeCompletionsForModuleExports": true,
+        "includeCompletionsWithInsertText": true
+      }
+    },
+    "extensionToLanguage": {
+      ".ts": "typescript",
+      ".tsx": "typescriptreact"
+    }
+  }
+}
+```
+
+### 启用调试日志
+
+遇到问题时，可以启用详细日志进行调试：
+
+```json
+{
+  "typescript": {
+    "command": "typescript-language-server",
+    "args": ["--stdio"],
+    "loggingConfig": {
+      "args": ["--log-level", "4"],
+      "env": {
+        "TSS_LOG": "-level verbose -file ${CLAUDE_PLUGIN_LSP_LOG_FILE}"
+      }
+    },
+    "extensionToLanguage": {
+      ".ts": "typescript"
+    }
+  }
+}
+```
+
+然后使用 `--enable-lsp-logging` 参数启动 Claude Code：
+
+```bash
+claude --enable-lsp-logging
+```
+
+日志文件保存在 `~/.claude/debug/` 目录。
+
+## 常见问题
+
+### "Executable not found in $PATH"
+
+**原因**：`typescript-language-server` 未安装或不在系统 PATH 中。
+
+**解决方案**：
+
+1. 确认已全局安装：
+```bash
+npm install -g typescript-language-server typescript
+```
+
+2. 检查 npm 全局目录是否在 PATH 中：
+```bash
+npm config get prefix
+# 确保输出的路径/bin 在 PATH 中
+```
+
+3. 对于 macOS/Linux，可能需要将以下内容添加到 `~/.bashrc` 或 `~/.zshrc`：
+```bash
+export PATH="$(npm config get prefix)/bin:$PATH"
+```
+
+### "No LSP server available for file type: .ts"
+
+**原因**：插件未正确安装或配置。
+
+**解决方案**：
+
+1. 检查插件状态：
+```bash
+/plugin
+# 查看 Installed 标签确认 typescript-lsp 已安装
+```
+
+2. 查看错误日志：
+```bash
+/plugin
+# 查看 Errors 标签了解具体错误
+```
+
+3. 重新安装插件：
+```bash
+/plugin uninstall typescript-lsp
+/plugin install boostvolt/claude-code-lsps:typescript-lsp
+```
+
+### 语言服务器启动缓慢
+
+对于大型项目，TypeScript 语言服务器可能需要一些时间来索引代码。
+
+**优化建议**：
+
+1. 确保项目有正确的 `tsconfig.json`
+2. 在 `tsconfig.json` 中排除不需要的目录：
+```json
+{
+  "exclude": ["node_modules", "dist", "build"]
+}
+```
+
+## 相关资源
+
+- [typescript-language-server (npm)](https://www.npmjs.com/package/typescript-language-server)
+- [typescript-language-server (GitHub)](https://github.com/typescript-language-server/typescript-language-server)
+- [boostvolt/claude-code-lsps](https://github.com/boostvolt/claude-code-lsps) - 社区 LSP 插件集合
+- [TypeScript 官方文档](https://www.typescriptlang.org/docs/)
