@@ -154,11 +154,23 @@ claude --version
 # 设置用户级环境变量（永久生效）
 [System.Environment]::SetEnvironmentVariable("ANTHROPIC_BASE_URL", "https://claude-code.club/api", "User")
 [System.Environment]::SetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", "你的API密钥", "User")
+[System.Environment]::SetEnvironmentVariable("CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC", "1", "User")
 ```
 
 <Callout type="warning">
   记得将 "你的API密钥" 替换为在上方 "API Keys" 标签页中创建的实际密钥。
   设置后需要重新打开 PowerShell 窗口才能生效。
+</Callout>
+
+<Callout type="info">
+  **关于 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC**
+
+  该环境变量用于关闭 Claude Code 的非必要网络请求（如遥测数据上报）。设置为 `1` 后：
+  - 禁用匿名使用统计和遥测数据上报
+  - 避免因无法访问遥测服务器（如 `sentry.io`、`statsig.com` 等）导致的连接超时或卡顿问题
+  - 不影响 Claude Code 的核心功能，只是关闭了后台的数据收集
+
+  **建议所有国内用户都配置此选项**，可以显著提升使用体验。
 </Callout>
 
 设置完后用如下命令检查环境变量是否成功（一条一条执行）：
@@ -167,6 +179,7 @@ claude --version
 # 查看已设置的环境变量
 [System.Environment]::GetEnvironmentVariable("ANTHROPIC_BASE_URL", "User")
 [System.Environment]::GetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", "User")
+[System.Environment]::GetEnvironmentVariable("CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC", "User")
 ```
 
 
