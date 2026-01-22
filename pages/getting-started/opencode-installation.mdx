@@ -1,0 +1,193 @@
+---
+title: 安装和配置
+description: OpenCode 的安装和配置指南，通过 New API 中转使用 CC Club 的 Claude 模型
+---
+
+import { Callout, Tabs, Steps } from 'nextra/components'
+
+# OpenCode 安装和配置指南
+
+本指南将帮助你安装 OpenCode 并配置使用 CC Club 的 Claude 模型。由于 OpenCode 默认使用的 Anthropic 模型 ID 不带日期后缀，而 CC Club 使用带日期的模型 ID，因此需要通过 New API 进行中转。
+
+<Callout type="info">
+  **为什么需要中转？**
+  
+  1. OpenCode 默认的 Anthropic 模型 ID 使用不带日期的格式（如 `claude-sonnet-4-5`），而 CC Club 使用带日期的模型 ID（如 `claude-sonnet-4-5-20250929`）。通过 New API 中转可以解决这个兼容性问题。
+  2. 通过中转可以避免官方提示不能使用 OpenCode 客户端的限制。
+</Callout>
+
+## 1. 部署 New API 中转服务
+
+New API 是一个开源的 API 管理和中转服务，支持多种 AI 模型的统一管理。
+
+<Callout type="info">
+  **官方文档**：[https://docs.newapi.pro/zh/docs](https://docs.newapi.pro/zh/docs)
+</Callout>
+
+<Tabs items={['Docker 部署', '1Panel 部署（推荐）']}>
+  <Tabs.Tab>
+    **适合场景**：本地开发环境或已有 Docker 环境的服务器
+
+    <Steps>
+      ### 克隆项目
+      ```bash
+      git clone https://github.com/QuantumNous/new-api.git
+      cd new-api
+      ```
+
+      ### 编辑配置文件
+      ```bash
+      nano docker-compose.yml
+      ```
+      
+      <Callout type="warning">
+        **配置建议**：
+        - 个人本地使用：配置 SQLite 数据库最简单，将数据文件映射出来即可
+        - 服务器环境：建议使用 PostgreSQL 或 MySQL
+        - Docker 镜像源建议配置国内源，否则可能需要科学上网
+      </Callout>
+
+      ### 启动服务
+      ```bash
+      docker compose up -d
+      ```
+    </Steps>
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **适合场景**：有服务器环境的用户（阿里云等云服务器，一年约百元）
+
+    <Callout type="info">
+      **1Panel 官方文档**：[https://1panel.cn/docs/v2/installation/online_installation](https://1panel.cn/docs/v2/installation/online_installation)
+    </Callout>
+
+    <Steps>
+      ### 安装 Docker（已有则跳过）
+      ```bash
+      bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
+      ```
+
+      ### 安装 1Panel
+      ```bash
+      bash -c "$(curl -sSL https://resource.fit2cloud.com/1panel/package/v2/quick_start.sh)"
+      ```
+
+      ### 登录 1Panel
+      安装完成后，根据提示访问 1Panel 管理界面。
+
+      ### 安装 New API
+      在 1Panel 应用商店中搜索并安装 New API。
+
+      ### 访问 New API
+      根据提示信息选择符合自己的类型并进入系统。个人使用建议选择"个人使用"类型，更加简洁。
+    </Steps>
+  </Tabs.Tab>
+</Tabs>
+
+## 2. 配置 New API 渠道
+
+部署完成后，需要在 New API 中配置 CC Club 的渠道信息。
+
+<Steps>
+  ### 添加渠道
+  进入 New API 管理界面，点击"渠道管理" → "添加渠道"。
+
+  ### 配置渠道信息
+  填写以下信息：
+  - **渠道类型**：选择 Anthropic Claude
+  - **渠道名称**：CC Club（或自定义名称）
+  - **代理地址**：填写 CC Club 的 API 地址（参考 [CC Club API 地址](/getting-started/get-api-key)）
+  - **密钥**：填写你的 CC Club API Key
+
+  ### 测试渠道
+  点击"测试"按钮，确认渠道配置正确。测试通过后会有成功提示。
+</Steps>
+
+## 3. 安装 OpenCode
+
+<Tabs items={['Go 安装', 'Homebrew (macOS)', '手动下载']}>
+  <Tabs.Tab>
+    ```bash
+    go install github.com/anomalyco/opencode@latest
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```bash
+    brew install opencode
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    从 [GitHub Releases](https://github.com/anomalyco/opencode/releases) 下载对应平台的二进制文件。
+  </Tabs.Tab>
+</Tabs>
+
+## 4. 配置 OpenCode
+
+找到 OpenCode 的配置文件并进行配置。配置文件通常位于 `~/.config/opencode/config.json`。
+
+<Callout type="warning">
+  **重要注意事项**：
+  - API 地址后缀一定要加 `/v1`
+  - 必须添加 `models` 参数进行模型重命名，因为 OpenCode 默认使用不带日期的模型 ID
+</Callout>
+
+### 配置示例
+
+```json
+{
+  "anthropic": {
+    "options": {
+      "baseURL": "http://你的NewAPI地址/v1"
+    },
+    "models": {
+      "claude-opus-4-5-20251101": {
+        "name": "claude-opus-4-5-20251101"
+      },
+      "claude-sonnet-4-5-20250929": {
+        "name": "claude-sonnet-4-5-20250929"
+      }
+    }
+  }
+}
+```
+
+### 配置说明
+
+| 配置项 | 说明 |
+|--------|------|
+| `options.baseURL` | New API 的地址，**必须以 `/v1` 结尾** |
+| `models` | 模型配置，定义可用的模型及其名称 |
+
+## 5. 验证配置
+
+配置完成后，启动 OpenCode 验证是否配置成功：
+
+```bash
+opencode
+```
+
+<Callout type="success">
+  **验证成功标志**：
+  - OpenCode 正常启动并可以进行对话
+  - 在 New API 的日志中可以看到调用记录
+</Callout>
+
+### 查看调用日志
+
+在 New API 管理界面的"日志"页面，可以查看 OpenCode 的调用记录，确认请求是否正确转发到 CC Club。
+
+## 常见问题
+
+**Q: 提示模型不存在？**
+
+A: 请检查 `models` 配置是否正确，确保模型 ID 配置正确。
+
+**Q: 请求失败或超时？**
+
+A: 请检查：
+1. New API 服务是否正常运行
+2. `baseURL` 是否正确，是否以 `/v1` 结尾
+3. CC Club 渠道是否配置正确并测试通过
+
+**Q: 如何获取 CC Club API Key？**
+
+A: 请访问 [获取 API Key](/getting-started/get-api-key) 页面了解如何获取密钥。
