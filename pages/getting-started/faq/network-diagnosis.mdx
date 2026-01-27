@@ -692,6 +692,78 @@ time claude --model claude-haiku-4-5-20251001 -p "hi"
 
 对比两次的 `real` 时间，选择更快的配置方案。
 
+### 收集 Debug 日志供管理员分析
+
+如果按照上述方法测试后仍无法解决问题，可以使用 Claude Code 的 debug 模式收集详细日志，发送给管理员进行深度分析。
+
+**收集 debug 日志：**
+
+<Tabs items={['macOS / Linux', 'Windows']}>
+  <Tabs.Tab>
+```bash
+# 使用 debug 模式发送测试请求，收集完整日志
+claude --debug-file /tmp/claude-network-debug.log \
+      --debug "api,mcp" \
+      --model claude-haiku-4-5-20251001 \
+      -p "test network connection"
+```
+
+收集完成后，日志会保存到 `/tmp/claude-network-debug.log`
+
+```bash
+# 查看日志内容
+cat /tmp/claude-network-debug.log
+
+# 将日志发送给管理员（可以复制内容或发送文件）
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```powershell
+# 使用 debug 模式发送测试请求，收集完整日志
+claude --debug-file $env:TEMP\claude-network-debug.log `
+      --debug "api,mcp" `
+      --model claude-haiku-4-5-20251001 `
+      -p "test network connection"
+```
+
+收集完成后，日志会保存到临时目录
+
+```powershell
+# 查看日志内容
+Get-Content $env:TEMP\claude-network-debug.log
+
+# 日志文件位置
+Write-Host "日志文件: $env:TEMP\claude-network-debug.log"
+```
+  </Tabs.Tab>
+</Tabs>
+
+**参数说明：**
+
+| 参数 | 说明 |
+|-----|------|
+| `--debug-file` | 指定日志保存路径 |
+| `--debug "api,mcp"` | 开启 API 和 MCP 相关的详细调试信息 |
+| `--model claude-haiku-4-5-20251001` | 使用最快的模型减少等待时间 |
+| `-p "test network connection"` | 发送简单测试消息 |
+
+**日志中包含的关键信息：**
+
+- 完整的 HTTP 请求和响应详情
+- 网络连接建立过程
+- TLS 握手细节
+- API 调用时序和耗时
+- 错误堆栈信息（如果有）
+- MCP 服务器连接状态
+
+<Callout type="warning">
+debug 日志可能包含敏感信息（如 API 密钥片段、请求路径等），发送给管理员前请确认日志内容，或使用 CC Club 的[工单系统](https://claude-code.club)安全上传。
+</Callout>
+
+<Callout type="info">
+使用 Haiku 模型是为了最小化 token 消耗和等待时间，同时生成完整的网络请求日志。这个测试只会消耗极少量 token。
+</Callout>
+
 ## 选择最佳 API 入口
 
 根据我们的测试结果，选择最适合的入口：
