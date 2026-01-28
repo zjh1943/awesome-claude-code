@@ -42,5 +42,15 @@ export default {
     href: '/getting-started/pricing'
   },
   'gemini-common-errors': '常见错误',
-  'gemini-faq': '常见问题'
+  'gemini-faq': '常见问题',
+  'opencode-core': {
+    type: 'separator',
+    title: 'OpenCode'
+  },
+  'opencode-introduction': '核心介绍',
+  'opencode-get-api-key': {
+    title: '获取 API Key',
+    href: '/getting-started/get-api-key'
+  },
+  'opencode-installation': '安装和配置'
 }
