@@ -52,5 +52,10 @@ export default {
     title: '获取 API Key',
     href: '/getting-started/get-api-key'
   },
-  'opencode-installation': '安装和配置'
+  'opencode-installation': '安装和配置',
+  'clawdbot-core': {
+    type: 'separator',
+    title: 'Clawdbot'
+  },
+  'clawdbot-installation': '安装和配置'
 }
