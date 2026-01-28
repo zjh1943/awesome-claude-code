@@ -1,0 +1,104 @@
+---
+title: Clawdbot (Moltbot) 介绍
+description: 了解 Clawdbot (Moltbot) 的核心功能和独特优势
+---
+
+import { Callout } from 'nextra/components'
+
+# Clawdbot (Moltbot)
+
+Moltbot（原名 Clawdbot）是一个**个人 AI 助手**，运行在你自己的设备上。它可以在你已经使用的各种消息平台上回复你，包括 WhatsApp、Telegram、Slack、Discord、Google Chat、Signal、iMessage、Microsoft Teams、WebChat 等，让你的 AI 助手无处不在。
+
+<Callout type="info">
+  **开源项目**：Moltbot 是完全开源的，你可以在 [GitHub](https://github.com/moltbot/moltbot) 上查看源码、提交 Issue 或贡献代码。
+</Callout>
+
+## 核心优势
+
+### 1. 本地优先，隐私可控
+Moltbot 运行在你自己的设备上，所有数据都在本地处理：
+- **完全掌控**：你的对话数据不会上传到第三方服务器
+- **本地 Gateway**：单一控制平面管理所有会话、频道和工具
+- **快速响应**：本地运行带来更快的响应速度
+
+### 2. 多平台消息支持
+Moltbot 支持几乎所有主流消息平台：
+- **即时通讯**：WhatsApp、Telegram、Signal、iMessage
+- **团队协作**：Slack、Discord、Microsoft Teams、Google Chat
+- **扩展支持**：BlueBubbles、Matrix、Zalo、WebChat
+- **统一体验**：在任何平台上都能获得一致的 AI 助手体验
+
+### 3. 语音交互能力
+支持在多个平台上进行语音交互：
+- **Voice Wake**：始终在线的语音唤醒功能
+- **Talk Mode**：连续对话模式，自然的语音交互体验
+- **跨平台支持**：macOS、iOS、Android 全平台语音支持
+- **ElevenLabs 集成**：高质量的语音合成
+
+### 4. Live Canvas 可视化工作区
+提供代理驱动的可视化工作空间：
+- **A2UI 技术**：AI 可以直接控制和操作界面
+- **实时渲染**：动态展示 AI 的工作过程
+- **跨设备支持**：在 macOS、iOS、Android 上都能使用
+
+### 5. 灵活的模型支持
+支持多种 AI 模型后端：
+- **Anthropic Claude**：通过 Claude Pro/Max 订阅或 API
+- **OpenAI**：ChatGPT/Codex 模型
+- **模型切换**：可以根据任务需求灵活切换模型
+- **故障转移**：自动切换到备用模型，确保服务可用性
+
+## 功能对比：Claude Code vs Moltbot
+
+| 功能点 | Claude Code | Moltbot |
+|--------|-------------|---------|
+| **运行方式** | 终端 CLI | 多平台消息应用 |
+| **消息平台** | 终端 | WhatsApp、Telegram、Slack、Discord 等 |
+| **语音交互** | 否 | 是（macOS/iOS/Android） |
+| **可视化界面** | 否 | Live Canvas |
+| **本地运行** | 是 | 是 |
+| **开源** | 否 | 是 |
+| **多设备支持** | 否 | 是（macOS、iOS、Android） |
+
+## 典型使用场景
+
+### 在 WhatsApp 上使用 AI 助手
+通过 Moltbot，你可以直接在 WhatsApp 上与 Claude 对话，无需切换应用，让 AI 助手融入你的日常沟通流程。
+
+### 团队协作中的 AI 助手
+在 Slack 或 Discord 团队频道中部署 Moltbot，让团队成员都能方便地使用 AI 助手，提升团队协作效率。
+
+### 语音交互场景
+在开车、做饭或其他不方便打字的场景下，通过语音唤醒和 Talk Mode 与 AI 助手自然对话。
+
+### 跨设备无缝体验
+在 macOS 上开始一个对话，在 iPhone 上继续，在 Android 平板上查看 Canvas 输出，所有设备无缝同步。
+
+## 安全与隐私
+
+Moltbot 提供多层安全保护：
+
+- **DM 配对机制**：默认情况下，未知发送者需要通过配对码验证
+- **本地数据存储**：所有对话数据存储在本地设备
+- **沙箱隔离**：支持 Docker 沙箱模式，隔离不同会话的执行环境
+- **权限控制**：细粒度的工具和命令权限管理
+
+<Callout type="warning">
+  **安全提示**：Moltbot 连接到真实的消息平台，请将入站 DM 视为不可信输入，并合理配置安全策略。
+</Callout>
+
+## 技术架构
+
+Moltbot 采用现代化的技术架构：
+
+- **Gateway WebSocket**：单一 WS 控制平面，管理客户端、工具和事件
+- **多代理路由**：将入站频道/账户/对等方路由到隔离的代理
+- **会话模型**：支持直接聊天、群组隔离、激活模式等
+- **工具生态**：浏览器控制、Canvas、节点、定时任务等丰富工具
+
+## 下一步
+
+- [安装和配置](/getting-started/clawdbot-installation) - 了解如何安装 Moltbot 并配置 CC Club 的 Claude 模型
+- [获取 API Key](/getting-started/get-api-key) - 获取 CC Club 的 API 密钥
+- [GitHub 仓库](https://github.com/moltbot/moltbot) - 查看源码和文档
+- [官方文档](https://docs.molt.bot) - 完整的使用文档

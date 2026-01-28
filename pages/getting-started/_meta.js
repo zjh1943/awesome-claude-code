@@ -47,15 +47,12 @@ export default {
     type: 'separator',
     title: 'OpenCode'
   },
-  'opencode-introduction': '核心介绍',
-  'opencode-get-api-key': {
-    title: '获取 API Key',
-    href: '/getting-started/get-api-key'
-  },
+  'opencode-introduction': 'OpenCode 介绍',
   'opencode-installation': '安装和配置',
   'clawdbot-core': {
     type: 'separator',
-    title: 'Clawdbot'
+    title: 'Clawdbot (Moltbot)'
   },
+  'clawdbot-introduction': 'Clawdbot 介绍',
   'clawdbot-installation': '安装和配置'
 }
