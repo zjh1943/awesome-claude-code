@@ -1,0 +1,279 @@
+---
+title: 安装和配置
+description: Clawdbot 的安装和配置指南（使用第三方 API 代理服务）
+---
+
+import { Callout, Tabs } from 'nextra/components'
+
+# Clawdbot 安装与配置指南
+
+本指南适用于使用第三方 API 代理服务配置 Clawdbot 的场景。
+
+<Callout type="info">
+**关于本文档**  
+本文档并非 Clawdbot 的官方权威安装文档。[Clawdbot 官方文档](https://github.com/moltbot/moltbot) 会持续更新，但本文档不会同步更新。  
+**本文档的重点**：帮助你在 Clawdbot 中配置 CC Club 平台的 `baseUrl` 、 `apiKey` 和 `modelName`，这是使用 CC Club 服务的关键步骤。对于 Clawdbot 的其他功能和详细说明，请参考官方文档。
+</Callout>
+
+## 1. 安装 Clawdbot
+
+```bash
+npm install -g clawdbot
+```
+
+## 2. 初始化配置
+
+```bash
+clawdbot onboard
+```
+
+按照向导完成初始设置。
+
+## 3. 配置第三方 API 代理
+
+<Callout type="warning">
+**重要：必须手动编辑配置文件**，Dashboard UI 对自定义 provider 配置支持不完整。
+</Callout>
+
+### 配置文件位置
+
+<Tabs items={['Windows', 'macOS', 'Linux']}>
+  <Tabs.Tab>
+    ```
+    C:\Users\<用户名>\.clawdbot\clawdbot.json
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```
+    ~/.clawdbot/clawdbot.json
+    ```
+    或
+    ```
+    /Users/<用户名>/.clawdbot/clawdbot.json
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```
+    ~/.clawdbot/clawdbot.json
+    ```
+    或
+    ```
+    /home/<用户名>/.clawdbot/clawdbot.json
+    ```
+  </Tabs.Tab>
+</Tabs>
+
+### 完整配置示例
+
+<Callout type="info">
+**注意**：以下示例使用 Windows 路径格式。macOS/Linux 用户请将路径中的 `C:\\Users\\<用户名>` 替换为 `~` 或 `/Users/<用户名>`（macOS）/ `/home/<用户名>`（Linux），并使用正斜杠 `/` 而非反斜杠 `\\`。
+</Callout>
+
+```json
+{
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "anthropic/claude-opus-4-5-20251101"
+      },
+      "maxConcurrent": 4,
+      "subagents": {
+        "maxConcurrent": 8
+      },
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "workspace": "C:\\Users\\<用户名>\\clawd"
+    }
+  },
+  "gateway": {
+    "mode": "local",
+    "auth": {
+      "mode": "token",
+      "token": "<你的gateway-token>"
+    },
+    "port": 18789,
+    "bind": "loopback",
+    "tailscale": {
+      "mode": "off",
+      "resetOnExit": false
+    }
+  },
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "anthropic": {
+        "baseUrl": "https://claude-code.club/api",
+        "apiKey": "<你的API密钥>",
+        "api": "anthropic-messages",
+        "models": [
+          {
+            "id": "claude-opus-4-5-20251101",
+            "name": "Claude Opus 4.5"
+          },
+          {
+            "id": "claude-sonnet-4-20250514",
+            "name": "Claude Sonnet 4"
+          }
+        ]
+      }
+    }
+  },
+  "auth": {
+    "profiles": {
+      "anthropic:default": {
+        "provider": "anthropic",
+        "mode": "api_key"
+      }
+    }
+  },
+  "skills": {
+    "install": {
+      "nodeManager": "npm"
+    }
+  },
+  "hooks": {
+    "internal": {
+      "enabled": true,
+      "entries": {
+        "session-memory": {
+          "enabled": true
+        }
+      }
+    }
+  }
+}
+```
+
+## 4. 关键配置说明
+
+| 配置项 | 说明 | 示例值 |
+|--------|------|--------|
+| `agents.defaults.model.primary` | 默认使用的模型，**必须使用完整模型ID** | `anthropic/claude-opus-4-5-20251101` |
+| `models.providers.anthropic.baseUrl` | 第三方代理 API 地址（见下方节点列表） | `https://claude-code.club/api` |
+| `models.providers.anthropic.apiKey` | 第三方代理提供的 API 密钥（[如何获取](/getting-started/get-api-key)） | `cr_xxxxxxx` 或 `sk-xxxxxxx` |
+| `models.providers.anthropic.api` | API 协议类型 | `anthropic-messages` |
+| `models.providers.anthropic.models[].id` | 可用模型列表，ID 必须与代理支持的模型匹配 | `claude-opus-4-5-20251101` |
+| `gateway.auth.token` | Dashboard 访问令牌 | 自动生成或自定义 |
+| `gateway.port` | Gateway 监听端口 | `18789` |
+
+### CC Club API 节点
+
+CC Club 提供多个节点供选择，详见 [Base URL 配置说明](/getting-started/faq/config-baseurl-authtoken)。
+
+### 模型 ID 格式要求
+
+<Callout type="danger">
+**重要**：第三方 API 代理通常要求使用完整的模型 ID
+</Callout>
+
+| 正确格式 | 错误格式 |
+|----------|----------|
+| `claude-opus-4-5-20251101` | `claude-opus-4-5` |
+| `claude-sonnet-4-20250514` | `claude-sonnet-4` |
+
+在 `agents.defaults.model.primary` 中需要加上 provider 前缀：
+- ✅ 正确：`anthropic/claude-opus-4-5-20251101`
+- ❌ 错误：`claude-opus-4-5-20251101`
+
+## 5. 启动 Gateway
+
+```bash
+clawdbot gateway
+```
+
+启动成功后会显示：
+```
+[gateway] agent model: anthropic/claude-opus-4-5-20251101
+[gateway] listening on ws://127.0.0.1:18789
+```
+
+### 使用批处理脚本启动（可选）
+
+创建 `start-gateway.bat`：
+
+```batch
+@echo off
+clawdbot gateway
+```
+
+## 6. 访问 Dashboard
+
+浏览器访问：
+```
+http://127.0.0.1:18789/?token=<你的gateway-token>
+```
+
+Dashboard 功能：
+- **Chat**：直接与 AI 对话
+- **Config**：查看/编辑配置（Raw 模式可编辑 JSON）
+- **Logs**：查看实时日志
+- **Sessions**：管理会话
+
+## 7. 常见问题
+
+### 7.1 "No available accounts in group claude-code"
+
+**原因**：模型 ID 格式错误，第三方代理不识别简短的模型名称。
+
+**解决方案**：
+1. 在 `agents.defaults.model.primary` 使用完整模型 ID
+2. 在 `models.providers.anthropic.models` 中也使用完整模型 ID
+3. 确保两处的模型 ID 一致
+
+### 7.2 Dashboard 配置页面为空或显示 "Schema unavailable"
+
+**原因**：Dashboard UI 对自定义 provider 配置的表单模式支持不完整。
+
+**解决方案**：
+1. 在 Config 页面点击 **Raw** 按钮切换到 JSON 编辑模式
+2. 或直接编辑 `clawdbot.json` 文件
+
+### 7.3 CC Switch 配置不生效
+
+**原因**：CC Switch 只配置 Claude Code，不影响 Clawdbot。它们是两个独立的系统，不能共享。
+
+**解决方案**：单独配置 Clawdbot 的 `clawdbot.json` 文件。
+
+### 7.4 配置验证错误
+
+运行以下命令检查配置：
+```bash
+clawdbot doctor --fix
+```
+
+出现错误时，必须删除缓存文件，然后重启 Gateway。
+
+### 7.5 需要翻墙/科学上网吗？
+
+- **API 请求**：如果使用国内可访问的第三方代理（如 CC Club），通常不需要翻墙
+- **Clawdbot 本身**：可能需要连接一些服务（更新检查等），视网络环境而定
+
+如需设置代理（如 Clawdbot 连接到需要代理才能访问的 API）：
+```batch
+set HTTP_PROXY=http://127.0.0.1:7890
+set HTTPS_PROXY=http://127.0.0.1:7890
+clawdbot gateway
+```
+
+## 8. 与 Claude Code 的区别
+
+| 对比项 | Claude Code | Clawdbot |
+|--------|-------------|----------|
+| **用途** | 命令行编程助手 | 自托管 AI Gateway |
+| **配置工具** | CC Switch / 环境变量 | 手动编辑 JSON |
+| **配置文件** | `~/.claude/settings.json` | `~/.clawdbot/clawdbot.json` |
+| **环境变量** | `ANTHROPIC_AUTH_TOKEN`, `ANTHROPIC_BASE_URL` | 不使用，直接写入配置文件 |
+| **模型 ID 格式** | 自动处理（如 `opus`） | 必须使用完整 ID |
+| **界面** | 命令行 | Web Dashboard |
+
+## 9. 参考资料
+
+- 官方文档：[https://docs.molt.bot/](https://docs.molt.bot/)
+- 配置示例：[https://docs.molt.bot/gateway/configuration-examples](https://docs.molt.bot/gateway/configuration-examples)
+
+<Callout type="info">
+**注意**：额度损耗可能比 Claude Code 多，因为 Clawdbot 需要处理更多的请求。
+
+*文档创建日期：2026-01-28*
+</Callout>

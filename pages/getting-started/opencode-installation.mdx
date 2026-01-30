@@ -1,0 +1,347 @@
+---
+title: 安装和配置
+description: OpenCode 的安装和配置指南，使用 CC Club 的 Claude 模型
+---
+
+import { Callout, Tabs, Steps } from 'nextra/components'
+
+export const toc = {
+  float: true,
+  headingComponent: null,
+  extraContent: null
+}
+
+export const tocDepth = 2
+
+# OpenCode 安装和配置指南
+
+本指南将帮助你安装 OpenCode 并配置使用 CC Club 的 Claude 模型。
+
+## 为什么需要特殊配置？
+
+<Callout type="info">
+  **兼容性问题说明**
+
+  1. **模型 ID 格式不同**：OpenCode 默认使用不带日期的 Anthropic 模型 ID（如 `claude-sonnet-4-5`），而 CC Club 使用带日期的模型 ID（如 `claude-sonnet-4-5-20250929`）。
+  2. **需要模型映射**：为了让 OpenCode 能够正确调用 CC Club 的模型，需要通过配置工具或中转服务来解决这个兼容性问题。
+  3. **避免客户端限制**：通过适当的配置可以避免官方提示不能使用 OpenCode 客户端的限制。
+</Callout>
+
+我们提供两种配置方法，推荐使用方法一（CC Switch）进行配置：
+
+- **方法一（推荐）**：使用 CC Switch 桌面应用，可视化管理配置，一键切换
+- **方法二（进阶）**：通过 New API 中转服务，适合需要更多自定义配置的场景
+
+## 方法一：使用 CC Switch 配置（推荐）
+
+CC Switch 是一款开源的跨平台桌面应用，专门用于统一管理 AI 编程助手的配置。它支持 Claude Code、Codex、OpenCode、Gemini CLI 四大工具的可视化配置管理。
+
+<Callout type="success">
+  **推荐理由**
+  - ✅ 可视化界面，无需手动编辑配置文件
+  - ✅ 一键切换多个 API Provider
+  - ✅ 内置延迟测试，选择最快的节点
+  - ✅ 自动处理模型 ID 映射问题
+  - ✅ 支持配置备份和云同步
+</Callout>
+
+<Steps>
+  ### 安装 CC Switch
+
+  根据你的操作系统选择对应的安装方式：
+
+  <Tabs items={['Windows', 'macOS', 'Linux']}>
+    <Tabs.Tab>
+      **方式一：MSI 安装包（推荐）**
+
+      1. 访问 [CC Switch Releases](https://github.com/farion1231/cc-switch/releases)
+      2. 下载最新版本的 `.msi` 文件
+      3. 双击安装包，按提示完成安装
+
+      **方式二：便携版**
+
+      1. 下载 `.zip` 便携版
+      2. 解压到任意目录
+      3. 直接运行 `cc-switch.exe`
+    </Tabs.Tab>
+    <Tabs.Tab>
+      **方式一：Homebrew（推荐）**
+
+      ```bash
+      brew install --cask cc-switch
+      ```
+
+      **方式二：手动安装**
+
+      1. 访问 [CC Switch Releases](https://github.com/farion1231/cc-switch/releases)
+      2. 下载 `.dmg` 或 `.zip` 文件
+      3. 拖入 Applications 文件夹
+
+      <Callout type="warning">
+        首次启动可能遇到 Gatekeeper 警告，需要在「系统偏好设置 → 安全性与隐私」中允许运行。
+      </Callout>
+    </Tabs.Tab>
+    <Tabs.Tab>
+      根据你的发行版选择：
+
+      **Ubuntu/Debian**
+      ```bash
+      # 下载 .deb 包后
+      sudo dpkg -i cc-switch.deb
+      ```
+
+      **Fedora/RHEL**
+      ```bash
+      # 下载 .rpm 包后
+      sudo rpm -i cc-switch.rpm
+      ```
+
+      **Arch Linux**
+      ```bash
+      paru -S cc-switch-bin
+      ```
+
+      **通用方式（AppImage）**
+      ```bash
+      # 下载 AppImage 后
+      chmod +x cc-switch.AppImage
+      ./cc-switch.AppImage
+      ```
+    </Tabs.Tab>
+  </Tabs>
+
+  ### 安装 OpenCode
+
+  <Tabs items={['Go 安装', 'Homebrew (macOS)', '手动下载']}>
+    <Tabs.Tab>
+      ```bash
+      go install github.com/anomalyco/opencode@latest
+      ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+      ```bash
+      brew install opencode
+      ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+      从 [GitHub Releases](https://github.com/anomalyco/opencode/releases) 下载对应平台的二进制文件。
+    </Tabs.Tab>
+  </Tabs>
+
+  ### 获取 CC Club API Key
+
+  访问 [获取 API Key](/getting-started/get-api-key) 页面了解如何获取 CC Club 的 API Key。
+
+  ### 配置 CC Switch
+
+  启动 CC Switch 应用后，按以下步骤添加 CC Club Provider：
+
+  1. **点击「Add Provider」按钮**
+
+  2. **选择「Custom」自定义配置**
+
+  3. **填写配置信息**：
+     - **名称**：CC Club（或自定义名称）
+     - **Base URL**：选择合适的 API 地址（见下方地址表）
+     - **API Key**：填写你的 CC Club API Key
+     - **模型映射**（重要）：配置模型 ID 映射关系
+
+  4. **配置模型映射示例**：
+     ```json
+     {
+       "claude-opus-4-5": "claude-opus-4-5-20251101",
+       "claude-sonnet-4-5": "claude-sonnet-4-5-20250929",
+       "claude-opus-4-5-20251101": "claude-opus-4-5-20251101",
+       "claude-sonnet-4-5-20250929": "claude-sonnet-4-5-20250929"
+     }
+     ```
+
+  <Callout type="info">
+    **模型映射说明**：左侧是 OpenCode 使用的模型 ID（不带日期），右侧是 CC Club 实际的模型 ID（带日期）。这样配置后，OpenCode 就能正确调用 CC Club 的模型了。
+  </Callout>
+
+  ### CC Club API 地址
+
+  根据你的网络环境选择合适的地址：
+
+  | 地址 | 说明 |
+  |-----|-----|
+  | `https://claude-code.club/api` | 默认地址（直连延迟 < 100ms 时最快） |
+  | `https://jp.claude-code.club/api` | 日本节点（阿里云，回国优化） |
+  | `https://hk.claude-code.club/api` | 香港节点（阿里云，回国优化） |
+  | `https://sz.ai-code.club/api` | 深圳节点（国内，由服务器代为出境） |
+
+  ### 切换到 CC Club Provider
+
+  配置保存后：
+
+  1. 在 CC Switch 主界面的 Provider 列表中找到「CC Club」
+  2. 点击「Switch」按钮或直接点击该 Provider
+  3. CC Switch 会自动修改 OpenCode 的配置文件
+
+  ### 测试连接
+
+  1. **使用 CC Switch 测速功能**：
+     - 点击 Provider 旁边的「Test」按钮
+     - 等待延迟测试完成
+     - 查看响应时间和状态指示
+
+  2. **启动 OpenCode 验证**：
+     ```bash
+     opencode
+     ```
+
+  <Callout type="success">
+    **验证成功标志**：OpenCode 正常启动并可以进行对话
+  </Callout>
+</Steps>
+
+<Callout type="info">
+  **详细教程参考**：[CC Switch 完全指南](https://help.apiyi.com/cc-switch-beginner-guide.html)
+</Callout>
+
+---
+
+## 方法二：使用 New API 中转（进阶）
+
+如果你需要更多自定义配置或方法一无法满足需求，可以使用 New API 中转服务。
+
+<Callout type="info">
+  **为什么需要中转？**
+
+  1. OpenCode 默认的 Anthropic 模型 ID 使用不带日期的格式（如 `claude-sonnet-4-5`），而 CC Club 使用带日期的模型 ID（如 `claude-sonnet-4-5-20250929`）。通过 New API 中转可以解决这个兼容性问题。
+  2. 通过中转可以避免官方提示不能使用 OpenCode 客户端的限制。
+</Callout>
+
+<Steps>
+  ### 部署 New API 中转服务
+
+  New API 是一个开源的 API 管理和中转服务，支持多种 AI 模型的统一管理。
+
+  <Callout type="info">
+    **部署参考**
+
+    New API 支持 Docker、1Panel 等多种部署方式，详细的部署步骤请参考：
+    - **官方文档**：[https://docs.newapi.pro/zh/docs](https://docs.newapi.pro/zh/docs)
+    - **GitHub 仓库**：[https://github.com/QuantumNous/new-api](https://github.com/QuantumNous/new-api)
+  </Callout>
+
+  ### 配置 New API 渠道
+
+  部署完成后，需要在 New API 中配置 CC Club 的渠道信息。
+
+  **添加渠道**
+
+  进入 New API 管理界面，点击"渠道管理" → "添加渠道"。
+
+  **配置渠道信息**
+
+  填写以下信息：
+  - **渠道类型**：选择 Anthropic Claude
+  - **渠道名称**：CC Club（或自定义名称）
+  - **代理地址**：填写 CC Club 的 API 地址（参考 [CC Club API 地址](/getting-started/get-api-key)）
+  - **密钥**：填写你的 CC Club API Key
+
+  **测试渠道**
+
+  点击"测试"按钮，确认渠道配置正确。测试通过后会有成功提示。
+
+  ### 安装 OpenCode
+
+  <Tabs items={['Go 安装', 'Homebrew (macOS)', '手动下载']}>
+    <Tabs.Tab>
+      ```bash
+      go install github.com/anomalyco/opencode@latest
+      ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+      ```bash
+      brew install opencode
+      ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+      从 [GitHub Releases](https://github.com/anomalyco/opencode/releases) 下载对应平台的二进制文件。
+    </Tabs.Tab>
+  </Tabs>
+
+  ### 配置 OpenCode
+
+  找到 OpenCode 的配置文件并进行配置。配置文件通常位于 `~/.config/opencode/config.json`。
+
+  <Callout type="warning">
+    **重要注意事项**：
+    - API 地址后缀一定要加 `/v1`
+    - 必须添加 `models` 参数进行模型重命名，因为 OpenCode 默认使用不带日期的模型 ID
+  </Callout>
+
+  **配置示例**
+
+  ```json
+  {
+    "anthropic": {
+      "options": {
+        "baseURL": "http://你的NewAPI地址/v1"
+      },
+      "models": {
+        "claude-opus-4-5-20251101": {
+          "name": "claude-opus-4-5-20251101"
+        },
+        "claude-sonnet-4-5-20250929": {
+          "name": "claude-sonnet-4-5-20250929"
+        }
+      }
+    }
+  }
+  ```
+
+  **配置说明**
+
+  | 配置项 | 说明 |
+  |--------|------|
+  | `options.baseURL` | New API 的地址，**必须以 `/v1` 结尾** |
+  | `models` | 模型配置，定义可用的模型及其名称 |
+
+  ### 验证配置
+
+  配置完成后，启动 OpenCode 验证是否配置成功：
+
+  ```bash
+  opencode
+  ```
+
+  <Callout type="success">
+    **验证成功标志**：
+    - OpenCode 正常启动并可以进行对话
+    - 在 New API 的日志中可以看到调用记录
+  </Callout>
+
+  **查看调用日志**
+
+  在 New API 管理界面的"日志"页面，可以查看 OpenCode 的调用记录，确认请求是否正确转发到 CC Club。
+</Steps>
+
+---
+
+## 常见问题
+
+**Q: 两种方法应该选择哪一种？**
+
+A: 推荐优先使用方法一（cc switch），配置简单快捷。如果方法一无法满足需求或需要更多自定义配置，再考虑使用方法二（New API）。
+
+**Q: 提示模型不存在？**
+
+A:
+- **方法一**：检查 `cc switch` 配置的 Base URL 是否正确
+- **方法二**：检查 `models` 配置是否正确，确保模型 ID 配置正确
+
+**Q: 请求失败或超时？**
+
+A: 请检查：
+1. 网络连接是否正常
+2. API Key 是否正确
+3. Base URL 是否正确（方法二需要确保以 `/v1` 结尾）
+4. 如使用方法二，检查 New API 服务是否正常运行
+
+**Q: 如何获取 CC Club API Key？**
+
+A: 请访问 [获取 API Key](/getting-started/get-api-key) 页面了解如何获取密钥。

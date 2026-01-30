@@ -42,5 +42,17 @@ export default {
     href: '/getting-started/pricing'
   },
   'gemini-common-errors': '常见错误',
-  'gemini-faq': '常见问题'
+  'gemini-faq': '常见问题',
+  'opencode-core': {
+    type: 'separator',
+    title: 'OpenCode'
+  },
+  'opencode-introduction': 'OpenCode 介绍',
+  'opencode-installation': '安装和配置',
+  'clawdbot-core': {
+    type: 'separator',
+    title: 'Clawdbot (Moltbot)'
+  },
+  'clawdbot-introduction': 'Clawdbot 介绍',
+  'clawdbot-installation': '安装和配置'
 }
