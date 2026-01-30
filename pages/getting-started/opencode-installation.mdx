@@ -27,12 +27,94 @@ export const tocDepth = 2
   3. **避免客户端限制**：通过适当的配置可以避免官方提示不能使用 OpenCode 客户端的限制。
 </Callout>
 
-我们提供两种配置方法，推荐使用方法一（CC Switch）进行配置：
+我们提供三种配置方法：
 
-- **方法一（推荐）**：使用 CC Switch 桌面应用，可视化管理配置，一键切换
-- **方法二（进阶）**：通过 New API 中转服务，适合需要更多自定义配置的场景
+- **方法一（推荐）**：直接编辑配置文件，最简单快捷
+- **方法二**：使用 CC Switch 桌面应用，可视化管理配置，一键切换
+- **方法三（进阶）**：通过 New API 中转服务，适合需要更多自定义配置的场景
 
-## 方法一：使用 CC Switch 配置（推荐）
+## 方法一：直接配置（推荐）
+
+这是最简单的配置方式，只需编辑 OpenCode 的配置文件即可。
+
+<Steps>
+  ### 安装 OpenCode
+
+  <Tabs items={['Go 安装', 'Homebrew (macOS)', '手动下载']}>
+    <Tabs.Tab>
+      ```bash
+      go install github.com/anomalyco/opencode@latest
+      ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+      ```bash
+      brew install opencode
+      ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+      从 [GitHub Releases](https://github.com/anomalyco/opencode/releases) 下载对应平台的二进制文件。
+    </Tabs.Tab>
+  </Tabs>
+
+  ### 获取 CC Club API Key
+
+  访问 [获取 API Key](/getting-started/get-api-key) 页面了解如何获取 CC Club 的 API Key。
+
+  ### 编辑配置文件
+
+  编辑 `~/.config/opencode/opencode.json` 文件（如果文件不存在则创建）：
+
+  ```bash
+  cat ~/.config/opencode/opencode.json
+  ```
+
+  ```json
+  {
+    "provider": {
+      "anthropic": {
+        "options": {
+          "baseURL": "https://claude-code.club/api/v1",
+          "apiKey": "cr_你的API密钥"
+        },
+        "npm": "@ai-sdk/anthropic",
+        "name": "cc-club(Claude)"
+      }
+    },
+    "$schema": "https://opencode.ai/config.json"
+  }
+  ```
+
+  <Callout type="warning">
+    **注意**：请将 `cr_你的API密钥` 替换为你实际的 CC Club API Key。
+  </Callout>
+
+  ### CC Club API 地址
+
+  根据你的网络环境，可以选择不同的 API 地址：
+
+  | 地址 | 说明 |
+  |-----|-----|
+  | `https://claude-code.club/api/v1` | 默认地址（直连延迟 < 100ms 时最快） |
+  | `https://jp.claude-code.club/api/v1` | 日本节点（阿里云，回国优化） |
+  | `https://hk.claude-code.club/api/v1` | 香港节点（阿里云，回国优化） |
+  | `https://sz.ai-code.club/api/v1` | 深圳节点（国内，由服务器代为出境） |
+
+  ### 验证配置
+
+  启动 OpenCode 验证是否配置成功：
+
+  ```bash
+  opencode
+  ```
+
+  <Callout type="success">
+    **验证成功标志**：OpenCode 正常启动并可以进行对话
+  </Callout>
+</Steps>
+
+---
+
+## 方法二：使用 CC Switch 配置
 
 CC Switch 是一款开源的跨平台桌面应用，专门用于统一管理 AI 编程助手的配置。它支持 Claude Code、Codex、OpenCode、Gemini CLI 四大工具的可视化配置管理。
 
@@ -202,9 +284,9 @@ CC Switch 是一款开源的跨平台桌面应用，专门用于统一管理 AI 
 
 ---
 
-## 方法二：使用 New API 中转（进阶）
+## 方法三：使用 New API 中转（进阶）
 
-如果你需要更多自定义配置或方法一无法满足需求，可以使用 New API 中转服务。
+如果你需要更多自定义配置或前两种方法无法满足需求，可以使用 New API 中转服务。
 
 <Callout type="info">
   **为什么需要中转？**
@@ -324,23 +406,24 @@ CC Switch 是一款开源的跨平台桌面应用，专门用于统一管理 AI 
 
 ## 常见问题
 
-**Q: 两种方法应该选择哪一种？**
+**Q: 三种方法应该选择哪一种？**
 
-A: 推荐优先使用方法一（cc switch），配置简单快捷。如果方法一无法满足需求或需要更多自定义配置，再考虑使用方法二（New API）。
+A: 推荐优先使用方法一（直接配置），最简单快捷。如果需要可视化管理多个 Provider，可以使用方法二（CC Switch）。如果需要更多自定义配置，再考虑使用方法三（New API）。
 
 **Q: 提示模型不存在？**
 
 A:
-- **方法一**：检查 `cc switch` 配置的 Base URL 是否正确
-- **方法二**：检查 `models` 配置是否正确，确保模型 ID 配置正确
+- **方法一**：检查配置文件中的 `baseURL` 是否正确，确保以 `/v1` 结尾
+- **方法二**：检查 CC Switch 配置的 Base URL 是否正确
+- **方法三**：检查 `models` 配置是否正确，确保模型 ID 配置正确
 
 **Q: 请求失败或超时？**
 
 A: 请检查：
 1. 网络连接是否正常
 2. API Key 是否正确
-3. Base URL 是否正确（方法二需要确保以 `/v1` 结尾）
-4. 如使用方法二，检查 New API 服务是否正常运行
+3. Base URL 是否正确（必须以 `/v1` 结尾）
+4. 如使用方法三，检查 New API 服务是否正常运行
 
 **Q: 如何获取 CC Club API Key？**
 
