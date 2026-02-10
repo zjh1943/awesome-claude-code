@@ -1,0 +1,56 @@
+import { Callout, Steps } from 'nextra/components'
+
+# 获取 Claude Code 本地会话文件
+
+当你在使用 Claude Code 过程中遇到问题时，可以导出当前会话的对话记录文件（`.jsonl` 格式）。你可以自行分析对话内容，也可以将文件发送给技术人员协助排查问题。
+
+## 操作步骤
+
+<Steps>
+
+### 获取 Session ID
+
+在 Claude Code 中执行 `/status` 命令，在输出信息中找到 **Session ID**：
+
+```
+> /status
+
+Session ID: abc123def456...
+```
+
+### 根据 Session ID 查找会话文件
+
+复制 Session ID，然后在终端中执行以下命令：
+
+```bash
+find ~/.claude/projects/ -name "<你的SessionID>.jsonl"
+```
+
+例如，如果你的 Session ID 是 `abc123def456`，则执行：
+
+```bash
+find ~/.claude/projects/ -name "abc123def456.jsonl"
+```
+
+命令会输出会话文件的完整路径，类似：
+
+```
+/Users/yourname/.claude/projects/.../abc123def456.jsonl
+```
+
+### 使用会话文件
+
+找到文件后，你可以：
+
+- **自行分析**：使用文本编辑器或 `jq` 等工具查看 `.jsonl` 文件内容，每一行是一条 JSON 格式的对话记录
+- **发送给技术人员**：将该文件发送给我们的技术支持人员，协助诊断和分析问题
+
+</Steps>
+
+<Callout type="info">
+会话文件以 `.jsonl`（JSON Lines）格式存储，每行一条记录，包含了完整的对话上下文信息。
+</Callout>
+
+<Callout type="warning">
+会话文件可能包含你与 Claude Code 的完整对话内容，包括代码片段等敏感信息。在分享给他人之前，请确认文件中不包含密码、密钥等机密数据。
+</Callout>
