@@ -39,18 +39,25 @@ import { Callout, Tabs } from 'nextra/components'
 在 `~/.codex/config.toml` 文件**开头**添加以下配置：
 
 ```toml
-model_provider = "ccclub"
+model_provider = "club"
 model = "gpt-5.3-codex"
-model_reasoning_effort = "high"
+model_reasoning_effort = "medium"
 disable_response_storage = true
 preferred_auth_method = "apikey"
+personality = "pragmatic"
 
-[model_providers.crs]
-name = "crs"
+[model_providers.club]
+name = "ai code club"
 base_url = "https://claude-code.club/openai"
 wire_api = "responses"
 requires_openai_auth = true
 env_key = "OPENAI_API_KEY"
+
+[features]
+shell_snapshot = true
+collaboration_modes = true
+multi_agent = true
+unified_exec = true
 ```
 
 ### 认证文件 auth.json
