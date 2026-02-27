@@ -108,12 +108,12 @@ clawdbot onboard
         "api": "anthropic-messages",
         "models": [
           {
-            "id": "claude-opus-4-5-20251101",
-            "name": "Claude Opus 4.5"
+            "id": "claude-opus-4-6",
+            "name": "Claude Opus 4.6"
           },
           {
-            "id": "claude-sonnet-4-20250514",
-            "name": "Claude Sonnet 4"
+            "id": "claude-sonnet-4-6",
+            "name": "Claude Sonnet 4.6"
           }
         ]
       }
@@ -169,12 +169,12 @@ CC Club 提供多个节点供选择，详见 [Base URL 配置说明](/getting-st
 
 | 正确格式 | 错误格式 |
 |----------|----------|
-| `claude-opus-4-5-20251101` | `claude-opus-4-5` |
-| `claude-sonnet-4-20250514` | `claude-sonnet-4` |
+| `claude-opus-4-6` | `claude-opus-4.6` |
+| `claude-sonnet-4-6` | `claude-sonnet-4.6` |
 
 在 `agents.defaults.model.primary` 中需要加上 provider 前缀：
-- ✅ 正确：`anthropic/claude-opus-4-5-20251101`
-- ❌ 错误：`claude-opus-4-5-20251101`
+- ✅ 正确：`anthropic/claude-opus-4-6`
+- ❌ 错误：`claude-opus-4-6`
 
 ## 5. 启动 Gateway
 
