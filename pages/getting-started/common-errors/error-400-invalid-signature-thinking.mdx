@@ -1,0 +1,60 @@
+import { Callout, Steps } from 'nextra/components'
+
+# Error 400 "Invalid `signature` in `thinking` block"
+
+有些用户遇到如下错误：
+
+```
+API Error: 400 {"type":"error","error":{"type":"invalid_request_error","message":"messages.1.content.0: Invalid `signature` in
+     `thinking` block"},"request_id":"req_011CYc2cTJr6BJ6Tti3qfPhf"}
+```
+
+## 原因
+
+该错误是由于当前会话上下文中的 `thinking` block 签名与服务端不一致导致的。这种情况通常发生在会话状态发生变化时。
+
+## 解决方法
+
+根据是否需要保留当前会话上下文，有以下两种处理方式：
+
+### 方法 1：直接重启 Claude（不保留上下文）
+
+<Callout type="info">
+当会话上下文不重要时，直接使用 `/clear` 命令或重启 Claude Code 即可解决问题。
+</Callout>
+
+### 方法 2：保留会话上下文
+
+如果你需要保留当前的会话内容，根据使用方式选择对应的操作：
+
+#### 命令行（CLI）用户
+
+<Steps>
+
+### 导出会话
+
+使用 `/export` 命令将当前会话内容复制到剪贴板。
+
+### 清除会话
+
+使用 `/clear` 命令清除当前会话。
+
+### 恢复会话
+
+将剪贴板中的会话内容粘贴回输入框，即可恢复上下文。
+
+</Steps>
+
+#### VS Code 扩展用户
+
+<Steps>
+
+### 重启插件
+
+重启 Claude Code VS Code 扩展插件。
+
+### 恢复会话
+
+在输入框中输入"恢复上次会话"，即可恢复之前的会话上下文。
+
+</Steps>
