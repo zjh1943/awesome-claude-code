@@ -1,102 +1,268 @@
 ---
-title: 安装和配置
-description: Clawdbot 的安装和配置指南（使用第三方 API 代理服务）
+title: OpenClaw 安装与配置
+description: OpenClaw 的安装和配置指南（使用 CC Club API 代理服务）
 ---
 
-import { Callout, Tabs } from 'nextra/components'
+import { Callout, Tabs, Steps } from 'nextra/components'
 
-# Clawdbot 安装与配置指南
+# OpenClaw 安装与配置指南
 
-本指南适用于使用第三方 API 代理服务配置 Clawdbot 的场景。
+本指南介绍如何安装 OpenClaw 并配置 CC Club 平台的 API 代理。
 
 <Callout type="info">
-**关于本文档**  
-本文档并非 Clawdbot 的官方权威安装文档。[Clawdbot 官方文档](https://github.com/moltbot/moltbot) 会持续更新，但本文档不会同步更新。  
-**本文档的重点**：帮助你在 Clawdbot 中配置 CC Club 平台的 `baseUrl` 、 `apiKey` 和 `modelName`，这是使用 CC Club 服务的关键步骤。对于 Clawdbot 的其他功能和详细说明，请参考官方文档。
+**关于本文档**
+本文档重点帮助你在 OpenClaw 中配置 CC Club 的 `baseUrl` 和 `apiKey`，以便在国内无障碍访问 Claude。对于 OpenClaw 的其他功能和详细说明，请参考[官方文档](https://docs.openclaw.ai)。
 </Callout>
 
-## 1. 安装 Clawdbot
+## 系统要求
 
-```bash
-npm install -g clawdbot
-```
+| 项目 | 最低要求 | 推荐 |
+|------|----------|------|
+| Node.js | ≥ 22.12.0 | 最新 LTS |
+| 内存 | 1GB | 4GB+ |
+| 操作系统 | macOS 12+ / Ubuntu 20.04+ / Windows 10+ | macOS 14+ |
 
-## 2. 初始化配置
+## 1. 安装 OpenClaw
 
-```bash
-clawdbot onboard
-```
-
-按照向导完成初始设置。
-
-## 3. 配置第三方 API 代理
-
-<Callout type="warning">
-**重要：必须手动编辑配置文件**，Dashboard UI 对自定义 provider 配置支持不完整。
-</Callout>
-
-### 配置文件位置
-
-<Tabs items={['Windows', 'macOS', 'Linux']}>
+<Tabs items={['安装脚本（推荐）', 'Homebrew (macOS)', 'npm / pnpm', 'Ubuntu 服务器', 'Docker']}>
   <Tabs.Tab>
+    **macOS / Linux / WSL2：**
+    ```bash
+    curl -fsSL https://openclaw.ai/install.sh | bash
     ```
-    C:\Users\<用户名>\.clawdbot\clawdbot.json
+
+    **Windows（PowerShell）：**
+    ```powershell
+    iwr -useb https://openclaw.ai/install.ps1 | iex
+    ```
+
+    安装脚本会自动检测环境、安装 CLI 并运行引导向导。跳过向导只安装 CLI：
+    ```bash
+    curl -fsSL https://openclaw.ai/install.sh | bash -s -- --no-onboard
     ```
   </Tabs.Tab>
   <Tabs.Tab>
-    ```
-    ~/.clawdbot/clawdbot.json
-    ```
-    或
-    ```
-    /Users/<用户名>/.clawdbot/clawdbot.json
+    ```bash
+    brew install openclaw/tap/openclaw
+    openclaw onboard --install-daemon
     ```
   </Tabs.Tab>
   <Tabs.Tab>
+    ```bash
+    # npm
+    npm install -g openclaw@latest
+
+    # 或 pnpm
+    pnpm add -g openclaw@latest
+
+    openclaw onboard --install-daemon
     ```
-    ~/.clawdbot/clawdbot.json
+
+    <Callout type="warning">
+    如果 `sharp` 安装报错（macOS + Homebrew libvips 冲突），使用：
+    ```bash
+    npm install -g openclaw@latest --ignore-scripts
+    npm rebuild sharp --platform=linux --arch=x64
     ```
-    或
+    </Callout>
+  </Tabs.Tab>
+  <Tabs.Tab>
+    Ubuntu 服务器需先安装 Node.js，推荐使用 nvm：
+
+    ```bash
+    # 安装 nvm
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+
+    # 加载 nvm（免重启 shell）
+    \. "$HOME/.nvm/nvm.sh"
+
+    # 安装 Node.js 24
+    nvm install 24
+
+    # 验证
+    node -v
+    npm -v
     ```
-    /home/<用户名>/.clawdbot/clawdbot.json
+
+    然后安装 OpenClaw：
+    ```bash
+    npm install -g openclaw@latest
+    ```
+
+    <Callout type="info">
+    nvm 安装的 Node.js 路径会写入 systemd 服务文件，升级 Node 版本后需运行 `openclaw doctor --repair` 更新服务配置。
+    </Callout>
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```bash
+    git clone https://github.com/openclaw/openclaw.git
+    cd openclaw
+
+    # 一键启动（交互式）
+    ./docker-setup.sh
+    ```
+
+    或手动 Docker Compose：
+    ```bash
+    cp .env.example .env
+    # 编辑 .env 填入 API 密钥和 Token
+    docker compose up -d
     ```
   </Tabs.Tab>
 </Tabs>
 
-### 完整配置示例
+## 2. 运行引导向导
 
-<Callout type="info">
-**注意**：以下示例使用 Windows 路径格式。macOS/Linux 用户请将路径中的 `C:\\Users\\<用户名>` 替换为 `~` 或 `/Users/<用户名>`（macOS）/ `/home/<用户名>`（Linux），并使用正斜杠 `/` 而非反斜杠 `\\`。
+安装后执行引导，完成首次配置：
+
+```bash
+openclaw onboard --install-daemon
+```
+
+向导会依次引导你：
+1. 选择模型提供商（选 Anthropic）
+2. 输入 API 密钥
+3. 设置 Gateway 网关（端口、认证方式）
+4. 配置消息渠道（Telegram / WhatsApp / Discord 等）
+5. 安装后台服务（launchd / systemd / Windows 计划任务）
+
+## 3. 配置 CC Club API 代理
+
+<Callout type="warning">
+**重要**：使用 CC Club 需要手动配置两个地方：**API 密钥**和**自定义 baseUrl**。
 </Callout>
+
+### 配置文件位置
+
+OpenClaw 的配置目录：
+
+<Tabs items={['macOS / Linux', 'Windows']}>
+  <Tabs.Tab>
+    ```
+    ~/.openclaw/
+    ├── openclaw.json               # 主配置文件
+    ├── .env                        # 环境变量（API 密钥等敏感信息）
+    └── agents/main/agent/
+        └── auth-profiles.json      # API Key 凭据
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```
+    C:\Users\<用户名>\.openclaw\
+    ├── openclaw.json               # 主配置文件
+    └── agents\main\agent\
+        └── auth-profiles.json      # API Key 凭据
+    ```
+  </Tabs.Tab>
+</Tabs>
+
+### 第一步：写入 API Key
+
+编辑 `~/.openclaw/agents/main/agent/auth-profiles.json`（Windows：`C:\Users\<用户名>\.openclaw\agents\main\agent\auth-profiles.json`）：
 
 ```json
 {
+  "version": 1,
+  "profiles": {
+    "anthropic:default": {
+      "type": "api_key",
+      "provider": "anthropic",
+      "key": "你的CC-Club-API-Key"
+    }
+  },
+  "lastGood": {
+    "anthropic": "anthropic:default"
+  }
+}
+```
+
+也可以通过命令行方式配置：
+```bash
+openclaw onboard --auth-choice apiKey --anthropic-api-key 你的CC-Club-API-Key
+```
+
+### 第二步：配置自定义 baseUrl
+
+编辑 `~/.openclaw/openclaw.json`，添加 `models` 节：
+
+```json
+{
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "anthropic": {
+        "baseUrl": "https://claude-code.club/api",
+        "models": []
+      }
+    }
+  }
+}
+```
+
+<Callout type="info">
+**`"models": []` 为必填项**，留空表示使用 provider 默认模型列表；省略该字段会导致配置校验报错：
+```
+Invalid config: models.providers.anthropic.models: expected array, received undefined
+```
+</Callout>
+
+### CC Club API 节点
+
+根据你的网络情况选择最佳节点：
+
+| 地址 | 说明 |
+|------|------|
+| `https://claude-code.club/api` | 默认地址（直连延迟 < 100ms 时最快） |
+| `https://jp.claude-code.club/api` | 日本节点（阿里云，回国优化） |
+| `https://hk.claude-code.club/api` | 香港节点（阿里云，回国优化） |
+| `https://sz.ai-code.club/api` | 深圳节点（国内，由服务器代为出境） |
+
+将上述地址填入 `openclaw.json` 的 `models.providers.anthropic.baseUrl`。
+
+### 第三步：重启 Gateway
+
+<Tabs items={['macOS', 'Linux / Ubuntu', 'Windows']}>
+  <Tabs.Tab>
+    ```bash
+    launchctl stop ai.openclaw.gateway
+    launchctl start ai.openclaw.gateway
+    ```
+    或：
+    ```bash
+    kill $(lsof -ti :18789) && openclaw gateway
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```bash
+    systemctl --user restart openclaw-gateway.service
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```bash
+    openclaw gateway stop
+    openclaw gateway start
+    ```
+  </Tabs.Tab>
+</Tabs>
+
+## 4. 完整配置示例
+
+以下是一个使用 CC Club 的完整 `openclaw.json` 示例：
+
+```json
+{
+  "meta": {
+    "lastTouchedVersion": "2026.2.19"
+  },
   "agents": {
     "defaults": {
       "model": {
-        "primary": "anthropic/claude-opus-4-5-20251101"
+        "primary": "anthropic/claude-sonnet-4-6"
       },
-      "maxConcurrent": 4,
-      "subagents": {
-        "maxConcurrent": 8
-      },
+      "workspace": "~/.openclaw/workspace",
       "compaction": {
         "mode": "safeguard"
-      },
-      "workspace": "C:\\Users\\<用户名>\\clawd"
-    }
-  },
-  "gateway": {
-    "mode": "local",
-    "auth": {
-      "mode": "token",
-      "token": "<你的gateway-token>"
-    },
-    "port": 18789,
-    "bind": "loopback",
-    "tailscale": {
-      "mode": "off",
-      "resetOnExit": false
+      }
     }
   },
   "models": {
@@ -104,176 +270,350 @@ clawdbot onboard
     "providers": {
       "anthropic": {
         "baseUrl": "https://claude-code.club/api",
-        "apiKey": "<你的API密钥>",
-        "api": "anthropic-messages",
-        "models": [
-          {
-            "id": "claude-opus-4-6",
-            "name": "Claude Opus 4.6"
-          },
-          {
-            "id": "claude-sonnet-4-6",
-            "name": "Claude Sonnet 4.6"
-          }
-        ]
+        "models": []
       }
     }
   },
-  "auth": {
-    "profiles": {
-      "anthropic:default": {
-        "provider": "anthropic",
-        "mode": "api_key"
-      }
-    }
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto"
   },
-  "skills": {
-    "install": {
-      "nodeManager": "npm"
-    }
-  },
-  "hooks": {
-    "internal": {
+  "gateway": {
+    "mode": "local",
+    "auth": {
+      "mode": "token",
+      "token": "你的gateway-token"
+    },
+    "port": 18789
+  }
+}
+```
+
+**关键配置说明：**
+
+| 配置项 | 说明 | 示例值 |
+|--------|------|--------|
+| `agents.defaults.model.primary` | 默认使用的模型，需加 provider 前缀 | `anthropic/claude-sonnet-4-6` |
+| `models.providers.anthropic.baseUrl` | CC Club API 地址 | `https://claude-code.club/api` |
+| `models.providers.anthropic.models` | 模型列表，留空使用默认 | `[]` |
+| `gateway.auth.token` | Dashboard 访问令牌 | 用 `openssl rand -hex 32` 生成 |
+| `gateway.port` | Gateway 监听端口 | `18789` |
+
+## 5. 启动 Gateway
+
+```bash
+# 前台启动（适合调试）
+openclaw gateway --port 18789 --verbose
+
+# 后台服务（推荐）
+openclaw onboard --install-daemon
+```
+
+Gateway 启动成功后会显示：
+```
+[gateway] listening on ws://127.0.0.1:18789 (PID xxxxx)
+```
+
+### 服务管理
+
+<Tabs items={['macOS', 'Linux / Ubuntu', 'Windows']}>
+  <Tabs.Tab>
+    ```bash
+    # 查看状态
+    launchctl list | grep openclaw
+
+    # 停止 / 启动
+    launchctl stop ai.openclaw.gateway
+    launchctl start ai.openclaw.gateway
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```bash
+    # 查看状态
+    systemctl --user status openclaw-gateway
+
+    # 重启
+    systemctl --user restart openclaw-gateway
+
+    # 查看日志
+    journalctl --user -u openclaw-gateway -f
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```bash
+    # 以管理员权限安装为计划任务
+    openclaw gateway install --force
+    openclaw gateway start
+    openclaw gateway status
+
+    # 卸载
+    openclaw gateway uninstall
+    ```
+  </Tabs.Tab>
+</Tabs>
+
+## 6. 访问 Dashboard
+
+```bash
+# 自动打开（推荐）
+openclaw dashboard
+
+# 或手动访问
+# http://127.0.0.1:18789/#token=你的gateway-token
+```
+
+Dashboard 功能：
+
+| 功能 | 说明 |
+|------|------|
+| **Chat** | 直接与 AI 对话 |
+| **Agents** | 管理 Agent 会话和历史 |
+| **Channels** | 查看渠道状态 |
+| **Models** | 查看可用模型 |
+| **Settings** | 配置 Token、主题等 |
+
+## 7. 配置消息渠道
+
+### Telegram
+
+<Steps>
+### 创建 Bot
+
+打开 Telegram，找 [@BotFather](https://t.me/BotFather)，发送 `/newbot`，按提示设置名称和用户名，获得 Bot Token（格式：`123456789:ABCDEF...`）。
+
+### 配置渠道
+
+在 `~/.openclaw/openclaw.json` 中添加：
+
+```json
+{
+  "channels": {
+    "telegram": {
       "enabled": true,
-      "entries": {
-        "session-memory": {
-          "enabled": true
-        }
+      "dmPolicy": "open",
+      "allowFrom": ["*"],
+      "groupPolicy": "allowlist",
+      "streamMode": "partial"
+    }
+  },
+  "plugins": {
+    "entries": {
+      "telegram": { "enabled": true }
+    }
+  }
+}
+```
+
+### 设置 Bot Token
+
+```bash
+# ~/.openclaw/.env
+TELEGRAM_BOT_TOKEN=123456789:ABCDEF...
+```
+
+### Telegram 配对
+
+在 Telegram 给你的 Bot 发消息，Bot 会返回配对码，然后在服务器上批准：
+
+```bash
+openclaw pairing approve telegram XXXXXXXX
+```
+</Steps>
+
+### Discord / Slack / WhatsApp
+
+WhatsApp 需要扫码登录：
+```bash
+openclaw channels login --channel whatsapp
+```
+
+Discord 和 Slack 在 `.env` 中配置 Bot Token，详见[官方文档](https://docs.openclaw.ai)。
+
+## 8. Ubuntu 服务器完整流程
+
+在远程 Ubuntu 服务器上部署 OpenClaw 的完整步骤：
+
+<Steps>
+### 安装 Node.js（通过 nvm）
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+\. "$HOME/.nvm/nvm.sh"
+nvm install 24
+```
+
+### 安装 OpenClaw
+
+```bash
+npm install -g openclaw@latest
+```
+
+### 配置 CC Club API Key
+
+编辑 `~/.openclaw/agents/main/agent/auth-profiles.json`：
+
+```json
+{
+  "version": 1,
+  "profiles": {
+    "anthropic:default": {
+      "type": "api_key",
+      "provider": "anthropic",
+      "key": "cr_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+  },
+  "lastGood": {
+    "anthropic": "anthropic:default"
+  }
+}
+```
+
+### 配置���定义 baseUrl
+
+编辑 `~/.openclaw/openclaw.json`：
+
+```json
+{
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "anthropic": {
+        "baseUrl": "https://claude-code.club/api",
+        "models": []
       }
     }
   }
 }
 ```
 
-## 4. 关键配置说明
-
-| 配置项 | 说明 | 示例值 |
-|--------|------|--------|
-| `agents.defaults.model.primary` | 默认使用的模型，**必须使用完整模型ID** | `anthropic/claude-opus-4-5-20251101` |
-| `models.providers.anthropic.baseUrl` | 第三方代理 API 地址（见下方节点列表） | `https://claude-code.club/api` |
-| `models.providers.anthropic.apiKey` | 第三方代理提供的 API 密钥（[如何获取](/getting-started/get-api-key)） | `cr_xxxxxxx` 或 `sk-xxxxxxx` |
-| `models.providers.anthropic.api` | API 协议类型 | `anthropic-messages` |
-| `models.providers.anthropic.models[].id` | 可用模型列表，ID 必须与代理支持的模型匹配 | `claude-opus-4-5-20251101` |
-| `gateway.auth.token` | Dashboard 访问令牌 | 自动生成或自定义 |
-| `gateway.port` | Gateway 监听端口 | `18789` |
-
-### CC Club API 节点
-
-CC Club 提供多个节点供选择，详见 [Base URL 配置说明](/getting-started/faq/config-baseurl-authtoken)。
-
-### 模型 ID 格式要求
-
-<Callout type="danger">
-**重要**：第三方 API 代理通常要求使用完整的模型 ID
-</Callout>
-
-| 正确格式 | 错误格式 |
-|----------|----------|
-| `claude-opus-4-6` | `claude-opus-4.6` |
-| `claude-sonnet-4-6` | `claude-sonnet-4.6` |
-
-在 `agents.defaults.model.primary` 中需要加上 provider 前缀：
-- ✅ 正确：`anthropic/claude-opus-4-6`
-- ❌ 错误：`claude-opus-4-6`
-
-## 5. 启动 Gateway
+### 运行引导向导
 
 ```bash
-clawdbot gateway
+openclaw onboard --install-daemon
 ```
 
-启动成功后会显示：
-```
-[gateway] agent model: anthropic/claude-opus-4-5-20251101
-[gateway] listening on ws://127.0.0.1:18789
-```
+向导中选择 Anthropic 模型，并配置 Telegram Bot Token。
 
-### 使用批处理脚本启动（可选）
+### 配对 Telegram
 
-创建 `start-gateway.bat`：
-
-```batch
-@echo off
-clawdbot gateway
-```
-
-## 6. 访问 Dashboard
-
-浏览器访问：
-```
-http://127.0.0.1:18789/?token=<你的gateway-token>
-```
-
-Dashboard 功能：
-- **Chat**：直接与 AI 对话
-- **Config**：查看/编辑配置（Raw 模式可编辑 JSON）
-- **Logs**：查看实时日志
-- **Sessions**：管理会话
-
-## 7. 常见问题
-
-### 7.1 "No available accounts in group claude-code"
-
-**原因**：模型 ID 格式错误，第三方代理不识别简短的模型名称。
-
-**解决方案**：
-1. 在 `agents.defaults.model.primary` 使用完整模型 ID
-2. 在 `models.providers.anthropic.models` 中也使用完整模型 ID
-3. 确保两处的模型 ID 一致
-
-### 7.2 Dashboard 配置页面为空或显示 "Schema unavailable"
-
-**原因**：Dashboard UI 对自定义 provider 配置的表单模式支持不完整。
-
-**解决方案**：
-1. 在 Config 页面点击 **Raw** 按钮切换到 JSON 编辑模式
-2. 或直接编辑 `clawdbot.json` 文件
-
-### 7.3 CC Switch 配置不生效
-
-**原因**：CC Switch 只配置 Claude Code，不影响 Clawdbot。它们是两个独立的系统，不能共享。
-
-**解决方案**：单独配置 Clawdbot 的 `clawdbot.json` 文件。
-
-### 7.4 配置验证错误
-
-运行以下命令检查配置：
 ```bash
-clawdbot doctor --fix
+openclaw pairing approve telegram XXXXXXXX
+```
+</Steps>
+
+## 9. 常见问题
+
+### API Key 报错：`No API key found for provider "anthropic"`
+
+**检查步骤：**
+1. 确认文件存在：`~/.openclaw/agents/main/agent/auth-profiles.json`
+2. 确认格式正确（参考第 3 节）
+3. 重启 Gateway
+
+### 配置文件校验失败
+
+```
+Invalid config: models.providers.anthropic.models: expected array, received undefined
 ```
 
-出现错误时，必须删除缓存文件，然后重启 Gateway。
+**解决**：在 `openclaw.json` 的 `models.providers.anthropic` 下添加 `"models": []`。
 
-### 7.5 需要翻墙/科学上网吗？
+### Gateway 端口被占用
 
-- **API 请求**：如果使用国内可访问的第三方代理（如 CC Club），通常不需要翻墙
-- **Clawdbot 本身**：可能需要连接一些服务（更新检查等），视网络环境而定
-
-如需设置代理（如 Clawdbot 连接到需要代理才能访问的 API）：
-```batch
-set HTTP_PROXY=http://127.0.0.1:7890
-set HTTPS_PROXY=http://127.0.0.1:7890
-clawdbot gateway
+```
+Port 18789 is already in use. pid xxxxx
 ```
 
-## 8. 与 Claude Code 的区别
+**解决（Linux/macOS）：**
+```bash
+kill $(lsof -ti :18789)
+```
 
-| 对比项 | Claude Code | Clawdbot |
+**解决（Windows）：**
+```powershell
+Stop-Process -Id <pid> -Force
+```
+
+### TUI 报 `pairing required` 或 `device token mismatch`
+
+```bash
+# 清除旧的设备配对文件
+rm -f ~/.openclaw/devices/paired.json \
+      ~/.openclaw/identity/device-auth.json \
+      ~/.openclaw/identity/device.json
+
+# 重启 Gateway
+systemctl --user restart openclaw-gateway.service
+
+# 验证状态
+sleep 5 && openclaw gateway status
+```
+
+### Dashboard 显示 "unauthorized"
+
+用带 Token 的 URL 访问：
+```
+http://localhost:18789/#token=你的gateway-token
+```
+
+或查看当前 Token：
+```bash
+openclaw config get gateway.auth.token
+```
+
+### 验证代理可达性
+
+```bash
+curl -X POST "https://claude-code.club/api/v1/messages" \
+  -H "x-api-key: 你的API-Key" \
+  -H "anthropic-version: 2023-06-01" \
+  -H "content-type: application/json" \
+  -d '{"model":"claude-sonnet-4-6","max_tokens":64,"messages":[{"role":"user","content":"hi"}]}'
+```
+
+### 更新 OpenClaw
+
+```bash
+# 稳定版（推荐）
+openclaw update --channel stable
+
+# 或直接 npm 更新
+npm update -g openclaw
+```
+
+## 常用命令速查
+
+```bash
+openclaw --version              # 查看版本
+openclaw doctor                 # 诊断配置问题
+openclaw doctor --repair        # 自动修复配置
+openclaw gateway --verbose      # 启动 Gateway（详细日志）
+openclaw dashboard              # 打开 Dashboard
+openclaw status                 # 查看运行状态
+openclaw onboard                # 重新运行引导向导
+openclaw tui                    # 打开终端交互界面
+openclaw logs --follow          # 实时查看日志
+openclaw update --channel stable # 更新到稳定版
+```
+
+## 与 Claude Code 的区别
+
+| 对比项 | Claude Code | OpenClaw |
 |--------|-------------|----------|
-| **用途** | 命令行编程助手 | 自托管 AI Gateway |
+| **用途** | 命令行编程助手 | 自托管多渠道 AI 网关 |
 | **配置工具** | CC Switch / 环境变量 | 手动编辑 JSON |
-| **配置文件** | `~/.claude/settings.json` | `~/.clawdbot/clawdbot.json` |
-| **环境变量** | `ANTHROPIC_AUTH_TOKEN`, `ANTHROPIC_BASE_URL` | 不使用，直接写入配置文件 |
-| **模型 ID 格式** | 自动处理（如 `opus`） | 必须使用完整 ID |
+| **配置文件** | `~/.claude/settings.json` | `~/.openclaw/openclaw.json` |
+| **API Key 存储** | 环境变量 | `auth-profiles.json` |
 | **界面** | 命令行 | Web Dashboard |
+| **消息平台** | 终端 | Telegram、WhatsApp 等 20+ |
 
-## 9. 参考资料
+## 参考资料
 
-- 官方文档：[https://docs.molt.bot/](https://docs.molt.bot/)
-- 配置示例：[https://docs.molt.bot/gateway/configuration-examples](https://docs.molt.bot/gateway/configuration-examples)
+- 官方文档：[https://docs.openclaw.ai/](https://docs.openclaw.ai/)
+- GitHub 仓库：[https://github.com/openclaw/openclaw](https://github.com/openclaw/openclaw)
+- [获取 CC Club API Key](/getting-started/get-api-key)
+- [CC Club 节点配置说明](/getting-started/faq/config-baseurl-authtoken)
 
 <Callout type="info">
-**注意**：额度损耗可能比 Claude Code 多，因为 Clawdbot 需要处理更多的请求。
-
-*文档创建日期：2026-01-28*
+**注意**：相比 Claude Code，OpenClaw 的额度消耗可能更多，因为它需要处理更多渠道和上下文请求。
 </Callout>

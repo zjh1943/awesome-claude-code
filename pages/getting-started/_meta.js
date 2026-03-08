@@ -51,8 +51,8 @@ export default {
   'opencode-installation': '安装和配置',
   'clawdbot-core': {
     type: 'separator',
-    title: 'Clawdbot (Moltbot)'
+    title: 'OpenClaw'
   },
-  'clawdbot-introduction': 'Clawdbot 介绍',
+  'clawdbot-introduction': 'OpenClaw 介绍',
   'clawdbot-installation': '安装和配置'
 }
