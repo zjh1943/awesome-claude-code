@@ -77,3 +77,4 @@ Use built-in Nextra components imported from `nextra/components`:
 ### Troubleshooting
 *   **Broken Links:** Run `pnpm build` and use a link checker if available (or manual verification).
 *   **Cache Issues:** If changes aren't reflecting, remove the `.next` directory: `rm -rf .next && pnpm dev`.
+
