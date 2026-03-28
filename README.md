@@ -59,6 +59,10 @@
 - **[Subagent](https://academy.claude-code.club/practical-skills/subagents)** - 子代理的使用和开发
 - **[MCP Tools](https://academy.claude-code.club/practical-skills/mcp-tools)** - MCP 工具的集成和应用
 
+### 🛠️ 社区工具
+
+- **[claude-dash](https://github.com/krabat-l/claude-dash)** - Claude Code 实时状态栏，显示上下文、成本、配额、缓存、工具和 Git 状态
+
 ### 🎓 完整课程
 
 系统化的完整课程，适合有整块时间的深度学习：
