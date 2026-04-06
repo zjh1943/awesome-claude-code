@@ -27,20 +27,8 @@ export default {
     title: 'Google Gemini CLI'
   },
   'gemini-introduction': '核心介绍',
-  'gemini-get-api-key': {
-    title: '获取 API Key',
-    href: '/getting-started/get-api-key'
-  },
   'gemini-installation': '安装和配置',
-  'gemini-quick-start': '快速体验',
-  'gemini-how-to': {
-    title: '常用功能指南',
-    href: '/getting-started/how-to'
-  },
-  'gemini-pricing': {
-    title: '计费说明',
-    href: '/getting-started/pricing'
-  },
+  'gemini-quick-start': '快速体验 Gemini CLI',
   'gemini-common-errors': '常见错误',
   'gemini-faq': '常见问题',
   'opencode-core': {

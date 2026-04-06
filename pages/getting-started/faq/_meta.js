@@ -7,4 +7,5 @@ export default {
   'network-diagnosis': '网络诊断与入口选择',
   'fetch-websearch-alternatives': 'fetch/web_search 替代方案',
   'use-in-ide': '在 IDE 中使用 Claude Code',
+  'connect-openai-model': '连接 GPT 大模型',
 }

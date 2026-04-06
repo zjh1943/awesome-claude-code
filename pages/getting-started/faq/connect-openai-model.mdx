@@ -1,0 +1,210 @@
+---
+title: 如何用 Claude Code 连接 GPT 大模型
+description: 使用 Claude Code 作为前端 Agent，搭配 OpenAI GPT 模型作为后端大模型的配置方法
+---
+
+import { Callout, Tabs } from 'nextra/components'
+
+# 如何用 Claude Code 连接 GPT 大模型
+
+## 为什么要这样做？
+
+目前 Claude 大模型的供应非常不稳定，Anthropic 的封号政策也比较严苛。如果你希望：
+
+- 有**稳定**的使用体验
+- 使用**优秀的大模型**
+- 不想丢掉 Claude Code **顶级的 Agent 生态**
+
+那么你可以用 **Claude Code 作为前端 Agent**，搭配 **OpenAI 的 GPT 模型作为后端大模型**。这样你既拥有了顶级的 Coding Agent，也有非常不错的 GPT 大模型支撑，使用体验相当不错。
+
+## 前提条件
+
+1. 已经安装并配置好 Claude Code
+2. 已经连接到 CC Club 的后端服务 API 接口（参考 [配置 Base URL 和 Auth Token](/getting-started/faq/config-baseurl-authtoken)）
+
+## 配置环境变量
+
+你需要配置以下环境变量，将 Claude Code 的模型指向 GPT 系列：
+
+| 环境变量 | 建议值 | 说明 |
+|---------|--------|------|
+| `ANTHROPIC_DEFAULT_HAIKU_MODEL` | `gpt-5.4-mini` | 轻量模型，用于简单任务 |
+| `ANTHROPIC_DEFAULT_OPUS_MODEL` | `gpt-5.4-max` | 高级模型，用于复杂任务 |
+| `ANTHROPIC_DEFAULT_SONNET_MODEL` | `gpt-5.4` | 默认模型，均衡选择 |
+| `ANTHROPIC_MODEL` | `gpt-5.4` | 主模型 |
+| `ANTHROPIC_REASONING_MODEL` | `gpt-5.4` | 推理模型 |
+
+<Callout type="info">
+目前仅支持以上 GPT 模型。如果后续需要增加其它模型，请点右下角客服 Agent 与我们联系。
+</Callout>
+
+根据你的操作系统，选择对应的配置方式：
+
+<Tabs items={['macOS / Linux', 'Windows (PowerShell)']}>
+  <Tabs.Tab>
+### 方法一：临时生效（当前终端会话）
+
+在终端中直接执行：
+
+```bash
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="gpt-5.4-mini"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="gpt-5.4-max"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="gpt-5.4"
+export ANTHROPIC_MODEL="gpt-5.4"
+export ANTHROPIC_REASONING_MODEL="gpt-5.4"
+```
+
+<Callout type="info">
+该方法仅在当前终端会话中生效。当你退出命令行工具时，它就会失效。这刚好符合大家临时切换模型的需求。
+</Callout>
+
+#### 补充：更简单的临时切换方式
+
+如果你只想临时切换主模型，还有一种更简单的做法，直接在启动 Claude Code 时指定模型：
+
+```bash
+claude --model gpt-5.4
+```
+
+大家可以直接把上面的命令拷贝过去，直接运行就行，非常快捷。
+
+<Callout type="warning">
+`--model` 参数只对主模型生效，不会对其他的高阶模型（Opus）或低阶模型（Haiku）生效。如果你需要覆盖所有模型，请使用上面的环境变量方式。
+</Callout>
+
+### 方法二：永久生效（推荐）
+
+将环境变量写入 shell 配置文件。根据你使用的 shell 选择对应文件：
+
+- **zsh**（macOS 默认）：编辑 `~/.zshrc`
+- **bash**：编辑 `~/.bashrc` 或 `~/.bash_profile`
+
+在文件末尾添加以下内容：
+
+```bash
+# Claude Code 连接 GPT 模型配置
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="gpt-5.4-mini"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="gpt-5.4-max"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="gpt-5.4"
+export ANTHROPIC_MODEL="gpt-5.4"
+export ANTHROPIC_REASONING_MODEL="gpt-5.4"
+```
+
+保存后执行以下命令使配置立即生效：
+
+```bash
+# zsh 用户
+source ~/.zshrc
+
+# bash 用户
+source ~/.bashrc
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+### 方法一：临时生效（当前终端会话）
+
+在 PowerShell 中执行：
+
+```powershell
+$env:ANTHROPIC_DEFAULT_HAIKU_MODEL = "gpt-5.4-mini"
+$env:ANTHROPIC_DEFAULT_OPUS_MODEL = "gpt-5.4-max"
+$env:ANTHROPIC_DEFAULT_SONNET_MODEL = "gpt-5.4"
+$env:ANTHROPIC_MODEL = "gpt-5.4"
+$env:ANTHROPIC_REASONING_MODEL = "gpt-5.4"
+```
+
+<Callout type="info">
+该方法仅在当前终端会话中生效。当你退出命令行工具时，它就会失效。这刚好符合大家临时切换模型的需求。
+</Callout>
+
+#### 补充：更简单的临时切换方式
+
+如果你只想临时切换主模型，还有一种更简单的做法，直接在启动 Claude Code 时指定模型：
+
+```powershell
+claude --model gpt-5.4
+```
+
+大家可以直接把上面的命令拷贝过去，直接运行就行，非常快捷。
+
+<Callout type="warning">
+`--model` 参数只对主模型生效，不会对其他的高阶模型（Opus）或低阶模型（Haiku）生效。如果你需要覆盖所有模型，请使用上面的环境变量方式。
+</Callout>
+
+### 方法二：永久生效（推荐）
+
+在 PowerShell 中执行以下命令，将环境变量写入用户级别：
+
+```powershell
+[System.Environment]::SetEnvironmentVariable("ANTHROPIC_DEFAULT_HAIKU_MODEL", "gpt-5.4-mini", "User")
+[System.Environment]::SetEnvironmentVariable("ANTHROPIC_DEFAULT_OPUS_MODEL", "gpt-5.4-max", "User")
+[System.Environment]::SetEnvironmentVariable("ANTHROPIC_DEFAULT_SONNET_MODEL", "gpt-5.4", "User")
+[System.Environment]::SetEnvironmentVariable("ANTHROPIC_MODEL", "gpt-5.4", "User")
+[System.Environment]::SetEnvironmentVariable("ANTHROPIC_REASONING_MODEL", "gpt-5.4", "User")
+```
+
+你也可以通过 **系统设置 → 系统 → 高级系统设置 → 环境变量** 手动添加。
+  </Tabs.Tab>
+</Tabs>
+
+## 重启终端使配置生效
+
+<Callout type="warning">
+配置完成后，**必须完全退出并重新打开终端**，环境变量才会生效。
+</Callout>
+
+- **终端用户**：关闭当前终端窗口，重新打开一个新的终端
+- **Cursor 用户**：完全退出 Cursor（不是关闭窗口，是退出应用），然后重新打开 Cursor
+- **VS Code 用户**：完全退出 VS Code，然后重新打开
+
+## 验证配置是否生效
+
+重新打开终端后，运行以下命令验证环境变量是否已正确设置：
+
+<Tabs items={['macOS / Linux', 'Windows (PowerShell)']}>
+  <Tabs.Tab>
+```bash
+echo "ANTHROPIC_MODEL=$ANTHROPIC_MODEL"
+echo "ANTHROPIC_REASONING_MODEL=$ANTHROPIC_REASONING_MODEL"
+echo "ANTHROPIC_DEFAULT_SONNET_MODEL=$ANTHROPIC_DEFAULT_SONNET_MODEL"
+echo "ANTHROPIC_DEFAULT_OPUS_MODEL=$ANTHROPIC_DEFAULT_OPUS_MODEL"
+echo "ANTHROPIC_DEFAULT_HAIKU_MODEL=$ANTHROPIC_DEFAULT_HAIKU_MODEL"
+```
+
+如果配置正确，你应该看到类似以下输出：
+
+```
+ANTHROPIC_MODEL=gpt-5.4
+ANTHROPIC_REASONING_MODEL=gpt-5.4
+ANTHROPIC_DEFAULT_SONNET_MODEL=gpt-5.4
+ANTHROPIC_DEFAULT_OPUS_MODEL=gpt-5.4-max
+ANTHROPIC_DEFAULT_HAIKU_MODEL=gpt-5.4-mini
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```powershell
+echo $env:ANTHROPIC_MODEL
+echo $env:ANTHROPIC_REASONING_MODEL
+echo $env:ANTHROPIC_DEFAULT_SONNET_MODEL
+echo $env:ANTHROPIC_DEFAULT_OPUS_MODEL
+echo $env:ANTHROPIC_DEFAULT_HAIKU_MODEL
+```
+
+如果配置正确，你应该看到类似以下输出：
+
+```
+gpt-5.4
+gpt-5.4
+gpt-5.4
+gpt-5.4-max
+gpt-5.4-mini
+```
+  </Tabs.Tab>
+</Tabs>
+
+如果输出为空或仍是旧值，请确认：
+1. 环境变量已正确写入配置文件
+2. 已完全重启终端（不只是新开一个 tab）
+3. Cursor / VS Code 用户需要完全退出应用后重新打开
+
+验证通过后，启动 Claude Code 即可使用 GPT 模型进行开发。
