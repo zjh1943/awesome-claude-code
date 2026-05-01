@@ -8,4 +8,5 @@ export default {
   'fetch-websearch-alternatives': 'fetch/web_search 替代方案',
   'use-in-ide': '在 IDE 中使用 Claude Code',
   'connect-openai-model': '连接 GPT 大模型',
+  'claude-desktop-gateway': 'Claude Desktop 第三方 Gateway 配置',
 }

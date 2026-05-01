@@ -1,0 +1,224 @@
+---
+title: Claude Desktop 第三方 Gateway 配置
+description: 在 Claude Desktop（GUI 客户端）中配置兼容 Anthropic Messages API 的第三方 Gateway，Windows 与 macOS 完整操作指南
+---
+
+import { Callout, Tabs } from 'nextra/components'
+
+# Claude Desktop 第三方 Gateway 配置指南
+
+本指南面向已安装 **Claude Desktop**（GUI 客户端）的用户，帮你把桌面端连接到兼容 Anthropic Messages API 的第三方 Gateway，本文以 `https://claude-code.club/api` 为例。
+
+如果你只用 Claude Code CLI，请优先参考 [配置 Base URL 和 Auth Token](/getting-started/faq/config-baseurl-authtoken)。
+
+## 1. 核心概念与地址选择
+
+Claude Desktop 的 **第三方推理配置** 用于把模型请求转发到自定义 Gateway。该 Gateway 必须兼容 Anthropic Messages API；它**不同于** OpenAI 风格的 `/v1/responses` 接口。
+
+| 配置项 | 推荐值 / 说明 |
+|---|---|
+| Gateway base URL | `https://claude-code.club/api` |
+| 鉴权方式 | `bearer`（即 `Authorization: Bearer <你的 API Key>`） |
+| 额外请求头 | 一般留空，除非服务商明确要求 |
+
+<Callout type="warning">
+**不要混用地址。** Claude Desktop 的 Gateway 配置应使用 Anthropic 兼容地址（例如 `https://claude-code.club/api`）；不要把 OpenAI / Codex 风格的地址（如 `https://claude-code.club/openai`）填入 Claude Desktop。
+</Callout>
+
+## 2. 配置前检查清单
+
+- 已安装最新 Claude Desktop
+- 已获取有效 API Key（参考 [获取 API Key](/getting-started/get-api-key)）
+- 不要使用已经在聊天、截图或仓库中暴露过的旧 Key；泄露后应立即作废并重建
+- 能够完全退出并重新打开 Claude Desktop（第三方推理配置通常需要重启应用后生效）
+
+## 3. 图形界面配置（推荐）
+
+### 3.1 打开第三方推理配置
+
+<Tabs items={['macOS / Linux', 'Windows (PowerShell)']}>
+  <Tabs.Tab>
+    1. 打开 Claude Desktop
+    2. 菜单栏进入 `Help` → `Troubleshooting`
+    3. 开启 `Enable Developer mode`
+    4. 进入菜单 `Developer` → `Configure third-party inference`
+  </Tabs.Tab>
+  <Tabs.Tab>
+    1. 打开 Claude Desktop
+    2. 菜单栏进入 `Help` → `Troubleshooting`
+    3. 开启 `Enable Developer mode`
+    4. 进入菜单 `Developer` → `Configure third-party inference`
+  </Tabs.Tab>
+</Tabs>
+
+### 3.2 填写 Gateway Credentials
+
+| 界面字段 | 填写内容 |
+|---|---|
+| `Gateway base URL` | `https://claude-code.club/api` |
+| `Gateway API key` | 你的有效 API Key（不要在文档或截图里暴露真实值） |
+| `Gateway auth scheme` | `bearer` |
+| `Gateway extra headers` | 留空 |
+
+### 3.3 应用配置
+
+1. 优先点击 **`Apply locally`**
+2. 看到成功提示后，**完全退出** Claude Desktop
+3. 重新打开 Claude Desktop 并发送一条测试消息
+4. 如果可以正常回复，说明配置已生效
+
+<Callout type="warning">
+**完全退出**指必须确保进程已结束 —— macOS 用 Activity Monitor 检查 `Claude` 进程已退出；Windows 在任务管理器中结束所有 `Claude` 进程。仅关闭窗口往往不会让配置生效。
+</Callout>
+
+## 4. 导出备用方案
+
+如果 `Apply locally` 不生效，或需要批量给多台机器部署相同配置，可以使用 **Export** 导出系统级配置文件。
+
+<Tabs items={['macOS / Linux', 'Windows (PowerShell)']}>
+  <Tabs.Tab>
+    **macOS：导出 `.mobileconfig`**
+
+    1. 在 `Configure third-party inference` 页面点击 `Export`
+    2. 选择 `macOS configuration profile (.mobileconfig)`
+    3. 保存到本机安全位置
+    4. 双击 `.mobileconfig` 文件，按系统提示进入 `System Settings` 安装配置描述文件
+    5. 安装后完全退出并重新打开 Claude Desktop
+
+    <Callout type="warning">
+      `.mobileconfig` 可能包含明文 API Key。只在可信设备上安装，用完后妥善删除原文件。
+    </Callout>
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Windows：导出 `.reg`**
+
+    1. 在 `Configure third-party inference` 页面点击 `Export`
+    2. 选择 `Windows registry file (.reg)`
+    3. 保存到本机安全位置
+    4. 双击 `.reg` 文件，确认导入注册表
+    5. 完全退出并重新打开 Claude Desktop
+
+    <Callout type="warning">
+      `.reg` 文件可能包含明文 API Key。导入后建议立即删除该文件；不要上传到 GitHub、网盘或发给他人。
+    </Callout>
+  </Tabs.Tab>
+</Tabs>
+
+## 5. Export 菜单格式说明
+
+| 导出选项 | 用途 |
+|---|---|
+| `Windows registry file (.reg)` | Windows 推荐备用格式；导入注册表 |
+| `macOS configuration profile (.mobileconfig)` | macOS 推荐备用格式；系统配置描述文件 |
+| `Plain JSON (.json)` | 通常不直接导入，用于排查或管理系统二次处理 |
+| `Firewall allowlist (.txt)` | 防火墙白名单，**不是** Gateway 账号配置 |
+| `Copy to clipboard (redacted)` | 适合发给别人排查配置结构；敏感值会被隐藏，**不能**作为完整导入 |
+
+## 6. CLI 环境变量（可选）
+
+如果你还要在终端中使用 Claude Code CLI，可以额外配置环境变量。Claude Desktop Gateway 图形配置和 CLI 环境变量是两套入口，但建议保持同一组地址和 Key。
+
+<Tabs items={['macOS / Linux', 'Windows (PowerShell)']}>
+  <Tabs.Tab>
+    把变量写入 zsh / bash 配置：
+
+    ```bash
+    cat >> ~/.zshrc <<'EOF'
+    export ANTHROPIC_BASE_URL="https://claude-code.club/api"
+    export ANTHROPIC_AUTH_TOKEN="你的APIKey"
+    export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC="1"
+    EOF
+    source ~/.zshrc
+    ```
+
+    检查是否生效：
+
+    ```bash
+    echo $ANTHROPIC_BASE_URL
+    echo $ANTHROPIC_AUTH_TOKEN
+    echo $CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    在 PowerShell 中写入用户级环境变量：
+
+    ```powershell
+    [System.Environment]::SetEnvironmentVariable("ANTHROPIC_BASE_URL", "https://claude-code.club/api", "User")
+    [System.Environment]::SetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", "你的APIKey", "User")
+    [System.Environment]::SetEnvironmentVariable("CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC", "1", "User")
+    ```
+
+    设置后关闭当前 PowerShell，重新打开后检查：
+
+    ```powershell
+    echo $env:ANTHROPIC_BASE_URL
+    echo $env:ANTHROPIC_AUTH_TOKEN
+    echo $env:CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC
+    ```
+  </Tabs.Tab>
+</Tabs>
+
+## 7. 验证方法
+
+- Claude Desktop 能正常启动
+- 发送消息后没有出现 `authentication`、`invalid api key`、`gateway unavailable` 等错误
+- 回复速度和模型行为符合 Gateway 服务预期
+- 如果同时使用 CLI，可以运行 `echo` 命令确认环境变量值存在
+
+如果之前已经成功通过 `Apply locally` 配置并可正常对话，就说明本地 Gateway 配置已经生效。
+
+## 8. 故障排查
+
+| 现象 | 处理方式 |
+|---|---|
+| `Invalid API key` | Key 错误、过期、被禁用或不属于该 Gateway。重新生成并填写 |
+| 连接失败 / `Gateway unavailable` | 检查网络、Gateway base URL 是否为 `https://claude-code.club/api`，确认没有多填 `/v1/messages` |
+| 模型不可用 | 当前账号或 Gateway 不支持请求的模型；联系服务商确认可用模型 |
+| `Apply locally` 后不生效 | 完全退出 Claude Desktop 后重启；Windows 可改用 `.reg`，macOS 可改用 `.mobileconfig` |
+| 配置文件导入后仍失败 | 重新打开配置页检查 Base URL、auth scheme、extra headers 是否正确 |
+
+## 9. 恢复默认配置
+
+<Tabs items={['macOS / Linux', 'Windows (PowerShell)']}>
+  <Tabs.Tab>
+    如果通过 `.mobileconfig` 安装了配置描述文件，在 `System Settings` 中找到 `Profiles` / `Device Management`，删除对应 Claude 配置描述文件，然后重启 Claude Desktop。
+
+    <Callout type="info">
+      不同 macOS 版本入口名称可能略有差异（System Preferences / System Settings / Profiles）。
+    </Callout>
+  </Tabs.Tab>
+  <Tabs.Tab>
+    如果之前通过注册表策略写入配置，在 PowerShell 中删除策略项，然后重启 Claude Desktop：
+
+    ```powershell
+    Remove-Item -Path "HKCU:\SOFTWARE\Policies\Claude" -Recurse -Force
+    ```
+  </Tabs.Tab>
+</Tabs>
+
+## 10. 安全规范
+
+<Callout type="warning">
+- API Key 等同于密码；不要写入公开文档、截图或 Git 仓库
+- 导出的 `.reg` / `.mobileconfig` / `.json` 文件可能包含明文 Key，应仅短期保存
+- 如果 Key 被复制到聊天、截图、日志或仓库，应立即作废并重新生成
+- 团队共享配置时，只共享步骤和占位符，不共享真实密钥
+</Callout>
+
+## 11. 最终推荐配置
+
+| 字段 | 值 |
+|---|---|
+| `Gateway base URL` | `https://claude-code.club/api` |
+| `Gateway API key` | 你的有效 API Key |
+| `Gateway auth scheme` | `bearer` |
+| `Gateway extra headers` | 留空 |
+
+Windows 和 macOS 都优先使用 **`Apply locally`**；只有在本地应用失败、需要批量部署或需要备份配置时，才导出对应系统的配置文件。
+
+## 12. 参考资料
+
+- [获取 API Key](/getting-started/get-api-key) — claude-code.club API Key 申请流程
+- [配置 Base URL 和 Auth Token](/getting-started/faq/config-baseurl-authtoken) — Claude Code CLI 视角的三种配置方式
+- [Claude Desktop 第三方推理 / Gateway 配置文档](https://claude.com/docs/cowork/3p/configuration)
+- [Claude Desktop 安装说明](https://support.claude.com/en/articles/10065433-install-claude-desktop)

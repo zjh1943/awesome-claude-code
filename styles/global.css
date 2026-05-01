@@ -267,3 +267,4 @@ nav a[aria-current="true"] {
 html.dark nav a[aria-current="true"] {
   color: hsl(var(--nextra-primary-hue), var(--nextra-primary-saturation), 60%) !important;
 }
+
