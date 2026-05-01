@@ -1,0 +1,193 @@
+---
+title: Codex 启动报错：502 Bad Gateway / TUI bootstrap 失败
+description: 处理 Codex 因本地配置文件过旧或不一致导致的启动报错
+---
+
+import { Callout, Tabs, Steps } from 'nextra/components'
+
+# Codex 启动报错：502 Bad Gateway / TUI bootstrap 失败
+
+有些用户在启动 Codex 时会遇到如下错误：
+
+```text
+unexpected status 502 Bad Gateway
+```
+
+或者：
+
+```text
+account/read failed during TUI bootstrap
+```
+
+该问题通常不是服务器故障，而是本地 Codex 配置文件没有及时更新，导致客户端读取到了过期或不兼容的配置。
+
+## 原因
+
+- `~/.codex/config.toml` 还是旧版本内容
+- `~/.codex/auth.json` 中保存的是旧的认证信息
+- 手动复制过配置，但漏掉了某些字段
+- 换过账号、入口地址或授权方式后，本地文件没有同步更新
+
+<Callout type="warning">
+修改配置文件前，建议先备份原文件，避免覆盖后无法回退。
+</Callout>
+
+## 解决方法
+
+<Steps>
+
+### 找到本地配置目录
+
+Codex 的配置文件通常位于：
+
+```text
+~/.codex/config.toml
+~/.codex/auth.json
+```
+
+在不同系统上，对应路径如下。
+
+<Tabs items={['Windows (PowerShell)', 'macOS / Linux']}>
+  <Tabs.Tab>
+
+```powershell
+$env:USERPROFILE\.codex\config.toml
+$env:USERPROFILE\.codex\auth.json
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```bash
+~/.codex/config.toml
+~/.codex/auth.json
+```
+
+  </Tabs.Tab>
+</Tabs>
+
+### 先备份原文件
+
+<Tabs items={['Windows (PowerShell)', 'macOS / Linux']}>
+  <Tabs.Tab>
+
+```powershell
+Copy-Item $env:USERPROFILE\.codex\config.toml $env:USERPROFILE\.codex\config.toml.bak -ErrorAction SilentlyContinue
+Copy-Item $env:USERPROFILE\.codex\auth.json $env:USERPROFILE\.codex\auth.json.bak -ErrorAction SilentlyContinue
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```bash
+cp ~/.codex/config.toml ~/.codex/config.toml.bak 2>/dev/null || true
+cp ~/.codex/auth.json ~/.codex/auth.json.bak 2>/dev/null || true
+```
+
+  </Tabs.Tab>
+</Tabs>
+
+### 打开配置文件
+
+<Tabs items={['Windows (PowerShell)', 'macOS / Linux']}>
+  <Tabs.Tab>
+
+```powershell
+notepad $env:USERPROFILE\.codex\config.toml
+notepad $env:USERPROFILE\.codex\auth.json
+```
+
+如果想先确认文件是否存在，可以先执行：
+
+```powershell
+Test-Path $env:USERPROFILE\.codex\config.toml
+Test-Path $env:USERPROFILE\.codex\auth.json
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```bash
+nano ~/.codex/config.toml
+nano ~/.codex/auth.json
+```
+
+如果你更习惯用 VS Code：
+
+```bash
+code ~/.codex/config.toml
+code ~/.codex/auth.json
+```
+
+  </Tabs.Tab>
+</Tabs>
+
+### 用最新文档中的配置覆盖旧内容
+
+打开官方安装与配置文档：
+
+```text
+https://academy.claude-code.club/getting-started/codex-installation
+```
+
+对照文档中的最新示例，检查并更新这两个文件中的内容。
+
+重点检查：
+
+- API 入口地址是否仍然有效
+- 认证字段是否完整
+- 配置格式是否和最新文档一致
+- 是否混入了旧版本遗留字段
+
+<Callout type="info">
+如果你不确定某一段配置该不该保留，最稳妥的方式是参考最新文档重新复制，再替换本地旧配置。
+</Callout>
+
+### 保存后重新启动 Codex
+
+修改完成后，关闭当前终端并重新打开，再执行：
+
+<Tabs items={['Windows (PowerShell)', 'macOS / Linux']}>
+  <Tabs.Tab>
+
+```powershell
+codex
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```bash
+codex
+```
+
+  </Tabs.Tab>
+</Tabs>
+
+如果只是想先验证配置是否恢复正常，也可以先重新执行你的原命令。
+
+</Steps>
+
+## 如何判断是否已经修复
+
+如果修复成功，通常会表现为：
+
+- Codex 可以正常启动，不再出现 `502 Bad Gateway`
+- 不再出现 `account/read failed during TUI bootstrap`
+- 可以正常进入交互界面
+- 后续请求可以正常发送
+
+## 如果还是报错
+
+如果更新后仍然报同样的错误，继续检查下面几项：
+
+1. 是否改错了账号下的配置目录
+2. `config.toml` 和 `auth.json` 是否只更新了一个，另一个还是旧文件
+3. 配置里是否有多余空格、缺少引号或 JSON / TOML 格式错误
+4. 终端是否还在使用旧会话，需要彻底关闭后重开
+
+## 补充说明
+
+- 这类报错多数不是服务器故障，而是本地配置文件问题
+- 如果客户是 Windows 用户，优先让他检查 `%USERPROFILE%\\.codex\\` 目录
+- 如果客户之前“能用，后来突然不能用”，优先怀疑配置过期
