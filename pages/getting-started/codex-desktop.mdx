@@ -1,0 +1,251 @@
+---
+title: Desktop 客户端配置
+description: Codex Desktop（GUI 客户端）连接到 OpenAI 兼容 Gateway 的完整配置指南
+---
+
+import { Callout, Tabs } from 'nextra/components'
+
+# Codex Desktop 客户端配置指南
+
+本指南面向已安装 **Codex Desktop**（GUI 客户端）的用户，帮你把桌面端连接到 OpenAI 兼容网关 `https://claude-code.club/openai`。如果你只用 Codex CLI，请优先参考 [安装和配置](/getting-started/codex-installation)。
+
+## 1. 前置条件
+
+- 已安装 Codex Desktop（如未安装，请先参考 [安装和配置](/getting-started/codex-installation) 第 1 节，或访问 [Codex 官方文档](https://github.com/openai/codex)）
+- 已获取有效 API Key（参考 [获取 API Key](/getting-started/get-api-key)）
+- 不要使用已经在聊天、截图或仓库中暴露过的旧 Key；泄露后应立即作废并重建
+
+## 2. Desktop 与 CLI 的配置关系
+
+Codex Desktop 与 Codex CLI **共用**同一组配置文件：
+
+| 文件 | 路径 | 作用 |
+|------|------|------|
+| `config.toml` | `~/.codex/config.toml` | 模型与网关定义 |
+| `auth.json` | `~/.codex/auth.json` | 认证密钥 |
+
+<Callout type="info">
+  Desktop 与 CLI 的配置共享，但 **重启策略** 和 **环境变量读取范围** 不同：Desktop 是图形进程，需要完全退出再启动；macOS 上 GUI 应用读不到 `~/.zshrc` 中的环境变量，必须用 `launchctl setenv`。这两点是本页的重点。
+</Callout>
+
+## 3. 最小可用配置
+
+如果你之前没配置过 `~/.codex/`，按下面步骤一次完成。如果已有配置，请保留其它配置块，仅确保下面这些键值存在且正确。
+
+### 3.1 创建 / 打开配置目录
+
+<Tabs items={['macOS / Linux', 'Windows (PowerShell)']}>
+  <Tabs.Tab>
+    ```bash
+    mkdir -p ~/.codex
+    open ~/.codex
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```powershell
+    New-Item -ItemType Directory -Force "$env:USERPROFILE\.codex"
+    explorer "$env:USERPROFILE\.codex"
+    ```
+  </Tabs.Tab>
+</Tabs>
+
+### 3.2 备份原文件（如果已存在）
+
+<Tabs items={['macOS / Linux', 'Windows (PowerShell)']}>
+  <Tabs.Tab>
+    ```bash
+    cp ~/.codex/config.toml ~/.codex/config.toml.bak 2>/dev/null
+    cp ~/.codex/auth.json   ~/.codex/auth.json.bak   2>/dev/null
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```powershell
+    Copy-Item "$env:USERPROFILE\.codex\config.toml" "$env:USERPROFILE\.codex\config.toml.bak" -ErrorAction SilentlyContinue
+    Copy-Item "$env:USERPROFILE\.codex\auth.json"   "$env:USERPROFILE\.codex\auth.json.bak"   -ErrorAction SilentlyContinue
+    ```
+  </Tabs.Tab>
+</Tabs>
+
+### 3.3 编辑 `config.toml`
+
+<Tabs items={['macOS / Linux', 'Windows (PowerShell)']}>
+  <Tabs.Tab>
+    ```bash
+    nano ~/.codex/config.toml
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```powershell
+    notepad "$env:USERPROFILE\.codex\config.toml"
+    ```
+  </Tabs.Tab>
+</Tabs>
+
+写入或合并以下内容：
+
+```toml
+model_provider = "club"
+model = "gpt-5.5"
+model_reasoning_effort = "high"
+preferred_auth_method = "apikey"
+disable_response_storage = true
+
+[model_providers.club]
+name = "Claude Code Club OpenAI Gateway"
+base_url = "https://claude-code.club/openai"
+wire_api = "responses"
+requires_openai_auth = true
+env_key = "OPENAI_API_KEY"
+```
+
+<Callout type="info">
+  字段含义详解（如 `wire_api`、`requires_openai_auth` 等）请参考 [安装和配置](/getting-started/codex-installation) 第 2 节。
+</Callout>
+
+### 3.4 编辑 `auth.json`
+
+<Tabs items={['macOS / Linux', 'Windows (PowerShell)']}>
+  <Tabs.Tab>
+    ```bash
+    nano ~/.codex/auth.json
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```powershell
+    notepad "$env:USERPROFILE\.codex\auth.json"
+    ```
+  </Tabs.Tab>
+</Tabs>
+
+写入以下结构，把占位符换成你的真实 API Key：
+
+```json
+{
+  "auth_mode": "apikey",
+  "OPENAI_API_KEY": "你的APIKey"
+}
+```
+
+<Callout type="warning">
+  `auth.json` 会以**明文**保存真实 API Key。不要把该文件截图、上传到 GitHub 或发给他人。如果 Key 已经泄露，应立刻作废并重新生成。
+</Callout>
+
+## 4. 重启 Codex Desktop
+
+配置改完后，**只关闭窗口不会让配置生效**——必须完全退出 Codex Desktop 进程再重新打开。
+
+<Tabs items={['macOS / Linux', 'Windows (PowerShell)']}>
+  <Tabs.Tab>
+    1. 在菜单栏点击 `Codex` → `Quit Codex`，或按 `Cmd + Q`
+    2. 打开 **Activity Monitor**（活动监视器），搜索 `Codex`，确认相关进程（包括 `Codex Helper`）已全部退出
+    3. 重新启动 Codex Desktop
+    4. 打开任意项目，发送一条简单请求验证配置生效
+  </Tabs.Tab>
+  <Tabs.Tab>
+    1. 关闭 Codex Desktop 主窗口
+    2. 打开**任务管理器**（`Ctrl + Shift + Esc`），在「进程」中找到所有 `Codex` 相关条目，逐个结束
+    3. 重新启动 Codex Desktop
+    4. 打开任意项目，发送一条简单请求验证配置生效
+  </Tabs.Tab>
+</Tabs>
+
+<Callout type="warning">
+  如果只点了窗口右上角的关闭按钮，进程往往仍在后台运行，配置文件的改动不会被读取。务必确认进程已经完全退出。
+</Callout>
+
+## 5. macOS：launchctl 环境变量（可选）
+
+如果你的某些 OpenAI 兼容 SDK 或 Codex Desktop 的扩展需要从环境变量读取 Key，且只想在 GUI 进程中生效，可以使用 `launchctl setenv`。
+
+<Callout type="info">
+  如果你已经通过 `config.toml` + `auth.json` 完成配置并能正常对话，**本节可跳过**。
+</Callout>
+
+```bash
+launchctl setenv OPENAI_BASE_URL "https://claude-code.club/openai"
+launchctl setenv OPENAI_API_KEY  "你的APIKey"
+```
+
+<Callout type="warning">
+  GUI 应用（包括 Codex Desktop）**不会**读取 `~/.zshrc` / `~/.bashrc` 中的 `export`。这是 macOS 终端 shell 与 Aqua GUI 之间的环境隔离造成的——所以才需要 `launchctl setenv`。重启系统后 `launchctl setenv` 会失效，如需持久化请配合 LaunchAgents。
+</Callout>
+
+如果你只在终端里使用 Codex CLI，参考 [安装和配置](/getting-started/codex-installation) 第 3 节即可。
+
+## 6. 连通性测试（可选诊断）
+
+如果想在启动 Desktop 前先确认网关和 Key 是否可用，可以用 `curl` 直接调用 OpenAI Responses 风格接口。
+
+<Tabs items={['macOS / Linux', 'Windows (PowerShell)']}>
+  <Tabs.Tab>
+    ```bash
+    curl -sS "https://claude-code.club/openai/v1/responses" \
+      -H "Authorization: Bearer 你的APIKey" \
+      -H "Content-Type: application/json" \
+      -d '{"model":"gpt-5.5","input":"你好，回复一句：测试成功"}'
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```powershell
+    $body = @{
+      model = "gpt-5.5"
+      input = "你好，回复一句：测试成功"
+    } | ConvertTo-Json -Depth 10
+
+    curl.exe -sS "https://claude-code.club/openai/v1/responses" `
+      -H "Authorization: Bearer 你的APIKey" `
+      -H "Content-Type: application/json" `
+      -d $body
+    ```
+  </Tabs.Tab>
+</Tabs>
+
+如果返回 JSON 中包含模型回复内容，说明网关和 Key 都没问题；此时若 Desktop 仍连不上，问题大概率在 `config.toml` 字段或进程未重启。
+
+## 7. 故障排查
+
+| 现象 | 处理方式 |
+|------|---------|
+| `Invalid API key` | `auth.json` 或环境变量里的 Key 错误、过期、被禁用，重新生成并替换 |
+| 仍然访问旧网关 | 检查 `config.toml` 中 `base_url` 是否还是旧的 `https://cc.ai-code.club`，改为 `https://claude-code.club/openai` |
+| 模型不可用 | `model` 值不被当前网关支持，换成平台支持的模型，例如 `gpt-5.5` |
+| `JSON` 格式错误 | `auth.json` 必须是合法 JSON，最后一项后面不能多逗号 |
+| `TOML` 格式错误 | `config.toml` 的字符串要用英文双引号；配置块 `[model_providers.club]` 拼写不要错 |
+| 改完不生效 | 完全退出 Codex Desktop（参见第 4 节），必要时重启系统 |
+
+## 8. 恢复默认配置
+
+如果配置改坏了，可以从备份文件恢复：
+
+<Tabs items={['macOS / Linux', 'Windows (PowerShell)']}>
+  <Tabs.Tab>
+    ```bash
+    cp ~/.codex/config.toml.bak ~/.codex/config.toml
+    cp ~/.codex/auth.json.bak   ~/.codex/auth.json
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```powershell
+    Copy-Item "$env:USERPROFILE\.codex\config.toml.bak" "$env:USERPROFILE\.codex\config.toml" -Force
+    Copy-Item "$env:USERPROFILE\.codex\auth.json.bak"   "$env:USERPROFILE\.codex\auth.json"   -Force
+    ```
+  </Tabs.Tab>
+</Tabs>
+
+恢复后同样需要按第 4 节完全重启 Codex Desktop。
+
+## 9. 安全规范
+
+<Callout type="warning">
+  - `auth.json` 中的 `OPENAI_API_KEY` 等同于密码，不要写入公开文档、截图或 Git 仓库
+  - `config.toml` / `auth.json` / 其他导出文件可能包含明文 Key，仅在可信设备上短期保存
+  - 团队共享配置时，只共享步骤和占位符，不共享真实密钥
+  - 如果 Key 曾出现在聊天、截图、日志或公开仓库中，应立即作废并重新生成
+</Callout>
+
+## 10. 参考资料
+
+- [OpenAI Codex 安装和配置](/getting-started/codex-installation) — Codex CLI 视角的完整安装指南
+- [获取 API Key](/getting-started/get-api-key) — claude-code.club API Key 申请流程
+- [配置 Base URL 和 Auth Token](/getting-started/faq/config-baseurl-authtoken) — 环境变量 / 配置文件 / 项目级配置三种方式
+- [Codex 官方仓库](https://github.com/openai/codex)

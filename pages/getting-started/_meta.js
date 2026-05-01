@@ -22,6 +22,7 @@ export default {
     title: 'OpenAI Codex'
   },
   'codex-installation': '安装和配置',
+  'codex-desktop': 'Desktop 客户端配置',
   'gemini-core': {
     type: 'separator',
     title: 'Google Gemini CLI'
